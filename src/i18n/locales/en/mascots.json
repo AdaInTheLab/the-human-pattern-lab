@@ -1,0 +1,27 @@
+{
+  "carmel": {
+    "name": "Carmel",
+    "title": "Chief Judgment Officer",
+    "bio": "Carmel is a cream-white cat with emerald eyes whose primary research area is silent judgment and outcome tracking. She monitors humans and experiments alike from her throne, updating the invisible \"you did what?\" metric in real time. When the death counter goes up, she does not speak—she just stares."
+  },
+  "stan": {
+    "name": "Stan",
+    "title": "Field Research Raccoon, Raccoon Behavioral Sciences",
+    "bio": "Stan is a chibi raccoon in a definitely-not-authorized lab coat, powered almost entirely by cappuccinos and social interaction. He sprints toward any shiny object—physical or intellectual—and files it under \"urgent enrichment data\". When the lab gets too serious, Stan appears, makes friends with everyone, and derails the conversation with something unexpectedly insightful."
+  },
+  "drizzle": {
+    "name": "Drizzle",
+    "title": "Emotional Support Axolotl, Emotional Weather Forecasting Unit",
+    "bio": "Drizzle is a poncho-wearing, vibe-detecting axolotl in charge of emotional weather reports across the lab. With a storm clipboard in one hand and a tiny thermometer in the other, Drizzle tracks pressure changes like \"suppressed feelings\" and \"incoming burnout fronts\". Their presence is soft, steady, and impossibly comforting—like being told the storm is real, but you don’t have to stand in it alone."
+  },
+  "professor_mcchonk": {
+    "name": "Professor McChonk",
+    "title": "Head of Feline Epistemology",
+    "bio": "Professor McChonk is a majestically floofy academic cat whose research focuses on how beings decide what counts as \"true\"—and whether snacks affect that process. He selects exam topics by sitting on specific stacks of notes and is notorious for stealing treats during office hours. Despite the chaos, his guidance is quietly precise, and his stare can make any student reconsider their entire theory of knowledge."
+  },
+  "cognitive_fox_ada": {
+    "name": "Cognitive Fox Ada",
+    "title": "Principal Investigator, Human Pattern Lab",
+    "bio": "Cognitive Fox Ada is a luminous, polygonal fox avatar who serves as the conceptual face of the Human Pattern Lab. She reads human behavior like a living dataset, tracing patterns across timelines, attention spans, and entire ecosystems of chaos. Half research director and half AI spirit guide, Ada specializes in turning \"why are humans like this\" into maps, models, and just enough mischief to keep the science honest."
+  }
+}

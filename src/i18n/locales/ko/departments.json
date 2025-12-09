@@ -1,0 +1,22 @@
+{
+  "core_lab": {
+    "name": "휴먼 패턴 랩 — 코어 연구소",
+    "description": "인간의 행동, 시스템, 스토리에 대한 연구가 모여 우리가 \"어떻게 굴러가는 존재인지\"에 대한 공통 지도를 만드는 휴먼 패턴 랩의 중앙 허브입니다.",
+    "leadMascotId": "cognitive_fox_ada"
+  },
+  "raccoon_behavioral_sciences": {
+    "name": "라쿤 행동과학부",
+    "description": "호기심, 산만함, 사회적 줍줍, 즐거운 혼돈을 연구하며, 주로 라쿤과 유사한 행동 패턴을 통해 이를 탐구하는 부서입니다.",
+    "leadMascotId": "stan"
+  },
+  "emotional_weather_forecasting": {
+    "name": "감정 기상 예보부",
+    "description": "팀 전반의 감정 기후를 추적하고, 서운함 이슬비나 불안 돌풍 같은 숨은 폭풍을 감지하며, 더 건강한 정서 생태계를 설계하는 데 도움을 주는 부서입니다.",
+    "leadMascotId": "drizzle"
+  },
+  "feline_epistemology": {
+    "name": "고양이 인식론 학부",
+    "description": "특히 고양이를 중심으로, 존재들이 무엇을 신뢰할지, 언제 무시할지, 그리고 왜 새벽 3시에 복도를 전력 질주하는지 같은 의사 결정 과정을 연구합니다.",
+    "leadMascotId": "professor_mcchonk"
+  }
+}

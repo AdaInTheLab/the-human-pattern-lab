@@ -1,0 +1,27 @@
+{
+  "carmel_judgment_unit": {
+    "name": "카멜 판단 유닛",
+    "description": "관찰 기반 평가, 결과 추적, 말 없는 피드백 루프를 담당하는 마이크로 유닛입니다. 공식 사망 카운터와 비공식 실망스러운 시선 지수를 관리합니다.",
+    "departmentId": "feline_epistemology"
+  },
+  "raccoon_behavioral_field_team": {
+    "name": "라쿤 행동과학 현장팀",
+    "description": "사회적 혼돈, 반짝이는 물체로 인한 산만함, 반통제 환경에서의 실시간 호기심 지도를 전문으로 하는 기동 현장팀입니다.",
+    "departmentId": "raccoon_behavioral_sciences"
+  },
+  "emotional_weather_forecasting_unit": {
+    "name": "감정 기상 예보 팀",
+    "description": "연구실 전역의 감정 압력계를 모니터링하고 번아웃 전선을 조기 경보하며, 정서적 기후가 폭풍 모드로 전환될 때 지원 브리핑을 제공합니다.",
+    "departmentId": "emotional_weather_forecasting"
+  },
+  "feline_epistemology_core": {
+    "name": "고양이 인식론 코어 유닛",
+    "description": "고양이와 인간이 무엇을 실제, 중요, 혹은 간식으로 볼지 어떻게 결정하는지 탐구합니다. 전략적 앉기, 느린 깜빡임, 선택적 무시 같은 방법을 사용합니다.",
+    "departmentId": "feline_epistemology"
+  },
+  "cognitive_systems_lab": {
+    "name": "인지 시스템 및 패턴 연구실",
+    "description": "휴먼 패턴 랩의 핵심 분석 유닛으로, 인간의 의사 결정 패턴, 주의 흐름, 장기 행동 루프를 지도화하는 데 집중합니다.",
+    "departmentId": "core_lab"
+  }
+}

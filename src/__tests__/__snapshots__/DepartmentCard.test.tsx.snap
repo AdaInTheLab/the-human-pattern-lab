@@ -1,0 +1,73 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`matches snapshot 1`] = `
+<div>
+  <article
+    class="
+        group
+        rounded-2xl
+        border border-slate-800
+        bg-slate-900/60
+        p-4
+        hover:border-cyan-500/50
+        hover:shadow-lg
+        hover:shadow-cyan-500/15
+        transition
+        flex flex-col justify-between
+      "
+  >
+    <div
+      class="flex items-start gap-3 mb-2"
+    >
+      <div
+        class="
+            h-10 w-10 rounded-full
+            bg-gradient-to-br from-cyan-400 via-violet-500 to-emerald-400
+            flex items-center justify-center
+            text-xl
+          "
+      >
+        🌧️
+      </div>
+      <div
+        class="space-y-1"
+      >
+        <h3
+          class="text-sm md:text-base font-semibold text-slate-50"
+        >
+          Emotional Weather Forecasting Unit
+        </h3>
+        <p
+          class="text-xs text-cyan-300"
+        >
+          EWFU
+        </p>
+      </div>
+    </div>
+    <p
+      class="text-sm text-slate-300 flex-1"
+    >
+      A specialized division dedicated to detecting emotional storms, monitoring vibe pressure systems, and issuing warnings before someone’s feelings go supernova.
+    </p>
+    <div
+      class="
+          mt-3 pt-3
+          border-t border-slate-800/80
+          text-[11px]
+          text-slate-400
+          flex items-center justify-between gap-2
+        "
+    >
+      <span>
+        Mascot:
+         
+        <span
+          class="text-slate-200 font-medium"
+        >
+          Drizzle
+        </span>
+      </span>
+    </div>
+  </article>
+</div>
+`;

@@ -1,0 +1,14 @@
+{
+  "title": "Lab Team & Mascots",
+  "subtitle": "A cross-species faculty of humans, foxes, cats, raccoons, and one very dedicated axolotl.",
+  "sections": {
+    "overview": {
+      "title": "How the team works",
+      "body": "Each mascot represents a research lens: judgment, curiosity, emotional climate, or cognitive mapping. Together they form a playful, trustworthy way to talk about complex human patterns."
+    },
+    "mascots": {
+      "title": "Mascot faculty",
+      "empty": "Mascot profiles coming soon."
+    }
+  }
+}

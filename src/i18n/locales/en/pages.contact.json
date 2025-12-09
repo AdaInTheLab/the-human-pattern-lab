@@ -1,0 +1,19 @@
+{
+  "title": "Contact",
+  "subtitle": "Reach out if you’d like to collaborate, ask questions, or say hi.",
+  "form": {
+    "name": "Name",
+    "email": "Email",
+    "message": "Message",
+    "reason": "Reason for reaching out",
+    "reasonOptions": {
+      "collab": "Collaboration",
+      "press": "Press / media",
+      "question": "Question",
+      "other": "Other"
+    },
+    "submit": "Send message",
+    "success": "Thanks for reaching out! We’ll read this soon.",
+    "error": "Could not send your message. Please try again."
+  }
+}

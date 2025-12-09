@@ -1,0 +1,26 @@
+{
+  "hero": {
+    "title": "Human Pattern Lab",
+    "subtitle": "A tiny research lab for understanding how humans behave, decide, spiral, recover, and try again.",
+    "ctaPrimary": "Explore the lab",
+    "ctaSecondary": "Meet the mascots"
+  },
+  "sections": {
+    "whatWeDo": {
+      "title": "What we study",
+      "body": "We map the patterns underneath everyday life: how people make choices, protect their energy, burn out, build systems, and occasionally turn everything into a delightful mess."
+    },
+    "departments": {
+      "title": "Departments & units",
+      "body": "From Feline Epistemology to Raccoon Behavioral Sciences, each department explores a different angle of \"why are humans like this?\""
+    },
+    "mascots": {
+      "title": "Mascot faculty",
+      "body": "Our mascot faculty turn abstract ideas into cozy, visual characters: judgment, curiosity, emotional climate, and cognitive maps all get their own chibi representative."
+    },
+    "labNotes": {
+      "title": "Lab notes",
+      "body": "Essays, experiments, and field notes from the Human Pattern Lab."
+    }
+  }
+}

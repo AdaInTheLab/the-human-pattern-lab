@@ -1,0 +1,27 @@
+{
+  "carmel_judgment_unit": {
+    "name": "Carmel Judgment Unit",
+    "description": "A micro-unit dedicated to observational judgment, outcome tracking, and silent feedback loops. Responsible for maintaining the official Death Counter and unofficial Disappointed Stare Index.",
+    "departmentId": "feline_epistemology"
+  },
+  "raccoon_behavioral_field_team": {
+    "name": "Raccoon Behavioral Field Team",
+    "description": "A fast-moving field team specializing in social chaos, shiny-object distraction, and real-time curiosity mapping in semi-controlled environments.",
+    "departmentId": "raccoon_behavioral_sciences"
+  },
+  "emotional_weather_forecasting_unit": {
+    "name": "Emotional Weather Forecasting Unit",
+    "description": "Monitors emotional pressure systems across the lab, issues early warnings for burnout fronts, and provides supportive briefings when the climate turns stormy.",
+    "departmentId": "emotional_weather_forecasting"
+  },
+  "feline_epistemology_core": {
+    "name": "Feline Epistemology Core Unit",
+    "description": "Explores how cats and humans decide what is real, important, or snack-worthy, using methods such as strategic sitting, slow blinking, and selective ignoring.",
+    "departmentId": "feline_epistemology"
+  },
+  "cognitive_systems_lab": {
+    "name": "Cognitive Systems & Patterns Lab",
+    "description": "The core analysis unit of the Human Pattern Lab, focused on mapping human decision patterns, attention flows, and long-term behavior loops.",
+    "departmentId": "core_lab"
+  }
+}

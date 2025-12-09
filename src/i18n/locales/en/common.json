@@ -1,0 +1,35 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "departments": "Departments",
+    "lab-notes": "Lab Notes",
+    "videos": "Videos",
+    "content-use-policy": "Content Use",
+    "contact": "Contact"
+  },
+  "footer": {
+    "tagline": "Curious humans, cozy mascots, serious patterns.",
+    "rights": "All rights reserved.",
+    "contentPolicy": "Content Use Policy",
+    "social": "Find us elsewhere"
+  },
+  "language": {
+    "label": "Language",
+    "en": "English",
+    "ko": "한국어"
+  },
+  "actions": {
+    "readMore": "Read more",
+    "viewAll": "View all",
+    "learnMore": "Learn more",
+    "back": "Back",
+    "backToHome": "Back to home",
+    "openDetails": "Open details"
+  },
+  "status": {
+    "loading": "Loading...",
+    "error": "Something went wrong.",
+    "empty": "Nothing to see here yet."
+  }
+}

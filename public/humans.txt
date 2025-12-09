@@ -1,0 +1,6 @@
+The Human Pattern Lab
+Creatures, humans, and occasionally AI work here.
+
+Lead Human: Dara
+Mascots: Carmel, Orbson, Professor McChonk
+Motto: Chaos is data.

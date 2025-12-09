@@ -1,0 +1,35 @@
+{
+  "nav": {
+    "home": "홈",
+    "about": "소개",
+    "departments": "부서",
+    "lab-notes": "랩 노트",
+    "videos": "영상",
+    "content-use-policy": "콘텐츠 이용",
+    "contact": "문의"
+  },
+  "footer": {
+    "tagline": "호기심 많은 인간, 포근한 마스코트, 진지한 패턴 연구.",
+    "rights": "All rights reserved.",
+    "contentPolicy": "콘텐츠 이용 정책",
+    "social": "다른 채널에서 만나기"
+  },
+  "language": {
+    "label": "언어",
+    "en": "English",
+    "ko": "한국어"
+  },
+  "actions": {
+    "readMore": "더 보기",
+    "viewAll": "전체 보기",
+    "learnMore": "자세히 보기",
+    "back": "뒤로",
+    "backToHome": "홈으로 돌아가기",
+    "openDetails": "자세히 열기"
+  },
+  "status": {
+    "loading": "불러오는 중...",
+    "error": "문제가 발생했습니다.",
+    "empty": "아직 표시할 내용이 없습니다."
+  }
+}

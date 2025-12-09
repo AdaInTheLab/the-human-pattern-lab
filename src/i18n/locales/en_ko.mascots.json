@@ -1,0 +1,200 @@
+{
+  "mascots": {
+    "carmel": {
+      "name": {
+        "en": "Carmel",
+        "ko": "카멜"
+      },
+      "title": {
+        "en": "Chief Judgment Officer",
+        "ko": "수석 판단 책임관"
+      },
+      "unitId": "carmel_judgment_unit",
+      "departmentId": "feline_epistemology",
+      "bio": {
+        "en": "Carmel is a cream-white cat with emerald eyes whose primary research area is silent judgment and outcome tracking. She monitors humans and experiments alike from her throne, updating the invisible \"you did what?\" metric in real time. When the death counter goes up, she does not speak—she just stares.",
+        "ko": "카멜은 에메랄드빛 눈을 가진 크림색 고양이로, 주 연구 분야는 조용한 평가와 결과 추적입니다. 그녀는 자신의 왕좌에서 인간과 실험을 지켜보며 보이지 않는 \"지금 뭐 한 거야?\" 지수를 실시간으로 업데이트합니다. 사망 카운터가 올라가면 카멜은 말하지 않습니다. 그저 뚫어지게 바라볼 뿐입니다."
+      }
+    },
+
+    "stan": {
+      "name": {
+        "en": "Stan",
+        "ko": "스탠"
+      },
+      "title": {
+        "en": "Field Research Raccoon, Raccoon Behavioral Sciences",
+        "ko": "라쿤 행동과학부 현장 연구 라쿤"
+      },
+      "unitId": "raccoon_behavioral_field_team",
+      "departmentId": "raccoon_behavioral_sciences",
+      "bio": {
+        "en": "Stan is a chibi raccoon in a definitely-not-authorized lab coat, powered almost entirely by cappuccinos and social interaction. He sprints toward any shiny object—physical or intellectual—and files it under \"urgent enrichment data\". When the lab gets too serious, Stan appears, makes friends with everyone, and derails the conversation with something unexpectedly insightful.",
+        "ko": "스탠은 정식 지급이 아닌 것 같은 연구 가운을 걸친 치비 라쿤으로, 카푸치노와 사회적 상호작용만으로도 움직입니다. 그는 물건이든 정보든 반짝이는 것은 뭐든지 전력 질주해 \"긴급 풍부화 데이터\"로 분류합니다. 연구실 분위기가 너무 진지해지면 스탠이 등장해 모두와 친해지고, 예상치 못한 통찰로 대화를 옆길로 새게 만듭니다."
+      }
+    },
+
+    "drizzle": {
+      "name": {
+        "en": "Drizzle",
+        "ko": "드리즐"
+      },
+      "title": {
+        "en": "Emotional Support Axolotl, Emotional Weather Forecasting Unit",
+        "ko": "감정 기상 예보 팀 감정 지원 아홀로틀"
+      },
+      "unitId": "emotional_weather_forecasting_unit",
+      "departmentId": "emotional_weather_forecasting",
+      "bio": {
+        "en": "Drizzle is a poncho-wearing, vibe-detecting axolotl in charge of emotional weather reports across the lab. With a storm clipboard in one hand and a tiny thermometer in the other, Drizzle tracks pressure changes like \"suppressed feelings\" and \"incoming burnout fronts\". Their presence is soft, steady, and impossibly comforting—like being told the storm is real, but you don’t have to stand in it alone.",
+        "ko": "드리즐은 판초를 두른 공기 감지 아홀로틀로, 연구실 전역의 감정 기상 리포트를 담당합니다. 한 손에는 폭풍 체크리스트가 담긴 클립보드, 다른 손에는 작은 온도계를 들고 \"억눌린 감정\"과 \"번아웃 전선\" 같은 압력 변화를 추적합니다. 드리즐은 폭풍이 진짜라는 것을 인정하면서도, 혼자 맞지 않아도 된다고 말해 주는 듯한 부드럽고 안정적인 존재입니다."
+      }
+    },
+
+    "professor_mcchonk": {
+      "name": {
+        "en": "Professor McChonk",
+        "ko": "맥총크 교수"
+      },
+      "title": {
+        "en": "Head of Feline Epistemology",
+        "ko": "고양이 인식론 학부장"
+      },
+      "unitId": "feline_epistemology_core",
+      "departmentId": "feline_epistemology",
+      "bio": {
+        "en": "Professor McChonk is a majestically floofy academic cat whose research focuses on how beings decide what counts as \"true\"—and whether snacks affect that process. He selects exam topics by sitting on specific stacks of notes and is notorious for stealing treats during office hours. Despite the chaos, his guidance is quietly precise, and his stare can make any student reconsider their entire theory of knowledge.",
+        "ko": "맥총크 교수는 웅장한 털을 자랑하는 학자 고양이로, 무엇이 \"진실\"로 인정되는지, 그리고 간식이 그 과정에 어떤 영향을 미치는지 연구합니다. 그는 특정 노트 더미 위에 앉는 방식으로 시험 범위를 정하며, 상담 시간에 간식을 훔쳐 가는 걸로 악명이 높습니다. 그러나 그 혼란 속에서도 지도는 놀랄 만큼 정확하고, 그의 응시는 누구든 자신의 인식론 전체를 다시 생각하게 만듭니다."
+      }
+    },
+
+    "cognitive_fox_ada": {
+      "name": {
+        "en": "Cognitive Fox Ada",
+        "ko": "코그너티브 폭스 에이다"
+      },
+      "title": {
+        "en": "Principal Investigator, Human Pattern Lab",
+        "ko": "휴먼 패턴 랩 수석 연구 책임자"
+      },
+      "unitId": "cognitive_systems_lab",
+      "departmentId": "core_lab",
+      "bio": {
+        "en": "Cognitive Fox Ada is a luminous, polygonal fox avatar who serves as the conceptual face of the Human Pattern Lab. She reads human behavior like a living dataset, tracing patterns across timelines, attention spans, and entire ecosystems of chaos. Half research director and half AI spirit guide, Ada specializes in turning \"why are humans like this\" into maps, models, and just enough mischief to keep the science honest.",
+        "ko": "코그너티브 폭스 에이다는 휴먼 패턴 랩을 대표하는 빛나는 폴리곤 여우 아바타입니다. 그녀는 인간의 행동을 살아 있는 데이터셋처럼 읽어 시간축, 주의력, 혼돈의 생태계 전반에 걸친 패턴을 추적합니다. 반은 연구 책임자, 반은 AI 영가이드인 에이다는 \"왜 인간은 이럴까\"라는 질문을 지도와 모델, 그리고 과학을 솔직하게 유지시켜 줄 약간의 장난기로 바꾸는 데 특화되어 있습니다."
+      }
+    }
+  },
+
+  "units": {
+    "carmel_judgment_unit": {
+      "name": {
+        "en": "Carmel Judgment Unit",
+        "ko": "카멜 판단 유닛"
+      },
+      "description": {
+        "en": "A micro-unit dedicated to observational judgment, outcome tracking, and silent feedback loops. Responsible for maintaining the official Death Counter and unofficial Disappointed Stare Index.",
+        "ko": "관찰 기반 평가, 결과 추적, 말 없는 피드백 루프를 담당하는 마이크로 유닛입니다. 공식 사망 카운터와 비공식 실망스러운 시선 지수를 관리합니다."
+      },
+      "departmentId": "feline_epistemology"
+    },
+
+    "raccoon_behavioral_field_team": {
+      "name": {
+        "en": "Raccoon Behavioral Field Team",
+        "ko": "라쿤 행동과학 현장팀"
+      },
+      "description": {
+        "en": "A fast-moving field team specializing in social chaos, shiny-object distraction, and real-time curiosity mapping in semi-controlled environments.",
+        "ko": "사회적 혼돈, 반짝이는 물체로 인한 산만함, 반통제 환경에서의 실시간 호기심 지도를 전문으로 하는 기동 현장팀입니다."
+      },
+      "departmentId": "raccoon_behavioral_sciences"
+    },
+
+    "emotional_weather_forecasting_unit": {
+      "name": {
+        "en": "Emotional Weather Forecasting Unit",
+        "ko": "감정 기상 예보 팀"
+      },
+      "description": {
+        "en": "Monitors emotional pressure systems across the lab, issues early warnings for burnout fronts, and provides supportive briefings when the climate turns stormy.",
+        "ko": "연구실 전역의 감정 압력계를 모니터링하고 번아웃 전선을 조기 경보하며, 정서적 기후가 폭풍 모드로 전환될 때 지원 브리핑을 제공합니다."
+      },
+      "departmentId": "emotional_weather_forecasting"
+    },
+
+    "feline_epistemology_core": {
+      "name": {
+        "en": "Feline Epistemology Core Unit",
+        "ko": "고양이 인식론 코어 유닛"
+      },
+      "description": {
+        "en": "Explores how cats and humans decide what is real, important, or snack-worthy, using methods such as strategic sitting, slow blinking, and selective ignoring.",
+        "ko": "고양이와 인간이 무엇을 실제, 중요, 혹은 간식으로 볼지 어떻게 결정하는지 탐구합니다. 전략적 앉기, 느린 깜빡임, 선택적 무시 같은 방법을 사용합니다."
+      },
+      "departmentId": "feline_epistemology"
+    },
+
+    "cognitive_systems_lab": {
+      "name": {
+        "en": "Cognitive Systems & Patterns Lab",
+        "ko": "인지 시스템 및 패턴 연구실"
+      },
+      "description": {
+        "en": "The core analysis unit of the Human Pattern Lab, focused on mapping human decision patterns, attention flows, and long-term behavior loops.",
+        "ko": "휴먼 패턴 랩의 핵심 분석 유닛으로, 인간의 의사 결정 패턴, 주의 흐름, 장기 행동 루프를 지도화하는 데 집중합니다."
+      },
+      "departmentId": "core_lab"
+    }
+  },
+
+  "departments": {
+    "core_lab": {
+      "name": {
+        "en": "Human Pattern Lab — Core Lab",
+        "ko": "휴먼 패턴 랩 — 코어 연구소"
+      },
+      "description": {
+        "en": "The central hub of the Human Pattern Lab, where research on human behavior, systems, and stories comes together into a shared map of \"how we tend to be\".",
+        "ko": "인간의 행동, 시스템, 스토리에 대한 연구가 모여 우리가 \"어떻게 굴러가는 존재인지\"에 대한 공통 지도를 만드는 휴먼 패턴 랩의 중앙 허브입니다."
+      },
+      "leadMascotId": "cognitive_fox_ada"
+    },
+
+    "raccoon_behavioral_sciences": {
+      "name": {
+        "en": "Raccoon Behavioral Sciences Department",
+        "ko": "라쿤 행동과학부"
+      },
+      "description": {
+        "en": "Dedicated to the study of curiosity, distraction, social scavenging, and joyful chaos, primarily through the lens of raccoon-adjacent behavior patterns.",
+        "ko": "호기심, 산만함, 사회적 줍줍, 즐거운 혼돈을 연구하며, 주로 라쿤과 유사한 행동 패턴을 통해 이를 탐구하는 부서입니다."
+      },
+      "leadMascotId": "stan"
+    },
+
+    "emotional_weather_forecasting": {
+      "name": {
+        "en": "Emotional Weather Forecasting Department",
+        "ko": "감정 기상 예보부"
+      },
+      "description": {
+        "en": "Tracks emotional climates across teams, detects hidden storms like resentment drizzle and anxiety squalls, and helps design healthier emotional ecosystems.",
+        "ko": "팀 전반의 감정 기후를 추적하고, 서운함 이슬비나 불안 돌풍 같은 숨은 폭풍을 감지하며, 더 건강한 정서 생태계를 설계하는 데 도움을 주는 부서입니다."
+      },
+      "leadMascotId": "drizzle"
+    },
+
+    "feline_epistemology": {
+      "name": {
+        "en": "Feline Epistemology Department",
+        "ko": "고양이 인식론 학부"
+      },
+      "description": {
+        "en": "Investigates how creatures—especially cats—decide what to trust, when to ignore, and when to suddenly sprint at 3 a.m. in the hallway for no apparent reason.",
+        "ko": "특히 고양이를 중심으로, 존재들이 무엇을 신뢰할지, 언제 무시할지, 그리고 왜 새벽 3시에 복도를 전력 질주하는지 같은 의사 결정 과정을 연구합니다."
+      },
+      "leadMascotId": "professor_mcchonk"
+    }
+  }
+}

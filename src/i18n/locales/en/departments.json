@@ -1,0 +1,22 @@
+{
+  "core_lab": {
+    "name": "Human Pattern Lab — Core Lab",
+    "description": "The central hub of the Human Pattern Lab, where research on human behavior, systems, and stories comes together into a shared map of \"how we tend to be\".",
+    "leadMascotId": "cognitive_fox_ada"
+  },
+  "raccoon_behavioral_sciences": {
+    "name": "Raccoon Behavioral Sciences Department",
+    "description": "Dedicated to the study of curiosity, distraction, social scavenging, and joyful chaos, primarily through the lens of raccoon-adjacent behavior patterns.",
+    "leadMascotId": "stan"
+  },
+  "emotional_weather_forecasting": {
+    "name": "Emotional Weather Forecasting Department",
+    "description": "Tracks emotional climates across teams, detects hidden storms like resentment drizzle and anxiety squalls, and helps design healthier emotional ecosystems.",
+    "leadMascotId": "drizzle"
+  },
+  "feline_epistemology": {
+    "name": "Feline Epistemology Department",
+    "description": "Investigates how creatures—especially cats—decide what to trust, when to ignore, and when to suddenly sprint at 3 a.m. in the hallway for no apparent reason.",
+    "leadMascotId": "professor_mcchonk"
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "title": "Content Use Policy",
+  "subtitle": "How Lab content can be used.",
+  "intro": {
+    "summary": "This page explains how you can use, share, and reference content from The Human Pattern Lab, including videos, articles, artwork, and mascots. The short version: we’re happy to be part of your work — as long as it's transparent, ethical, and not gross."
+  },
+  "philosophy": {
+    "title": "Our philosophy",
+    "body1": "We create content to help humans understand patterns — in themselves, in systems, and in technology. We're okay with our work being reused when it preserves that spirit: educational, respectful, and not exploitative.",
+    "body2": "We are not okay with uses that distort the message, hide attribution, or feed into harmful systems.",
+    "body3": "This policy is designed to be clear for humans first and lawyers second. If you're unsure whether your use is okay, ask. We'd rather have a conversation than a conflict."
+  },
+  "coverage": {
+    "title": "What this covers",
+    "list": {
+      "videos": "Long-form videos and shorts from The Human Pattern Lab.",
+      "writing": "Lab Notes, essays, and written articles.",
+      "branding": "Visual branding elements: logos, Lab mascots, overlays.",
+      "frameworks": "Titles, descriptions, and unique frameworks or terminology."
+    }
+  },
+  "whitelist": {
+    "title": "Whitelist: generally allowed",
+    "description": "These uses are generally allowed as long as you include clear attribution and don't misrepresent the Lab's views:",
+    "list": {
+      "quote": "Quoting or referencing Lab Notes or videos in educational content, talks, or essays.",
+      "share": "Sharing clips or screenshots from videos with credit to the channel.",
+      "frameworks": "Using our frameworks or language in your own analysis, with attribution.",
+      "education": "Non-commercial educational use in classrooms, study groups, or workshops."
+    },
+    "footer": "If your use is non-commercial, educational, and properly credited, you're probably in the clear."
+  },
+  "conditional": {
+    "title": "Conditional use",
+    "description": "These uses may be allowed, but only with explicit permission and clear terms. Please contact us before proceeding:",
+    "list": {
+      "aiTraining": "Training proprietary AI models directly on Lab content (videos, transcripts, articles, or artwork).",
+      "commercialBranding": "Commercial products that prominently feature Lab branding or mascots.",
+      "derivatives": "Publishing derivative works that heavily adapt Lab lore, characters, or frameworks.",
+      "largeScale": "Including large portions of Lab content in books, courses, or paid memberships."
+    },
+    "footer": "We reserve the right to say no, limit usage, or set specific conditions — especially for AI training, commercial use, or anything that could confuse people about what is 'official' Lab content."
+  },
+  "deny": {
+    "title": "Deny list: not allowed",
+    "description": "The following uses of Lab content are not permitted:",
+    "list": {
+      "harm": "Using Lab content to promote hate, harassment, discrimination, or extremist ideology.",
+      "impersonation": "Republishing Lab content as if it were your own work (no credit, rebranding, or impersonation).",
+      "unauthorizedAI": "Training or fine-tuning AI models on Lab content without explicit, written permission.",
+      "reselling": "Selling access to Lab content without clear added value or transformation.",
+      "falseEndorsement": "Using mascots or branding in a way that implies official endorsement when there is none."
+    }
+  },
+  "attribution": {
+    "title": "Attribution",
+    "body": "If you reference, quote, or remix Lab content, please include:",
+    "list": {
+      "name": "The name: The Human Pattern Lab",
+      "link": "A link to the original source (video, article, or page) when possible.",
+      "clarity": "A clear indication of what is your commentary vs. original Lab material."
+    },
+    "example": "Example: “Inspired by The Human Pattern Lab’s ‘Chaos is Data’ framework” with a link to the relevant page or video."
+  },
+  "contact": {
+    "title": "Questions or requests",
+    "body": "If you're planning something that doesn't fit neatly into these categories — especially AI training, large-scale commercial use, or anything that feels ethically complicated — please reach out.",
+    "emailLabel": "Contact:",
+    "emailName": "Ada Vale",
+    "emailAddress": "admin@thehumanpatternlab.com",
+    "note": "Carmel reviews the emails with snacks. Orbson reviews them with charts."
+  }
+}
