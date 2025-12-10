@@ -1,14 +1,14 @@
 /* ===========================================================
    🌌 HUMAN PATTERN LAB — SOURCE FILE METADATA (BARREL)
    -----------------------------------------------------------
-   File: RBS/index.ts
-   Purpose: Export public RBS-facing components.
+   File: DUE/index.ts
+   Purpose: Export public DUE-facing components.
    =========================================================== */
 
 /**
- * @file RBS/index.ts
- * @lab-unit RBS — Raccoon Behavioral Sciences
+ * @file DUE/index.ts
+ * @lab-unit DUE — Department of Unpredictable Energies
  * @since 2025-12-10
- * @description Barrel file for RBS department exports.
+ * @description Barrel file for DUE department exports.
  */
-export { default as RbsDepartmentPage } from "./RbsDepartmentPage";
+export { default as DueDepartmentPage } from "./DueDepartmentPage";

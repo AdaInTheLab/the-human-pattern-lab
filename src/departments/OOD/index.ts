@@ -1,14 +1,14 @@
 /* ===========================================================
    🌌 HUMAN PATTERN LAB — SOURCE FILE METADATA (BARREL)
    -----------------------------------------------------------
-   File: RBS/index.ts
-   Purpose: Export public RBS-facing components.
+   File: OOD/index.ts
+   Purpose: Export public OOD-facing components.
    =========================================================== */
 
 /**
- * @file RBS/index.ts
- * @lab-unit RBS — Raccoon Behavioral Sciences
+ * @file OOD/index.ts
+ * @lab-unit OOD — Observational Oversight Division
  * @since 2025-12-10
- * @description Barrel file for RBS department exports.
+ * @description Barrel file for OOD department exports.
  */
-export { default as RbsDepartmentPage } from "./RbsDepartmentPage";
+export { default as OodDepartmentPage } from "./OodDepartmentPage";

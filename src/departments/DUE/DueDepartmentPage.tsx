@@ -3,24 +3,23 @@
    -----------------------------------------------------------
    Author: Ada (Founder, The Human Pattern Lab)
    Assistant: Lyric (AI Lab Companion)
-   File: FelineDepartmentPage.tsx
-   Purpose: Render the department page for the Feline Epistemology
-            division, studying feline models of knowledge.
+   File: DueDepartmentPage.tsx
+   Purpose: Render the department page for DUE, dedicated to
+            volatility, chaos patterns, and unpredictable energy flows.
    =========================================================== */
 
 /**
- * @file FelineDepartmentPage.tsx
+ * @file DueDepartmentPage.tsx
  * @assistant Lyric
- * @lab-unit FELINE — Feline Epistemology
+ * @lab-unit DUE — Department of Unpredictable Energies
  * @since 2025-12-10
- * @description Outlines the mission and research domains of the
- *              Feline Epistemology department, led by Professor McChonk.
+ * @description Provides mission and responsibilities for DUE,
+ *              chaired by Nemmi, patron of spontaneous chaos.
  */
-
 
 import React from "react";
 
-const FelineDepartmentPage: React.FC = () => {
+const DueDepartmentPage: React.FC = () => {
     return (
         <main className="max-w-4xl mx-auto px-4 py-12 space-y-8">
             <header className="space-y-2">
@@ -28,46 +27,43 @@ const FelineDepartmentPage: React.FC = () => {
                     Department
                 </p>
                 <h1 className="text-3xl md:text-4xl font-semibold">
-                    Feline Epistemology Department
+                    DUE — Department of Unpredictable Energies
                 </h1>
                 <p className="text-slate-300">
-                    Academic home of Professor McChonk, Head of Feline Epistemology and
-                    professional snack thief.
+                    Chaired by Nemmi, Deputy of Unpredictable Energies and tiny agent of
+                    chaos.
                 </p>
             </header>
 
             <section className="space-y-3">
                 <h2 className="text-xl font-semibold">Mission</h2>
                 <p className="text-slate-200">
-                    This department explores how cats know what they know: intuition,
-                    selective attention, nap-based cognition, and why they&aposre always
-                    right even when the data disagrees.
+                    DUE studies volatility: creative surges, motivation crashes, random
+                    rabbit holes, and the sudden urge to redo everything at 2 AM. It is
+                    not here to prevent chaos — just to understand and channel it.
                 </p>
             </section>
 
             <section className="space-y-3">
                 <h2 className="text-xl font-semibold">Core Responsibilities</h2>
                 <ul className="list-disc list-inside space-y-2 text-slate-200">
-                    <li>Develop and refine the Feline Epistemology Framework.</li>
-                    <li>
-                        Research judgment, curiosity, and &quot;I sit on this now, it is
-                        mine&quot; theory.
-                    </li>
-                    <li>Host occasional lectures on snack-driven learning models.</li>
-                    <li>Collaborate with CJO on formalizing feline judgment protocols.</li>
+                    <li>Track spikes and dips in creative and emotional energy.</li>
+                    <li>Identify patterns in distraction, hyperfocus, and momentum loss.</li>
+                    <li>Collaborate with SCMS on designing buffer-friendly systems.</li>
+                    <li>Maintain the official &quot;Nemmi did it&quot; incident log.</li>
                 </ul>
             </section>
 
             <section className="space-y-3">
                 <h2 className="text-xl font-semibold">Mascot</h2>
                 <p className="text-slate-200">
-                    <strong>Professor McChonk</strong> — tenure-eligible floof, beloved
-                    lecturer, and known to select exam topics by sitting on notes at
-                    random.
+                    <strong>Nemmi</strong> — black-tortie chaos sprite, Deputy of
+                    Unpredictable Energies, and patron of &quot;I didn&apos;t plan this
+                    but it&apos;s happening.&quot;
                 </p>
             </section>
         </main>
     );
 };
 
-export default FelineDepartmentPage;
+export default DueDepartmentPage;
