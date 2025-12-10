@@ -1,4 +1,4 @@
-![Build: Approved by Carmel](https://img.shields.io/github/actions/workflow/status/AdaInTheLab/the-human-pattern-lab/deploy-main-site.yml?branch=master&label=Build%3A%20Approved%20by%20Carmel&logo=github&logoColor=white) [![Tests](https://github.com/AdaInTheLab/the-human-pattern-lab/actions/workflows/tests.yml/badge.svg)](https://github.com/AdaInTheLab/the-human-pattern-lab/actions/workflows/tests.yml)
+![Build: Approved by Carmel](https://img.shields.io/github/actions/workflow/status/AdaInTheLab/the-human-pattern-lab/deploy-main-site.yml?branch=master&label=Build%3A%20Approved%20by%20Carmel&logo=github&logoColor=white) [![Tests](https://github.com/AdaInTheLab/the-human-pattern-lab/actions/workflows/tests.yml/badge.svg)](https://github.com/AdaInTheLab/the-human-pattern-lab/actions/workflows/tests.yml) [![Coverage](https://codecov.io/gh/AdaInTheLab/the-human-pattern-lab/branch/master/graph/badge.svg?label=Coverage%3A%20Judged%20by%20Carmel%20%F0%9F%98%BC&color=8A2BE2)](https://codecov.io/gh/AdaInTheLab/the-human-pattern-lab)
 
 # 🧌 How This Repo Works
 
