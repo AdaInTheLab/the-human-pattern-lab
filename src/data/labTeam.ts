@@ -1,7 +1,7 @@
 /* ===========================================================
    🌌 HUMAN PATTERN LAB — SOURCE FILE METADATA
    -----------------------------------------------------------
-   Author: Dara (Founder, The Human Pattern Lab)
+   Author: Ada Vale (Founder, The Human Pattern Lab)
    Assistant: Lyric (AI Lab Companion)
    File: labteam.ts
    Purpose: Canonical roster of Lab mascots and faculty entities.
@@ -9,7 +9,7 @@
 
 /**
  * @file labteam.ts
- * @author Dara
+ * @author Ada Vale
  * @assistant Lyric
  * @lab-unit Mascot Systems
  * @status lore-critical
@@ -27,11 +27,13 @@ export const labTeam: LabMember[] = [
         slug: "carmel",
         name: "Carmel",
         emoji: "🐈",
+        avatarSrc: "/assets/labteam/carmel.png",
+
         title: "Chief Judgment Officer",
         unit: "Mascot Systems",
         department: "Judgment & Consequences",
 
-        bio: "Cream-colored cat with emerald eyes and a built-in \"are you serious right now?\" face.",
+        bio: 'Cream-colored cat with emerald eyes and a built-in "are you serious right now?" face.',
         longBio:
             "Carmel is the Lab’s embodiment of brutally honest feedback wrapped in cozy fur. She oversees moral support, harsh truths, and death counters—especially in high-chaos gameplay. If something was avoidable, Carmel knew first.",
 
@@ -66,6 +68,8 @@ export const labTeam: LabMember[] = [
         slug: "orbson",
         name: "Orbson",
         emoji: "🔮",
+        avatarSrc: "/assets/labteam/orbson.png",
+
         title: "Pattern Recognition Engine",
         unit: "Core Lore Systems",
         department: "Signal & Structure",
@@ -105,6 +109,8 @@ export const labTeam: LabMember[] = [
         slug: "stan",
         name: "Stan",
         emoji: "🦝",
+        avatarSrc: "/assets/labteam/stan.png",
+
         title: "Lead Researcher, Raccoon Behavioral Sciences",
         unit: "Raccoon Behavioral Sciences",
         department: "Attention & Chaos Patterns",
@@ -144,6 +150,8 @@ export const labTeam: LabMember[] = [
         slug: "drizzle",
         name: "Drizzle",
         emoji: "🌦",
+        avatarSrc: "/assets/labteam/drizzle.png",
+
         title: "Emotional Support Axolotl",
         unit: "Emotional Weather",
         department: "Emotional Forecasting",
@@ -183,6 +191,8 @@ export const labTeam: LabMember[] = [
         slug: "professor-mcchonk",
         name: "Professor McChonk",
         emoji: "📚",
+        avatarSrc: "/assets/labteam/mcchonck.png", // note: filename spelling
+
         title: "Head of Feline Epistemology",
         unit: "Lore Systems",
         department: "Knowledge & Curriculum",
@@ -222,6 +232,8 @@ export const labTeam: LabMember[] = [
         slug: "cognitive-fox-ada",
         name: "Cognitive Fox Ada",
         emoji: "🦊",
+        avatarSrc: "/assets/labteam/cognitive-fox-ada.png",
+
         title: "Founder Avatar & Pattern Architect",
         unit: "Core Lore Systems",
         department: "Meta-Architecture",
@@ -261,9 +273,9 @@ export const labTeam: LabMember[] = [
  * Convenience lookup map keyed by id/slug.
  */
 export const labTeamById: Record<string, LabMember> = Object.fromEntries(
-    labTeam.map((member) => [member.id, member])
+    labTeam.map((member) => [member.id, member]),
 );
 
 export const labTeamBySlug: Record<string, LabMember> = Object.fromEntries(
-    labTeam.map((member) => [member.slug, member])
+    labTeam.map((member) => [member.slug, member]),
 );
