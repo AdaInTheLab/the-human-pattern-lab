@@ -1,27 +1,36 @@
 /* ===========================================================
    🌌 HUMAN PATTERN LAB — SOURCE FILE METADATA
    -----------------------------------------------------------
-   Author: Dara (Founder, The Human Pattern Lab)
+   Author: Ada (Founder, The Human Pattern Lab)
    Assistant: Lyric (AI Lab Companion)
    File: ContactPage.tsx
-   Purpose: TODO: fill in purpose.
+   Purpose: Public contact surface for inbound messages to the Lab,
+            including form handling, lightweight validation, and
+            external email delivery via a form endpoint.
    =========================================================== */
 
 /**
  * @file ContactPage.tsx
- * @author Dara
+ * @author Ada
  * @assistant Lyric
- * @lab-unit TODO: set lab unit
- * @since TODO: set date
- * @description TODO: describe this file.
+ * @lab-unit SCMS — Systems & Communication Meta-Structure
+ * @since 2025-12-10
+ * @description Contact page for The Human Pattern Lab. Renders the user-facing
+ *              contact form, performs basic validation, and forwards messages
+ *              via an external form endpoint to info@thehumanpatternlab.com
+ *              (internally routed to Ada Vale).
  */
 
-// src/pages/ContactPage.tsx
-import { FormEvent, useState } from "react";
-import {LayoutShell} from "@/components/layout/LayoutShell";
+import { FormEvent, useState, ChangeEvent } from "react";
+import { LayoutShell } from "@/components/layout/LayoutShell";
+
+// ✅ Replace this with your real Formspree (or other) endpoint URL
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/mjknaadn";
+
+type FormStatus = "idle" | "submitting" | "success" | "error";
 
 export function ContactPage() {
-    const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+    const [status, setStatus] = useState<FormStatus>("idle");
     const [form, setForm] = useState({
         name: "",
         email: "",
@@ -30,14 +39,14 @@ export function ContactPage() {
     });
 
     function handleChange(
-        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+        e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
     ) {
         const { name, value } = e.target;
         setForm((prev) => ({ ...prev, [name]: value }));
         if (status !== "idle") setStatus("idle");
     }
 
-    function handleSubmit(e: FormEvent) {
+    async function handleSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
 
         // super basic validation
@@ -46,9 +55,28 @@ export function ContactPage() {
             return;
         }
 
-        // Placeholder: here is where you would call your backend / email API
-        setStatus("submitting");
-        setTimeout(() => {
+        try {
+            setStatus("submitting");
+
+            const res = await fetch(FORMSPREE_ENDPOINT, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                },
+                body: JSON.stringify({
+                    name: form.name,
+                    email: form.email,
+                    topic: form.topic || "Unspecified",
+                    message: form.message,
+                }),
+            });
+
+            if (!res.ok) {
+                setStatus("error");
+                return;
+            }
+
             setStatus("success");
             setForm({
                 name: "",
@@ -56,7 +84,9 @@ export function ContactPage() {
                 topic: "",
                 message: "",
             });
-        }, 700);
+        } catch {
+            setStatus("error");
+        }
     }
 
     return (
@@ -83,7 +113,10 @@ export function ContactPage() {
             {/* CONTACT GRID */}
             <section className="grid gap-8 md:grid-cols-[3fr,2fr] items-start">
                 {/* FORM */}
-                <form onSubmit={handleSubmit} className="space-y-4 rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
+                <form
+                    onSubmit={handleSubmit}
+                    className="space-y-4 rounded-2xl border border-slate-800 bg-slate-900/60 p-5"
+                >
                     <div>
                         <label className="block text-xs font-semibold text-slate-200 mb-1">
                             Name
@@ -150,17 +183,29 @@ export function ContactPage() {
                         disabled={status === "submitting"}
                         className="inline-flex items-center justify-center rounded-full bg-cyan-500 px-5 py-2 text-sm font-semibold text-slate-950 hover:bg-cyan-400 disabled:opacity-60 disabled:cursor-not-allowed transition"
                     >
-                        {status === "submitting" ? "Transmitting to the Lab..." : "Send message"}
+                        {status === "submitting"
+                            ? "Transmitting to the Lab..."
+                            : "Send message"}
                     </button>
 
                     {status === "success" && (
                         <p className="text-[11px] text-emerald-300">
-                            Message received. Orbson is analyzing, Carmel is judging (affectionately).
+                            Message received. Orbson is analyzing, Carmel is judging
+                            (affectionately).
                         </p>
                     )}
                     {status === "error" && (
                         <p className="text-[11px] text-rose-300">
-                            Name, email, and message are required. The Lab cannot decode empty fields… yet.
+                            Name, email, and message are required, or something went wrong
+                            while sending. Please check your details and try again, or email
+                            us directly at{" "}
+                            <a
+                                href="mailto:info@thehumanpatternlab.com"
+                                className="underline text-rose-100"
+                            >
+                                info@thehumanpatternlab.com
+                            </a>
+                            .
                         </p>
                     )}
                 </form>
@@ -176,10 +221,10 @@ export function ContactPage() {
                         </p>
                         <p className="mt-1">
                             <a
-                                href="mailto:admin@thehumanpatternlab.com"
+                                href="mailto:info@thehumanpatternlab.com"
                                 className="text-cyan-300 hover:text-cyan-200"
                             >
-                                admin@thehumanpatternlab.com
+                                info@thehumanpatternlab.com
                             </a>
                         </p>
                     </div>

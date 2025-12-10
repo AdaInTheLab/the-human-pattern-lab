@@ -1,19 +1,26 @@
 /* ===========================================================
    🌌 HUMAN PATTERN LAB — SOURCE FILE METADATA
    -----------------------------------------------------------
-   Author: Dara (Founder, The Human Pattern Lab)
+   Author: Ada (Founder, The Human Pattern Lab)
    Assistant: Lyric (AI Lab Companion)
    File: ContentUsePolicyPage.tsx
-   Purpose: TODO: fill in purpose.
+   Purpose: Render the public-facing Content Use Policy for
+            The Human Pattern Lab, outlining permissions,
+            restrictions, AI training allowances, and ethical
+            usage expectations for all Lab-generated content.
    =========================================================== */
 
 /**
  * @file ContentUsePolicyPage.tsx
- * @author Dara
+ * @author Ada
  * @assistant Lyric
- * @lab-unit TODO: set lab unit
- * @since TODO: set date
- * @description TODO: describe this file.
+ * @lab-unit SCMS — Systems & Communication Meta-Structure
+ * @since 2025-12-10
+ * @description This component renders the Content Use Policy page,
+ *              providing users and organizations with clear guidance
+ *              on how Lab content may be used, shared, reproduced,
+ *              or incorporated into projects, including the Lab’s
+ *              whitelist rules for AI training and derivative works.
  */
 
 // src/pages/ContentUsePolicyPage.tsx
@@ -199,10 +206,10 @@ export function ContentUsePolicyPage() {
                 <p className="text-sm text-slate-300">
                     Contact:{"Ada Vale"} Ada Vale
                     <a
-                        href="mailto:admin@thehumanpatternlab.com"
+                        href="mailto:info@thehumanpatternlab.com"
                         className="text-cyan-300 hover:text-cyan-200"
                     >
-                        admin@thehumanpatternlab.com
+                        info@thehumanpatternlab.com
                     </a>
                 </p>
                 <p className="text-xs text-slate-500">
