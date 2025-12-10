@@ -1,4 +1,3 @@
-# 🧌 How This Repo Works  
 
 Welcome, traveler, to the **inner workings** of The Human Pattern Lab main site.  
 This section explains how everything functions, but, you know… in gremlin.
