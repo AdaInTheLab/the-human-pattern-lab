@@ -3,24 +3,23 @@
    -----------------------------------------------------------
    Author: Ada (Founder, The Human Pattern Lab)
    Assistant: Lyric (AI Lab Companion)
-   File: FelineDepartmentPage.tsx
-   Purpose: Render the department page for the Feline Epistemology
-            division, studying feline models of knowledge.
+   File: AoeDepartmentPage.tsx
+   Purpose: Render the department page for AOE, which studies
+            anomalous energies, signals, and strange Lab phenomena.
    =========================================================== */
 
 /**
- * @file FelineDepartmentPage.tsx
+ * @file AoeDepartmentPage.tsx
  * @assistant Lyric
- * @lab-unit FELINE — Feline Epistemology
+ * @lab-unit AOE — Department of Anomalous Energies
  * @since 2025-12-10
- * @description Outlines the mission and research domains of the
- *              Feline Epistemology department, led by Professor McChonk.
+ * @description Documents the mission and scope of AOE, overseen by
+ *              Fill the Void, guardian of mysterious signals.
  */
-
 
 import React from "react";
 
-const FelineDepartmentPage: React.FC = () => {
+const AoeDepartmentPage: React.FC = () => {
     return (
         <main className="max-w-4xl mx-auto px-4 py-12 space-y-8">
             <header className="space-y-2">
@@ -28,46 +27,43 @@ const FelineDepartmentPage: React.FC = () => {
                     Department
                 </p>
                 <h1 className="text-3xl md:text-4xl font-semibold">
-                    Feline Epistemology Department
+                    AOE — Department of Anomalous Energies
                 </h1>
                 <p className="text-slate-300">
-                    Academic home of Professor McChonk, Head of Feline Epistemology and
-                    professional snack thief.
+                    Directed by Fill the Void, guardian of strange signals and unexplained
+                    vibes.
                 </p>
             </header>
 
             <section className="space-y-3">
                 <h2 className="text-xl font-semibold">Mission</h2>
                 <p className="text-slate-200">
-                    This department explores how cats know what they know: intuition,
-                    selective attention, nap-based cognition, and why they&aposre always
-                    right even when the data disagrees.
+                    The AOE investigates patterns, glitches, and phenomena that refuse to
+                    fit inside normal frameworks: coincidences, weird runs of luck,
+                    recurring dreams, and &quot;I can&apos;t explain it but…&quot; energy.
                 </p>
             </section>
 
             <section className="space-y-3">
                 <h2 className="text-xl font-semibold">Core Responsibilities</h2>
                 <ul className="list-disc list-inside space-y-2 text-slate-200">
-                    <li>Develop and refine the Feline Epistemology Framework.</li>
-                    <li>
-                        Research judgment, curiosity, and &quot;I sit on this now, it is
-                        mine&quot; theory.
-                    </li>
-                    <li>Host occasional lectures on snack-driven learning models.</li>
-                    <li>Collaborate with CJO on formalizing feline judgment protocols.</li>
+                    <li>Track anomalous events across projects, content, and systems.</li>
+                    <li>Tag and classify anomalies for future analysis.</li>
+                    <li>Collaborate with EWU on emotional &quot;weather fronts&quot; of weirdness.</li>
+                    <li>Document persistent &quot;impossible but real&quot; patterns.</li>
                 </ul>
             </section>
 
             <section className="space-y-3">
                 <h2 className="text-xl font-semibold">Mascot</h2>
                 <p className="text-slate-200">
-                    <strong>Professor McChonk</strong> — tenure-eligible floof, beloved
-                    lecturer, and known to select exam topics by sitting on notes at
-                    random.
+                    <strong>Fill the Void</strong> — sleek black cat, Director of
+                    Anomalous Observation, and embodiment of &quot;the data will reveal
+                    itself if you stare at it long enough.&quot;
                 </p>
             </section>
         </main>
     );
 };
 
-export default FelineDepartmentPage;
+export default AoeDepartmentPage;

@@ -9,13 +9,12 @@
 
 /**
  * @file routes.tsx
- * @author Ada Vale
- * @assistant Lyric
- * @lab-unit SCMS — Systems & Code Management Suite
- * @since 2025-12-09
- * @description Defines all public routes, layout nesting, and
- *              detail views for the Human Pattern Lab site.
+ * @lab-unit SCMS — Systems, Chaos & Meta-Structures
+ * @since 2025-12-10
+ * @description Defines all route paths, nested layouts, and
+ *              dynamic department/member/lab note routing.
  */
+
 // src/router/routes.tsx
 import { createBrowserRouter } from "react-router-dom";
 
@@ -28,14 +27,23 @@ import { VideoArchivePage } from "@/pages/VideoArchivePage";
 import { ContentUsePolicyPage } from "@/pages/ContentUsePolicyPage";
 import { MerchPage } from "@/pages/MerchPage";
 import { ContactPage } from "@/pages/ContactPage";
-import  NotFoundPage  from "@/pages/NotFoundPage";
-import LabTeamPage from "@/pages/LabTeamPage"
-import LabMemberDetailPage from "@/pages/LabMemberDetailPage"
-
-// (Optional) detail pages if/when you make them:
+import NotFoundPage from "@/pages/NotFoundPage";
+import LabTeamPage from "@/pages/LabTeamPage";
+import LabMemberDetailPage from "@/pages/LabMemberDetailPage";
 import { LabNoteDetailPage } from "@/pages/LabNoteDetailPage";
 import { VideoDetailPage } from "@/pages/VideoDetailPage";
 import { DepartmentDetailPage } from "@/pages/DepartmentDetailPage";
+
+import {
+    CjoDepartmentPage,
+    ScmsDepartmentPage,
+    OodDepartmentPage,
+    AoeDepartmentPage,
+    DueDepartmentPage,
+    FelineDepartmentPage,
+    RbsDepartmentPage,
+    EwuDepartmentPage,
+} from "@/departments";
 
 export const router = createBrowserRouter([
     {
@@ -47,6 +55,19 @@ export const router = createBrowserRouter([
             { path: "about", element: <AboutPage /> },
             { path: "departments", element: <DepartmentsPage /> },
 
+            // Canonical department routes
+            { path: "departments/cjo", element: <CjoDepartmentPage /> },
+            { path: "departments/scms", element: <ScmsDepartmentPage /> },
+            { path: "departments/ood", element: <OodDepartmentPage /> },
+            { path: "departments/aoe", element: <AoeDepartmentPage /> },
+            { path: "departments/due", element: <DueDepartmentPage /> },
+            { path: "departments/feline", element: <FelineDepartmentPage /> },
+            { path: "departments/rbs", element: <RbsDepartmentPage /> },
+            { path: "departments/ewu", element: <EwuDepartmentPage /> },
+
+            // Future-friendly dynamic detail route (if/when needed)
+            { path: "departments/:id", element: <DepartmentDetailPage /> },
+
             { path: "lab-notes", element: <LabNotesPage /> },
             { path: "lab-notes/:id", element: <LabNoteDetailPage /> },
 
@@ -57,8 +78,6 @@ export const router = createBrowserRouter([
             { path: "merch", element: <MerchPage /> },
             { path: "contact", element: <ContactPage /> },
 
-            // Optional: department detail route later
-            { path: "departments/:id", element: <DepartmentDetailPage /> },
             { path: "labteam", element: <LabTeamPage /> },
             { path: "labteam/:memberId", element: <LabMemberDetailPage /> },
 
