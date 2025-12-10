@@ -49,6 +49,7 @@ When in doubt, assume **SCMS** + **CJO** have final say on public-facing content
     - `[FELINE]` for docs/education
     - `[SCMS]` for system/policy/meta
     - `[OOI]` for analytics/logging
+  
 | Prefix       | Emoji | Who / What                           | Use for…                                      |
 |-------------|-------|---------------------------------------|-----------------------------------------------|
 | `CORE`      | 🧩    | Core architecture                     | Big refactors, foundational structure         |
