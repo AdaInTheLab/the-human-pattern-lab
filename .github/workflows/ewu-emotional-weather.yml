@@ -1,0 +1,39 @@
+name: EWU Emotional Weather Scan
+
+on:
+  schedule:
+    # Every day at 04:00 UTC
+    - cron: "0 4 * * *"
+  workflow_dispatch: {}
+
+jobs:
+  emotional-weather:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🌧️ Drizzle checks the emotional atmosphere
+        run: |
+          echo "EWU REPORT — Emotional Weather Scan"
+          echo "Timestamp: $(date -u +"%Y-%m-%d %H:%M:%S UTC")"
+          echo ""
+
+          moods=(
+            "Calm but curious. Ideal conditions for quiet refactors."
+            "Mild anxiety with scattered 'did I break prod?' clouds."
+            "High excitement, 80% chance of starting a new feature at 1am."
+            "Slightly frazzled, recommend tea and a cat break."
+            "Cozy focus. Perfect vibes for writing documentation."
+            "Chaotic-neutral energy. Stan has been spotted near the deploy button."
+            "Reflective mood. Good time to review old commits and patterns."
+            "Gremlin mode. Do NOT open Twitter. Do open your editor."
+            "Soft melancholy, 60% chance of introspective Lab Notes."
+            "Playful mischief detected. Expect experimental branches."
+          )
+
+          # Pick a random mood
+          index=$((RANDOM % ${#moods[@]}))
+          forecast=${moods[$index]}
+
+          echo "Forecast: $forecast"
+          echo ""
+          echo "Recommendation: Be kind to your future self. Commit messages with context. Hydrate. Pet Carmel."
