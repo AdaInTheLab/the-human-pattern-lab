@@ -1,4 +1,6 @@
 
+# 🧌 How This Repo Works
+
 Welcome, traveler, to the **inner workings** of The Human Pattern Lab main site.  
 This section explains how everything functions, but, you know… in gremlin.
 
@@ -42,7 +44,7 @@ Once the **/dist** folder is generated:
 
 - It gets shipped to DreamHost (for now)
 - The server accepts the offering
-- The website updates  
+- The website updates
 - The mascots celebrate by pushing untested changes to main
 
 Eventually, this will all be automated via **GitHub Actions**, so the deployment ritual becomes:
@@ -60,9 +62,9 @@ git push
 
 The main site links into:
 
-- **/docs/** — The Lab Archives  
-- **Mascot pages** — Profiles, lore, and vibes  
-- **Systems & architecture** — Future home of our Big Brain explainers  
+- **/docs/** — The Lab Archives
+- **Mascot pages** — Profiles, lore, and vibes
+- **Systems & architecture** — Future home of our Big Brain explainers
 - **Lab Notes** — Where the fox writes things down so we don’t forget them
 
 If something 404s, don’t worry.  
@@ -75,16 +77,16 @@ Probably.
 
 You are welcome to contribute if you are:
 
-- Gremlin-coded  
-- Mascot-approved  
-- Powered by caffeine  
-- Comfortable writing code at 2am  
+- Gremlin-coded
+- Mascot-approved
+- Powered by caffeine
+- Comfortable writing code at 2am
 - Emotionally prepared to be judged by Carmel
 
 Pull requests should include:
 
-- Functioning code  
-- Minimal fires  
+- Functioning code
+- Minimal fires
 - A small offering (snack) for Professor McChonk
 
 ---
@@ -93,10 +95,10 @@ Pull requests should include:
 
 This repo is powered by:
 
-- Curiosity  
-- Pattern analysis  
-- Questionable decisions  
-- Cosmic mascots  
+- Curiosity
+- Pattern analysis
+- Questionable decisions
+- Cosmic mascots
 - A chaotic neutral energy source that has not been scientifically identified
 
 If anything breaks:  

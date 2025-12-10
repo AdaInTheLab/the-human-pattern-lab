@@ -1,21 +1,21 @@
 /* ===========================================================
    🌌 HUMAN PATTERN LAB — SOURCE FILE METADATA
    -----------------------------------------------------------
-   Author: Dara (Founder, The Human Pattern Lab)
+   Author: Ada Vale (Founder, The Human Pattern Lab)
    Assistant: Lyric (AI Lab Companion)
    File: routes.tsx
-   Purpose: TODO: fill in purpose.
+   Purpose: Central router configuration for the Lab front-end.
    =========================================================== */
 
 /**
  * @file routes.tsx
- * @author Dara
+ * @author Ada Vale
  * @assistant Lyric
- * @lab-unit TODO: set lab unit
- * @since TODO: set date
- * @description TODO: describe this file.
+ * @lab-unit SCMS — Systems & Code Management Suite
+ * @since 2025-12-09
+ * @description Defines all public routes, layout nesting, and
+ *              detail views for the Human Pattern Lab site.
  */
-
 // src/router/routes.tsx
 import { createBrowserRouter } from "react-router-dom";
 
@@ -48,7 +48,7 @@ export const router = createBrowserRouter([
             { path: "departments", element: <DepartmentsPage /> },
 
             { path: "lab-notes", element: <LabNotesPage /> },
-            { path: "lab-notes/:slug", element: <LabNoteDetailPage /> },
+            { path: "lab-notes/:id", element: <LabNoteDetailPage /> },
 
             { path: "videos", element: <VideoArchivePage /> },
             { path: "videos/:slug", element: <VideoDetailPage /> },

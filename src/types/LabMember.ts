@@ -1,7 +1,7 @@
 /* ===========================================================
    🌌 HUMAN PATTERN LAB — SOURCE FILE METADATA
    -----------------------------------------------------------
-   Author: Dara (Founder, The Human Pattern Lab)
+   Author: Ada Vale (Founder, The Human Pattern Lab)
    Assistant: Lyric (AI Lab Companion)
    File: LabMember.ts
    Purpose: Shared type definition for Lab mascots and faculty.
@@ -9,7 +9,7 @@
 
 /**
  * @file LabMember.ts
- * @author Dara
+ * @author Ada Vale
  * @assistant Lyric
  * @lab-unit Mascot Systems
  * @status lore-critical
@@ -25,9 +25,7 @@ export interface MascotAura {
     accent: string;
 }
 
-export type LabMemberStatus =
-    | "lore-critical"
-    | "guest";
+export type LabMemberStatus = "lore-critical" | "guest";
 
 export interface LabMemberLink {
     label: string;
@@ -45,6 +43,9 @@ export interface LabMember {
     /** Optional emoji used in UI chips/cards */
     emoji?: string;
 
+    /** Path to avatar image used in cards, grids, and detail views */
+    avatarSrc: string;
+
     /** Short title/role shown on cards */
     title: string;
     /** High-level unit they belong to (e.g., Raccoon Behavioral Sciences) */
@@ -56,6 +57,9 @@ export interface LabMember {
     bio: string;
     /** Extra detail for detail views or tooltips */
     longBio?: string;
+
+    /** Optional fun fact used in cards or sidebars */
+    funFact?: string;
 
     /** Thematically relevant focus areas */
     focusAreas: string[];
