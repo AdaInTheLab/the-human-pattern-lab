@@ -8,7 +8,7 @@
    =========================================================== */
 
 import { Link } from "react-router-dom";
-import { labTeam } from "@/data/labteam";
+import { labTeam } from "@/data/labTeam";
 
 export function LabTeamPreview() {
     return (

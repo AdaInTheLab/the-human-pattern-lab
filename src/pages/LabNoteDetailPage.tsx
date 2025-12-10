@@ -4,20 +4,20 @@
    Author: Ada Vale (Founder, The Human Pattern Lab)
    Assistant: Lyric (AI Lab Companion)
    File: LabNoteDetailPage.tsx
-   Purpose: Renders a single Lab Note detail view with title,
-            metadata, and full Lab Notes chrome.
+   Lab Unit: Lab Notes Division
+   Purpose: Renders a single Lab Note detail view with full Lab
+            aesthetic, metadata, category pill, and MDX content.
    =========================================================== */
 
 /**
  * @file LabNoteDetailPage.tsx
  * @author Ada Vale
  * @assistant Lyric
- * @lab-unit Lab Notes
- * @status evolving
+ * @lab-unit Lab Notes Division
  * @since 2025-12-09
- * @description Detail page for an individual Lab Note, resolving
- *              the note by id from the route and displaying the
- *              full content with Lab-flavored layout.
+ * @description Displays an individual Lab Note fetched from the
+ *              localized note registry, including title, subtitle,
+ *              metadata, pill badges, and full MDX content.
  */
 
 import React from "react";
@@ -26,15 +26,25 @@ import { LayoutShell } from "@/components/layout/LayoutShell";
 import { getLabNotes } from "@/lib/labNotes";
 import { useTranslation } from "react-i18next";
 
+// CATEGORY COLORS — use lowercase keys
 const categoryColors: Record<string, string> = {
-    "AI & Alignment": "bg-cyan-500/10 text-cyan-300 border-cyan-500/40",
-    "Human Psychology": "bg-emerald-500/10 text-emerald-300 border-emerald-500/40",
-    "Cosmic Philosophy": "bg-violet-500/10 text-violet-300 border-violet-500/40",
-    Humor: "bg-amber-500/10 text-amber-300 border-amber-500/40",
-    "Behind the Lab": "bg-slate-500/10 text-slate-200 border-slate-500/40",
-    "Lore Drop": "bg-pink-500/10 text-pink-300 border-pink-500/40",
+    "ai & alignment":
+        "bg-cyan-500/15 text-cyan-200 border-cyan-500/40 shadow-[0_0_12px_rgba(34,211,238,0.25)]",
+    "human psychology":
+        "bg-emerald-500/15 text-emerald-200 border-emerald-500/40 shadow-[0_0_12px_rgba(52,211,153,0.25)]",
+    "cosmic philosophy":
+        "bg-violet-500/15 text-violet-200 border-violet-500/40 shadow-[0_0_12px_rgba(167,139,250,0.25)]",
+    humor:
+        "bg-amber-500/15 text-amber-200 border-amber-500/40 shadow-[0_0_12px_rgba(251,191,36,0.25)]",
+    "behind the lab":
+        "bg-sky-500/15 text-sky-200 border-sky-500/40 shadow-[0_0_12px_rgba(56,189,248,0.25)]",
+    "lore drop":
+        "bg-pink-500/15 text-pink-200 border-pink-500/40 shadow-[0_0_12px_rgba(236,72,153,0.25)]",
+    behavior:
+        "bg-blue-500/15 text-blue-200 border-blue-500/40 shadow-[0_0_12px_rgba(59,130,246,0.25)]",
+    emotion:
+        "bg-rose-500/15 text-rose-200 border-rose-500/40 shadow-[0_0_12px_rgba(244,63,94,0.25)]",
 };
-
 
 type RouteParams = {
     id?: string;
@@ -48,6 +58,7 @@ export const LabNoteDetailPage: React.FC = () => {
     const notes = getLabNotes(locale);
     const note = notes.find((n) => n.id === id);
 
+    // 🔥 Not found screen stays the same (looks great)
     if (!note) {
         return (
             <LayoutShell>
@@ -59,41 +70,44 @@ export const LabNoteDetailPage: React.FC = () => {
                         Lab Note not found.
                     </h1>
                     <p className="max-w-md text-slate-300">
-                        Orbson checked the archives and couldn&apos;t find this note in the Lab&apos;s
-                        current timeline. It may have been moved, renamed, or never written.
+                        Orbson checked the archives and didn&apos;t find this note in the Lab&apos;s
+                        active timeline. It may have been moved, renamed, or never written.
                     </p>
-                    <div className="flex flex-wrap justify-center gap-3">
-                        <Link
-                            to="/lab-notes"
-                            className="px-4 py-2 rounded-full bg-cyan-500 text-slate-950 text-sm font-semibold hover:bg-cyan-400 transition"
-                        >
-                            Back to Lab Notes
-                        </Link>
-                        <Link
-                            to="/"
-                            className="px-4 py-2 rounded-full border border-slate-700 text-sm text-slate-200 hover:border-cyan-400 hover:text-cyan-200 transition"
-                        >
-                            Return to Homepage
-                        </Link>
-                    </div>
-                    <p className="text-xs text-slate-500 italic">
-                        Error Code: NOTE-404 — Entry Not Indexed
-                    </p>
+                    <Link
+                        to="/lab-notes"
+                        className="
+                            inline-flex items-center gap-1 text-xs text-slate-400
+                            hover:text-cyan-300 transition relative
+                          "
+                                            >
+                          <span className="relative">
+                            ←
+                            <span
+                                className="
+                                absolute inset-0 blur-md text-cyan-400 opacity-0
+                                group-hover:opacity-60 transition
+                              "
+                            >
+                              ←
+                            </span>
+                          </span>
+
+                        Back to all notes
+                    </Link>
                 </div>
             </LayoutShell>
         );
     }
 
-    const categoryLabel = (note as any).category as string | undefined;
+    // Normalized category
+    const tag = note.tags?.[0]?.toLowerCase();
+    console.log(note);
     const badgeClass =
-        (categoryLabel && categoryColors[categoryLabel]) ??
+        categoryColors[tag ?? ""] ??
         "bg-slate-800/60 text-slate-200 border-slate-600";
 
-    const published = (note as any).published as string | undefined;
-    const readingTime = (note as any).readingTime ?? 3;
-
-    const formattedDate = published
-        ? new Date(published).toLocaleDateString(undefined, {
+    const formattedDate = note.published
+        ? new Date(note.published).toLocaleDateString(undefined, {
             year: "numeric",
             month: "short",
             day: "2-digit",
@@ -102,74 +116,86 @@ export const LabNoteDetailPage: React.FC = () => {
 
     return (
         <LayoutShell>
-            <main className="mx-auto max-w-3xl space-y-8">
-                {/* HEADER / META */}
+            <main className="mx-auto max-w-3xl px-4 space-y-10 pb-20">
+
+                {/* --- HEADER --- */}
                 <header className="space-y-4 border-b border-slate-800 pb-6">
+
+                    {/* Category pill + date + read time */}
                     <div className="flex flex-wrap items-center gap-3 text-xs text-slate-400">
-                        {categoryLabel && (
+                        {/* Pill */}
+                        {note.tags?.[0] && (
                             <span
-                                className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] uppercase tracking-[0.16em] ${badgeClass}`}
+                                className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] uppercase tracking-[0.14em] ${badgeClass}`}
                             >
-                {categoryLabel}
+                {note.tags[0]}
               </span>
                         )}
 
                         {formattedDate && <span>{formattedDate}</span>}
-
                         <span>·</span>
-
-                        <span>{readingTime} min read</span>
+                        <span>{note.readingTime ?? 3} min read</span>
                     </div>
 
-                    <h1 className="text-3xl md:text-4xl font-semibold text-slate-50">
+                    {/* Title */}
+                    <h1 className="text-3xl md:text-4xl font-semibold text-slate-50 leading-tight">
                         {note.title}
                     </h1>
 
+                    {/* Subtitle */}
                     {note.subtitle && (
                         <p className="text-base md:text-lg text-slate-300 max-w-3xl">
                             {note.subtitle}
                         </p>
                     )}
 
-                    <div className="flex flex-wrap gap-3 text-xs text-slate-400">
-                        <Link
-                            to="/lab-notes"
-                            className="inline-flex items-center gap-1 hover:text-cyan-300"
-                        >
-                            ← Back to all notes
-                        </Link>
-                    </div>
+                    {/* Back link */}
+                                <Link
+                                    to="/lab-notes"
+                                    className="
+                inline-flex items-center gap-1 text-xs text-slate-400
+                hover:text-cyan-300 transition relative
+              "
+                                >
+              <span className="relative">
+                ←
+                <span
+                    className="
+                    absolute inset-0 blur-md text-cyan-400 opacity-0
+                    group-hover:opacity-60 transition
+                  "
+                >
+                  ←
+                </span>
+              </span>
+
+                        Back to all notes
+                    </Link>
                 </header>
 
-                {/* BODY CONTENT */}
-                <section className="space-y-4 text-sm md:text-base text-slate-200 max-w-3xl">
-                    {/* TODO: Replace stub with real content when lab notes carry full bodies. */}
-
-                    <p>
-                        This is where the full Lab Note content will live — deeper dives into
-                        the idea, examples, diagrams, and whatever else the Lab needs to make
-                        this pattern feel less mysterious and more understandable.
-                    </p>
-
-                    <p className="text-slate-300">
-                        For now, you&apos;re seeing a stub layout: title, metadata, and
-                        context. When this note is fully written, it will walk through the
-                        pattern step by step, with plenty of room for Orbson&apos;s charts and
-                        Carmel&apos;s commentary.
-                    </p>
-
-                    <p className="text-slate-400 text-sm">
-                        If you&apos;re reading this and thinking, “hey, I have thoughts about
-                        this pattern,” feel free to send them via the{" "}
-                        <Link
-                            to="/contact"
-                            className="text-cyan-300 hover:text-cyan-200 underline underline-offset-2"
-                        >
-                            contact page
-                        </Link>
-                        . Some of the best Lab Notes start as conversations.
-                    </p>
+                {/* --- BODY CONTENT --- */}
+                <section className="prose prose-invert prose-sm md:prose-base max-w-none text-slate-200 leading-relaxed">
+                    {/* 🔥 This is where your MDX content goes */}
+                    <section
+                        className="prose prose-invert prose-p:leading-relaxed prose-p:my-4 prose-strong:text-slate-50
+                            prose-em:text-slate-300 prose-blockquote:border-cyan-400/40 prose-blockquote:text-slate-300
+                            prose-blockquote:italic prose-blockquote:pl-4 prose-blockquote:border-l-2 max-w-none"
+                            dangerouslySetInnerHTML={{ __html: note.contentHtml }}
+                    />
                 </section>
+                {/* --- CARMEL CAMEO --- */}
+                <div className="mt-16 flex items-center gap-4 border-t border-slate-800 pt-6">
+                    <div className="text-4xl select-none">😼</div>
+
+                    <div className="space-y-1">
+                        <p className="text-sm text-slate-300">
+                            Carmel has reviewed this Lab Note.
+                        </p>
+                        <p className="text-xs text-slate-500 italic">
+                            “Hmm. Adequate. But I’m watching you.”
+                        </p>
+                    </div>
+                </div>
             </main>
         </LayoutShell>
     );

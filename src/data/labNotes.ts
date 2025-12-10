@@ -4,16 +4,18 @@
    Author: Dara (Founder, The Human Pattern Lab)
    Assistant: Lyric (AI Lab Companion)
    File: labNotes.ts
-   Purpose: TODO: fill in purpose.
+   Purpose: Canonical dataset for Lab Notes used across the site.
    =========================================================== */
 
 /**
  * @file labNotes.ts
  * @author Dara
  * @assistant Lyric
- * @lab-unit TODO: set lab unit
- * @since TODO: set date
- * @description TODO: describe this file.
+ * @lab-unit SCMS — Systems & Code Management Suite
+ * @status Active
+ * @since 2025-12-10
+ * @description Strongly-typed Lab Notes collection powering the
+ *              Lab Notes index, detail views, and homepage preview.
  */
 
 // src/data/labNotes.ts
