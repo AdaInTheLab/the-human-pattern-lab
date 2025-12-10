@@ -1,3 +1,4 @@
+![Build: Approved by Carmel](https://img.shields.io/github/actions/workflow/status/AdaInTheLab/the-human-pattern-lab/deploy-main-site.yml?branch=master&label=Build%3A%20Approved%20by%20Carmel&logo=github&logoColor=white)
 
 # 🧌 How This Repo Works
 
