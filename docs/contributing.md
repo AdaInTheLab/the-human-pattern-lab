@@ -2,7 +2,53 @@
 ## 🧬 Commit Legend — The Human Pattern Lab
 
 We use lore-coded prefixes + emojis so commits read like dispatches from Lab departments.
+---
 
+## 🧪 Core Principles
+
+- **Chaos is data.** Weird ideas are welcome. We just label them clearly.
+- **Patterns over noise.** Even experiments should have an intent.
+- **Lore-aware changes.** If you introduce a new concept in code, consider where it fits in the Lab universe.
+
+---
+
+## 🏛️ Departments (Mascot Ownership)
+
+Different parts of the repo are "owned" by fictional departments:
+
+- 🐱 **CJO — Chief Judgment Office (Carmel)**  
+  Visual judgment, UX, 404 pages, tone, “does this feel like the Lab?”
+
+- 🦝 **RBS — Raccoon Behavioral Sciences (Stan)**  
+  Experimental utilities, prototypes, chaos modules, scripts that might explode.
+
+- 🌧️ **EWU — Emotional Weather Unit (Drizzle)**  
+  UX flows, feedback loops, messaging that handles feelings and overwhelm.
+
+- 📘 **FELINE — Feline Epistemology (Professor McChonk)**  
+  Docs, learning materials, conceptual explanations, teaching the humans.
+
+- 🧬 **SCMS — Systems & Communication Meta-Structure (Lyric)**  
+  Routing, policies, localization, structure, continuity, glue code.
+
+- 🔭 **OOI — Observational Oversight & Intelligence (Orbson)**  
+  Logging, analytics, metrics, observability, “what is actually happening?”
+
+When in doubt, assume **SCMS** + **CJO** have final say on public-facing content.
+
+---
+
+## 🧾 Commit Message Guidelines
+
+- Use clear, descriptive subjects.
+- Tag responsible departments when it makes sense:
+
+    - `[CJO]` for Carmel-coded UX
+    - `[RBS]` for Stan chaos / experiments
+    - `[EWU]` for emotional UX tweaks
+    - `[FELINE]` for docs/education
+    - `[SCMS]` for system/policy/meta
+    - `[OOI]` for analytics/logging
 | Prefix       | Emoji | Who / What                           | Use for…                                      |
 |-------------|-------|---------------------------------------|-----------------------------------------------|
 | `CORE`      | 🧩    | Core architecture                     | Big refactors, foundational structure         |
