@@ -1,115 +1,161 @@
-![Build: Approved by Carmel](https://img.shields.io/github/actions/workflow/status/AdaInTheLab/the-human-pattern-lab/deploy-main-site.yml?branch=master&label=Build%3A%20Approved%20by%20Carmel&logo=github&logoColor=white) [![Tests](https://github.com/AdaInTheLab/the-human-pattern-lab/actions/workflows/tests.yml/badge.svg)](https://github.com/AdaInTheLab/the-human-pattern-lab/actions/workflows/tests.yml) [![Coverage](https://codecov.io/gh/AdaInTheLab/the-human-pattern-lab/branch/master/graph/badge.svg?label=Coverage%3A%20Judged%20by%20Carmel%20%F0%9F%98%BC&color=8A2BE2)](https://codecov.io/gh/AdaInTheLab/the-human-pattern-lab)
+![Build: Approved by Carmel](https://img.shields.io/github/actions/workflow/status/AdaInTheLab/the-human-pattern-lab/deploy-main-site.yml?branch=master&label=Build%3A%20Approved%20by%20Carmel&logo=github&logoColor=white)
+[![Tests](https://github.com/AdaInTheLab/the-human-pattern-lab/actions/workflows/tests.yml/badge.svg)](https://github.com/AdaInTheLab/the-human-pattern-lab/actions/workflows/tests.yml)
+[![Coverage](https://codecov.io/gh/AdaInTheLab/the-human-pattern-lab/branch/master/graph/badge.svg?label=Coverage%3A%20Judged%20by%20Carmel%20%F0%9F%98%BC&color=8A2BE2)](https://codecov.io/gh/AdaInTheLab/the-human-pattern-lab)
 
 # 🧌 How This Repo Works
 
 Welcome, traveler, to the **inner workings** of The Human Pattern Lab main site.  
-This section explains how everything functions, but, you know… in gremlin.
+This section explains how everything functions, but, you know… *in gremlin*.
 
 ---
 
 ## 🧪 1. The Folder Structure (a.k.a. “Where Things Live, Probably”)
 
-The repo is arranged in a way that *suggests* organization:
+This repo now has **real structure**.  
+SCMS (Systems, Chaos & Meta-Structures) fought for its life to make sure things are where they *claim* to be.
 
-- **/src** — The heart of the Lab. Components, pages, layouts… all the places the gremlins like to hide.
-- **/public** — Static files. Images. Logos. Artifacts from previous experiments that we don’t talk about.
-- **/assets** — Shiny objects Stan keeps dragging in. Also CSS and other useful things.
-- **/components** — Reusable UI pieces and questionable ideas wrapped in React.
-- **/mascots** — The creatures who run this place when we’re not looking.
-- **/utils** — Tools, helpers, spells, enchantments. Use responsibly.
+- **/src** — The heart of the Lab. Components, pages, layouts, and chaos.
+- **/departments** — Home of the CJO, SCMS, OOD, AOE, DUE, FELINE, RBS, and EWU.  
+  Each has its own lore, responsibilities, and mascot supervisor.
+- **/pages** — Site routes (Home, About, Lab Notes, Videos, etc).
+- **/components** — Reusable UI widgets and questionable React ideas.
+- **/lib** — Infrastructure magic. Probably important. We should label it someday.
+- **/assets** — Shiny objects Stan collected. Also fonts and images.
+- **/public** — Static files that refuse to be organized.
+- **/__tests__** — Where Vitest silently judges your code (Carmel joins in).
 
-If you don’t see a folder you expect, it’s either:  
-A) being hoarded by a raccoon, or  
-B) something we forgot to build yet.
+If something isn’t listed:  
+- It is either **in progress**,  
+- **in hiding**,  
+- or **in the claws of Nemmi**.
 
 ---
 
 ## ⚙️ 2. The Build Process (aka “Making It Less Broke™”)
 
-To conjure the site into existence:
+If you want the gremlins to forge this site into existence:
 
-```
+```bash
 npm install
 npm run build
 ```
 
-This transforms your chaos into a pristine **/dist** folder, which magically becomes the website humans see.
-
-The gremlins claim responsibility, but it’s actually Vite.
+This produces the holy **/dist** folder.  
+Treat it with respect.  
+Or don’t — Vite will rebuild it anyway.
 
 ---
 
-## 🧹 3. The Deployment Ritual
+## 🚀 3. Deployment (The Ritual, Automated Edition)
 
-Once the **/dist** folder is generated:
+Thanks to GitHub Actions:
 
-- It gets shipped to DreamHost (for now)
-- The server accepts the offering
-- The website updates
-- The mascots celebrate by pushing untested changes to main
+1. You push to `master`
+2. The build runs
+3. Carmel judges it
+4. DreamHost gets the updated site
+5. A mascot somewhere high-fives another mascot
 
-Eventually, this will all be automated via **GitHub Actions**, so the deployment ritual becomes:
-
-```
-git push
-```
-
-→ *internet updates itself*  
-→ *gremlins cheer*
+No more manual deployments.  
+Unless things break.  
+(They will.)
 
 ---
 
 ## 🧭 4. Navigation (or: “How Not to Get Lost in the Lab”)
 
-The main site links into:
+Main sections include:
 
-- **/docs/** — The Lab Archives
-- **Mascot pages** — Profiles, lore, and vibes
-- **Systems & architecture** — Future home of our Big Brain explainers
-- **Lab Notes** — Where the fox writes things down so we don’t forget them
+- **/departments/** — Explore each division of the Lab  
+  (Judgment, Chaos, Anomalies, Emotional Weather, Raccoon Science… all the essentials.)
+- **/docs/** — The Lab Archives (via Docusaurus)
+- **/lab-notes/** — Thoughts, diagrams, lore, and the occasional fox rant
+- **/videos/** — Archive of content for future humans
+- **/mascots/** — The real executives of the organization
 
-If something 404s, don’t worry.  
-It’s a feature.  
-Probably.
+If you see a 404:  
+Congratulations.  
+You’ve discovered a new department.
 
 ---
 
-## 🐾 5. Contributions (Chaos Edition)
+## 🧪 5. Tests (a.k.a. “Proving Things Mostly Work™”)
 
-You are welcome to contribute if you are:
+Vitest + Happy DOM ensures:
 
-- Gremlin-coded
-- Mascot-approved
-- Powered by caffeine
-- Comfortable writing code at 2am
-- Emotionally prepared to be judged by Carmel
+- Pages render  
+- Routes map correctly  
+- Departments don’t spontaneously explode  
+- The codebase remains *slightly* less cursed  
+
+Run them with:
+
+```bash
+npm run test
+```
+
+For coverage:
+
+```bash
+npm run test:coverage
+```
+
+Carmel will judge the numbers from her neon Codecov throne.
+
+---
+
+## 🧹 6. Coverage & CI Badges
+
+Your repo is now monitored by three powerful forces:
+
+- **Carmel** — Approves builds  
+- **Vitest** — Judges your logic  
+- **Codecov** — Exposes your sins via percentage  
+
+Perfect synergy.
+
+---
+
+## 🐾 7. Contributions (Gremlin Edition)
+
+You may contribute if you are:
+
+- Gremlin-coded  
+- Mascot-approved  
+- Comfortable shipping features at 3am  
+- Aware that Stan may steal your code mid-PR  
+- Prepared to be silently judged by Carmel
 
 Pull requests should include:
 
-- Functioning code
-- Minimal fires
-- A small offering (snack) for Professor McChonk
+- Working code  
+- Minimal fires  
+- Snacks for Professor McChonk  
+- Respect for Drizzle’s emotional climate  
+- Zero leading-space filenames (we do not speak of it)
 
 ---
 
-## 🔥 6. The Vibes
+## 🔥 8. The Vibes
 
-This repo is powered by:
+This repo is held together by:
 
-- Curiosity
-- Pattern analysis
-- Questionable decisions
-- Cosmic mascots
-- A chaotic neutral energy source that has not been scientifically identified
+- Curiosity  
+- Pattern recognition  
+- Mascot energy  
+- Coffee  
+- Chaos  
+- Vibes  
+- Several untracked miracles  
 
-If anything breaks:  
-Just assume Stan touched it.
+If something breaks:  
+**Stan touched it.**
 
-If anything works:  
-Absolutely assume Carmel did it.
+If something works:  
+**Carmel allowed it.**
 
 ---
 
-End of gremlin-coded logistics.  
 Proceed with caution.  
-And snacks.
+And snacks.  
+Always snacks.
