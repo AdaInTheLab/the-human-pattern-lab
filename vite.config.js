@@ -17,7 +17,12 @@ export default defineConfig({
     test: {
         environment: "happy-dom",
         setupFiles: "./src/setupTests.ts",
-        globals: true
+        globals: true,
+        coverage: {
+            provider: "v8",       // built-in, no extra installs needed
+            reporter: ["text", "lcov"],
+            reportsDirectory: "./coverage"
+        }
     },
     server: {
         port: 5173,   // default, but explicit is nice

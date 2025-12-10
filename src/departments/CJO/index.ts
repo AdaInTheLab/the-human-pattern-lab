@@ -1,0 +1,1 @@
+export { default as CjoDepartmentPage } from "./CjoDepartmentPage";
