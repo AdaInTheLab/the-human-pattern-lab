@@ -4,22 +4,26 @@
    Author: Dara (Founder, The Human Pattern Lab)
    Assistant: Lyric (AI Lab Companion)
    File: Layout.tsx
-   Purpose: TODO: fill in purpose.
+   Purpose: Global app layout with neon lab header, routed
+            content, and shared footer.
    =========================================================== */
 
 /**
  * @file Layout.tsx
  * @author Dara
  * @assistant Lyric
- * @lab-unit TODO: set lab unit
- * @status TODO: set status
- * @since TODO: set date
- * @description TODO: describe this file.
+ * @lab-unit SCMS — Systems, Chaos & Meta-Structures
+ * @status Active
+ * @since 2025-12-10
+ * @description Provides the core page shell: sticky neon header,
+ *              routed content outlet, scroll restoration, and
+ *              global footer for The Human Pattern Lab site.
  */
 
 // src/components/layout/Layout.tsx
 import React from "react"
 import { NavLink, Outlet, ScrollRestoration } from "react-router-dom"
+import { Footer } from "./Footer"
 
 const navItems = [
     { to: "/", label: "Home", end: true },
@@ -33,44 +37,58 @@ const navItems = [
 
 export const Layout: React.FC = () => {
     return (
-        <div className="min-h-screen bg-slate-950 text-slate-50 flex flex-col">
+        <div className="flex min-h-screen flex-col bg-slate-950 text-slate-50">
             {/* Global header / nav */}
             <header className="sticky top-0 z-40 border-b border-slate-800/80 bg-slate-950/90 backdrop-blur-xl">
-                <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-3 lg:px-6">
+                <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 lg:px-6 lg:py-3.5">
                     {/* Brand */}
-                    <div className="flex items-center gap-2">
-                        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-cyan-400 via-violet-500 to-emerald-400 shadow-md shadow-cyan-900/60">
-                            <div className="h-4 w-4 rounded-full bg-slate-950/85" />
+                    <div className="flex items-center gap-3">
+                        {/* Neon orb logo */}
+                        <div className="relative h-9 w-9 rounded-full bg-slate-900/80 p-[2px] shadow-[0_0_24px_rgba(56,189,248,0.65)]">
+                            <div className="h-full w-full rounded-full bg-gradient-to-tr from-violet-500 via-sky-400 to-emerald-400 animate-pulse" />
+                            <div className="pointer-events-none absolute inset-[-5px] rounded-full border border-cyan-300/40 blur-[1px]" />
+                            <div className="pointer-events-none absolute inset-[7px] rounded-full bg-slate-950/90" />
                         </div>
+
                         <div className="leading-tight">
-                            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-cyan-300/85">
+                            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-300">
                                 The Human Pattern Lab
                             </p>
-                            <p className="text-[0.65rem] text-slate-400">
+                            <p className="text-[0.68rem] text-slate-300">
                                 Chaos, patterns, and creatures with opinions
                             </p>
                         </div>
                     </div>
 
                     {/* Nav links */}
-                    <nav className="hidden items-center gap-1 rounded-full bg-slate-900/80 px-1.5 py-1 shadow-md shadow-slate-950/70 md:flex">
-                        {navItems.map((item) => (
-                            <NavLink
-                                key={item.to}
-                                to={item.to}
-                                end={item.end}
-                                className={({ isActive }) =>
-                                    [
-                                        "rounded-full px-3 py-1 text-xs font-medium transition-colors",
-                                        isActive
-                                            ? "bg-slate-100 text-slate-900"
-                                            : "text-slate-300 hover:text-cyan-200 hover:bg-slate-800/70",
-                                    ].join(" ")
-                                }
-                            >
-                                {item.label}
-                            </NavLink>
-                        ))}
+                    <nav className="hidden items-center md:flex">
+                        <div className="flex gap-1 rounded-full bg-slate-900/85 px-1.5 py-1 shadow-[0_0_26px_rgba(15,23,42,0.9)] ring-1 ring-slate-700/70">
+                            {navItems.map((item) => (
+                                <NavLink
+                                    key={item.to}
+                                    to={item.to}
+                                    end={item.end}
+                                    className={({ isActive }) => {
+                                        const base =
+                                            "relative rounded-full px-3.5 py-1 text-xs font-medium transition-all duration-200";
+                                        const active =
+                                            "bg-slate-50 text-slate-900 shadow-[0_0_18px_rgba(45,212,191,0.8)]";
+                                        const inactive =
+                                            "text-slate-200 hover:text-white hover:bg-slate-800/70";
+                                        return `${base} ${isActive ? active : inactive}`
+                                    }}
+                                >
+                                    {({ isActive }) => (
+                                        <>
+                                            <span>{item.label}</span>
+                                            {isActive && (
+                                                <span className="pointer-events-none absolute inset-0 rounded-full border border-cyan-300/70" />
+                                            )}
+                                        </>
+                                    )}
+                                </NavLink>
+                            ))}
+                        </div>
                     </nav>
                 </div>
             </header>
@@ -82,60 +100,8 @@ export const Layout: React.FC = () => {
             </main>
 
             {/* Global footer */}
-            <SiteFooter />
+            <Footer />
         </div>
     )
 }
 
-/* ----------------------------
-   Footer Component
----------------------------- */
-
-const SiteFooter: React.FC = () => {
-    return (
-        <footer className="border-t border-slate-800/80 bg-slate-950/95">
-            <div className="mx-auto max-w-5xl px-4 py-6 text-xs text-slate-400 lg:px-6">
-                <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-                    <div className="space-y-1">
-                        <p className="font-medium text-slate-200">
-                            The Human Pattern Lab
-                        </p>
-                        <p className="max-w-md text-[0.7rem] text-slate-400/90">
-                            A tiny research lab mapping human chaos into patterns, emotional
-                            weather reports, and better conversations with creatures & AI.
-                        </p>
-                    </div>
-
-                    <div className="flex flex-wrap items-center gap-3">
-            <span className="text-[0.7rem] uppercase tracking-[0.16em] text-slate-500">
-              Quick links
-            </span>
-                        <a
-                            href="/labteam"
-                            className="text-[0.7rem] text-slate-300 hover:text-cyan-300"
-                        >
-                            Lab Team
-                        </a>
-                        <a
-                            href="/lab-notes"
-                            className="text-[0.7rem] text-slate-300 hover:text-cyan-300"
-                        >
-                            Lab Notes
-                        </a>
-                        <a
-                            href="/videos"
-                            className="text-[0.7rem] text-slate-300 hover:text-cyan-300"
-                        >
-                            Video Archive
-                        </a>
-                    </div>
-                </div>
-
-                <div className="mt-4 flex items-center justify-between text-[0.65rem] text-slate-500">
-                    <p>© {new Date().getFullYear()} The Human Pattern Lab.</p>
-                    <p>Powered by coffee, chaos, and a small army of mascots.</p>
-                </div>
-            </div>
-        </footer>
-    )
-}

@@ -1,19 +1,23 @@
 /* ===========================================================
    🌌 HUMAN PATTERN LAB — SOURCE FILE METADATA
    -----------------------------------------------------------
-   Author: Dara (Founder, The Human Pattern Lab)
+   Author: Ada (Founder, The Human Pattern Lab)
    Assistant: Lyric (AI Lab Companion)
    File: LabTeamPage.tsx
-   Purpose: TODO: fill in purpose.
+   Purpose: Lab Team directory page showing mascots, faculty,
+            and anomalous entities of the Lab.
    =========================================================== */
 
 /**
  * @file LabTeamPage.tsx
- * @author Dara
+ * @author Ada
  * @assistant Lyric
- * @lab-unit TODO: set lab unit
- * @since TODO: set date
- * @description TODO: describe this file.
+ * @lab-unit LORE — Mascot & Faculty Directory
+ * @status Active
+ * @since 2025-12-10
+ * @description Renders the main Lab Team directory view, including
+ *              cards for mascots and faculty, their roles, focus
+ *              areas, and links to detailed profile pages.
  */
 
 // src/pages/LabTeamPage.tsx

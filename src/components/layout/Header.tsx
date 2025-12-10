@@ -16,55 +16,80 @@
  * @description TODO: describe this file.
  */
 
-// src/components/layout/Header.tsx
-import { Link, NavLink } from "react-router-dom";
-import { useTranslation } from "react-i18next";
+import React from "react";
+import { NavLink } from "react-router-dom";
 
-const navItems = [
-    { to: "/", label: "{t(\"nav.home\")}" },
-    { to: "/about", label: "{t(\"nav.about\")}" },
-    { to: "/departments", label: "{t(\"nav.departments\")}" },
-    { to: "/lab-notes", label: "{t(\"nav.lab-notes\")}" },
-    { to: "/videos", label: "{t(\"nav.videos\")}" },
-    { to: "/content-use-policy", label: "{t(\"nav.content-use-policy\")}" },
-    { to: "/contact", label: "{t(\"nav.contact\")}" },
+type NavItem = {
+    label: string;
+    to: string;
+    end?: boolean;
+};
+
+const navItems: NavItem[] = [
+    { label: "Home", to: "/", end: true },
+    { label: "About", to: "/about" },
+    { label: "Departments", to: "/departments" },
+    { label: "Lab Notes", to: "/lab-notes" },
+    { label: "Videos", to: "/videos" },
+    { label: "Content Use", to: "/content-use-policy" },
+    { label: "Contact", to: "/contact" },
 ];
-const { t } = useTranslation("common");
 
-export function Header() {
+export const SiteHeader: React.FC = () => {
     return (
-        <header className="border-b border-slate-800 bg-slate-950/80 backdrop-blur">
-            <div className="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between gap-4">
+        <header className="sticky top-0 z-40 border-b border-slate-800/70 bg-slate-950/90 backdrop-blur">
+            <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-4 py-3 md:px-6 md:py-4">
+                {/* Brand block */}
+                <div className="flex items-center gap-3 md:gap-4">
+                    {/* Neon orb logo */}
+                    <div className="relative h-9 w-9 rounded-full bg-slate-900/80 p-[2px] shadow-[0_0_25px_rgba(56,189,248,0.45)]">
+                        <div className="h-full w-full rounded-full bg-gradient-to-tr from-violet-500 via-sky-400 to-emerald-400 animate-pulse" />
+                        <div className="pointer-events-none absolute inset-[-6px] rounded-full border border-cyan-300/25 blur-[1px]" />
+                    </div>
 
-                {/* LOGO */}
-                <Link to="/" className="flex items-center gap-2">
-                    <div className="h-8 w-8 rounded-full bg-gradient-to-br from-cyan-400 to-violet-500" />
-                    <span className="font-semibold tracking-wide">
-            The Human Pattern Lab
-          </span>
-                </Link>
+                    <div className="flex flex-col">
+            <span className="text-xs font-semibold tracking-[0.32em] text-cyan-300 uppercase">
+              The Human Pattern Lab
+            </span>
+                        <span className="text-[11px] text-slate-300 md:text-xs">
+              Chaos, patterns, and creatures with opinions
+            </span>
+                    </div>
+                </div>
 
-                {/* NAVIGATION */}
-                <nav className="hidden md:flex gap-4 text-sm">
-                    {navItems.map((item) => (
-                        <NavLink
-                            key={item.to}
-                            to={item.to}
-                            end={item.to === "/"}
-                            className={({ isActive }) =>
-                                `px-2 py-1 rounded-full transition ${
-                                    isActive
-                                        ? "bg-slate-800 text-cyan-300"
-                                        : "text-slate-300 hover:bg-slate-800/60 hover:text-cyan-200"
-                                }`
-                            }
-                        >
-                            {item.label}
-                        </NavLink>
-                    ))}
+                {/* Nav block */}
+                <nav className="flex items-center justify-end">
+                    <div className="flex gap-1 rounded-full bg-slate-900/80 px-1 py-1 shadow-[0_0_25px_rgba(15,23,42,0.9)] ring-1 ring-slate-700/70">
+                        {navItems.map((item) => (
+                            <NavLink
+                                key={item.to}
+                                to={item.to}
+                                end={item.end}
+                                className={({ isActive }) => {
+                                    const base =
+                                        "relative px-3.5 py-1.5 text-xs md:text-sm font-medium rounded-full transition-all duration-200";
+                                    const active =
+                                        "bg-slate-50 text-slate-900 shadow-[0_0_18px_rgba(45,212,191,0.7)]";
+                                    const inactive =
+                                        "text-slate-200 hover:text-white hover:bg-slate-800/60";
+                                    return `${base} ${isActive ? active : inactive}`;
+                                }}
+                            >
+                                {({ isActive }) => (
+                                    <>
+                                        <span>{item.label}</span>
+                                        {isActive && (
+                                            <span className="pointer-events-none absolute inset-0 rounded-full border border-cyan-300/60/80 opacity-60" />
+                                        )}
+                                    </>
+                                )}
+                            </NavLink>
+                        ))}
+                    </div>
                 </nav>
-
             </div>
         </header>
     );
-}
+};
+
+export default SiteHeader;
