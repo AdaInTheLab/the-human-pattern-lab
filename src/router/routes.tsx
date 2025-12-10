@@ -28,7 +28,7 @@ import { VideoArchivePage } from "@/pages/VideoArchivePage";
 import { ContentUsePolicyPage } from "@/pages/ContentUsePolicyPage";
 import { MerchPage } from "@/pages/MerchPage";
 import { ContactPage } from "@/pages/ContactPage";
-import { NotFoundPage } from "@/pages/NotFoundPage";
+import  NotFoundPage  from "@/pages/NotFoundPage";
 import LabTeamPage from "@/pages/LabTeamPage"
 import LabMemberDetailPage from "@/pages/LabMemberDetailPage"
 

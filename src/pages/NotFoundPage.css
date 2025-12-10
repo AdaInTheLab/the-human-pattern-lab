@@ -1,0 +1,59 @@
+.notfound-wrapper {
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+}
+
+.notfound-card {
+    text-align: center;
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(12px);
+    padding: 3rem 2rem;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    max-width: 500px;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.notfound-carmel {
+    width: 160px;
+    margin-bottom: 1rem;
+    filter: drop-shadow(0 0 12px #cfa7ff88);
+}
+
+.notfound-title {
+    margin: 0;
+    font-size: 2rem;
+    color: #e7dbff;
+}
+
+.notfound-text {
+    color: #daccff;
+    margin-top: 1rem;
+    line-height: 1.5;
+    font-size: 1.1rem;
+}
+
+.notfound-button {
+    display: inline-block;
+    margin-top: 2rem;
+    padding: 0.8rem 1.8rem;
+    border-radius: 12px;
+    background: #b88cff;
+    color: black;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.2s ease;
+}
+
+.notfound-button:hover {
+    background: #d3b0ff;
+    transform: scale(1.05);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}

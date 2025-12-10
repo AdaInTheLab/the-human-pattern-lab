@@ -148,7 +148,7 @@ export const LabMemberCard: React.FC<LabMemberCardProps> = ({ member }) => {
 
                     {member.docAnchor && (
                         <a
-                            href={`/docs/mascot-lore#${member.docAnchor}`}
+                            href={`/docs/lore/mascot-lore#${member.docAnchor}`}
                             target="_blank"
                             rel="noreferrer"
                             className="text-[0.7rem] font-medium text-slate-400 hover:text-slate-200"

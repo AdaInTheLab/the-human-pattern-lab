@@ -1,45 +1,28 @@
-/* ===========================================================
-   🌌 HUMAN PATTERN LAB — SOURCE FILE METADATA
-   -----------------------------------------------------------
-   Author: Dara (Founder, The Human Pattern Lab)
-   Assistant: Lyric (AI Lab Companion)
-   File: NotFoundPage.tsx
-   Purpose: TODO: fill in purpose.
-   =========================================================== */
+import React from "react";
+import { Link } from "react-router-dom";
+import "./NotFoundPage.css";
 
-/**
- * @file NotFoundPage.tsx
- * @author Dara
- * @assistant Lyric
- * @lab-unit TODO: set lab unit
- * @since TODO: set date
- * @description TODO: describe this file.
- */
-
-// src/pages/NotFoundPage.tsx
-import React from "react"
-import { LayoutShell } from "@/components/layout/LayoutShell"
-import { Link } from "react-router-dom"
-
-export const NotFoundPage: React.FC = () => {
+export default function NotFoundPage() {
     return (
-        <LayoutShell
-            eyebrow="404"
-            title="Signal Lost"
-            description="We couldn’t map that route in the current version of this universe."
-            className="pb-16"
-        >
-            <div className="space-y-4 text-sm text-slate-200">
-                <p>
-                    The page you’re looking for doesn’t exist, or it fell through a lore rewrite.
+        <div className="notfound-wrapper">
+            <div className="notfound-card">
+                <img
+                    src="/public/assets/labteam/carmel.png"
+                    alt="Carmel confused"
+                    className="notfound-carmel"
+                />
+
+                <h1 className="notfound-title">Uh-oh… wrong hallway.</h1>
+
+                <p className="notfound-text">
+                    Carmel checked the Lab’s floor plan and… this page doesn’t exist.<br />
+                    Pretty sure you just slipped into a side dimension. Happens to the best of us.
                 </p>
-                <Link
-                    to="/"
-                    className="inline-flex items-center rounded-full border border-slate-600 bg-slate-900/70 px-3 py-1.5 text-xs font-medium text-slate-100 transition-colors hover:border-cyan-400/80 hover:text-cyan-200"
-                >
-                    ← Back to Home
+
+                <Link className="notfound-button" to="/">
+                    🔙 Back to Safety
                 </Link>
             </div>
-        </LayoutShell>
-    )
+        </div>
+    );
 }
