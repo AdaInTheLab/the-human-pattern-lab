@@ -33,6 +33,7 @@ import LabMemberDetailPage from "@/pages/LabMemberDetailPage";
 import { LabNoteDetailPage } from "@/pages/LabNoteDetailPage";
 import { VideoDetailPage } from "@/pages/VideoDetailPage";
 import { DepartmentDetailPage } from "@/pages/DepartmentDetailPage";
+import PrivacyPolicyPage from "@/pages/PrivacyPolicyPage";
 
 import {
     CjoDepartmentPage,
@@ -80,6 +81,8 @@ export const router = createBrowserRouter([
 
             { path: "labteam", element: <LabTeamPage /> },
             { path: "labteam/:memberId", element: <LabMemberDetailPage /> },
+
+            { path: "privacy-policy", element: <PrivacyPolicyPage /> },
 
             { path: "*", element: <NotFoundPage /> },
         ],

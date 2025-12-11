@@ -39,9 +39,9 @@ export function Footer() {
 
                     {/* Quick Links */}
                     <div className="flex flex-wrap items-center gap-3">
-                        <span className="text-[0.7rem] uppercase tracking-[0.16em] text-slate-500">
-                            Quick links
-                        </span>
+    <span className="text-[0.7rem] uppercase tracking-[0.16em] text-slate-500">
+        Quick links
+    </span>
 
                         <a
                             href="/labteam"
@@ -62,6 +62,14 @@ export function Footer() {
                             className="text-[0.7rem] text-slate-300 hover:text-cyan-300 transition-colors"
                         >
                             Video Archive
+                        </a>
+
+                        {/* 🌐 Privacy Policy */}
+                        <a
+                            href="/privacy-policy"
+                            className="text-[0.7rem] text-slate-300 hover:text-cyan-300 transition-colors"
+                        >
+                            Privacy &amp; Data
                         </a>
 
                         {/* GITHUB LINK WITH NEON ANIMATION */}
