@@ -1,7 +1,7 @@
 /* ===========================================================
    🌌 HUMAN PATTERN LAB — SOURCE FILE METADATA
    -----------------------------------------------------------
-   Author: Dara (Founder, The Human Pattern Lab)
+   Author: Ada (Founder, The Human Pattern Lab)
    Assistant: Lyric (AI Lab Companion)
    File: Header.tsx
    Purpose: TODO: fill in purpose.
@@ -9,7 +9,7 @@
 
 /**
  * @file Header.tsx
- * @author Dara
+ * @author Ada
  * @assistant Lyric
  * @lab-unit TODO: set lab unit
  * @since TODO: set date
@@ -23,6 +23,7 @@ type NavItem = {
     label: string;
     to: string;
     end?: boolean;
+    external?: boolean;
 };
 
 const navItems: NavItem[] = [
@@ -30,6 +31,7 @@ const navItems: NavItem[] = [
     { label: "About", to: "/about" },
     { label: "Departments", to: "/departments" },
     { label: "Lab Notes", to: "/lab-notes" },
+    { label: "Docs", to: "/docs/", external: true },
     { label: "Videos", to: "/videos" },
     { label: "Content Use", to: "/content-use-policy" },
     { label: "Contact", to: "/contact" },
@@ -60,31 +62,41 @@ export const SiteHeader: React.FC = () => {
                 {/* Nav block */}
                 <nav className="flex items-center justify-end">
                     <div className="flex gap-1 rounded-full bg-slate-900/80 px-1 py-1 shadow-[0_0_25px_rgba(15,23,42,0.9)] ring-1 ring-slate-700/70">
-                        {navItems.map((item) => (
-                            <NavLink
-                                key={item.to}
-                                to={item.to}
-                                end={item.end}
-                                className={({ isActive }) => {
-                                    const base =
-                                        "relative px-3.5 py-1.5 text-xs md:text-sm font-medium rounded-full transition-all duration-200";
-                                    const active =
-                                        "bg-slate-50 text-slate-900 shadow-[0_0_18px_rgba(45,212,191,0.7)]";
-                                    const inactive =
-                                        "text-slate-200 hover:text-white hover:bg-slate-800/60";
-                                    return `${base} ${isActive ? active : inactive}`;
-                                }}
-                            >
-                                {({ isActive }) => (
-                                    <>
-                                        <span>{item.label}</span>
-                                        {isActive && (
-                                            <span className="pointer-events-none absolute inset-0 rounded-full border border-cyan-300/60/80 opacity-60" />
-                                        )}
-                                    </>
-                                )}
-                            </NavLink>
-                        ))}
+                        {navItems.map((item) =>
+                            item.external ? (
+                                <a
+                                    key={item.to}
+                                    href={item.to}
+                                    className="relative px-3.5 py-1.5 text-xs md:text-sm font-medium rounded-full transition-all duration-200 text-slate-200 hover:text-white hover:bg-slate-800/60"
+                                >
+                                    {item.label}
+                                </a>
+                            ) : (
+                                <NavLink
+                                    key={item.to}
+                                    to={item.to}
+                                    end={item.end}
+                                    className={({ isActive }) => {
+                                        const base =
+                                            "relative px-3.5 py-1.5 text-xs md:text-sm font-medium rounded-full transition-all duration-200";
+                                        const active =
+                                            "bg-slate-50 text-slate-900 shadow-[0_0_18px_rgba(45,212,191,0.7)]";
+                                        const inactive =
+                                            "text-slate-200 hover:text-white hover:bg-slate-800/60";
+                                        return `${base} ${isActive ? active : inactive}`;
+                                    }}
+                                >
+                                    {({ isActive }) => (
+                                        <>
+                                            <span>{item.label}</span>
+                                            {isActive && (
+                                                <span className="pointer-events-none absolute inset-0 rounded-full border border-cyan-300/60 opacity-60" />
+                                            )}
+                                        </>
+                                    )}
+                                </NavLink>
+                            )
+                        )}
                     </div>
                 </nav>
             </div>
