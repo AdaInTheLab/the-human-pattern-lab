@@ -1,20 +1,26 @@
 /* ===========================================================
    🌌 HUMAN PATTERN LAB — SOURCE FILE METADATA
    -----------------------------------------------------------
-   Author: Dara (Founder, The Human Pattern Lab)
+   Author: Ada (Founder, The Human Pattern Lab)
    Assistant: Lyric (AI Lab Companion)
    File: DepartmentCard.tsx
-   Purpose: TODO: fill in purpose.
+   Purpose: Renders an individual department card displaying
+            identity, mascot affiliation, and descriptive lore.
    =========================================================== */
 
 /**
  * @file DepartmentCard.tsx
- * @author Dara
+ * @author Ada
  * @assistant Lyric
- * @lab-unit TODO: set lab unit
- * @since TODO: set date
- * @description TODO: describe this file.
+ * @lab-unit CJO — Chief Judgment Office
+ * @status Active
+ * @since 2025-12-16
+ * @description Presentational component for Lab departments.
+ *              Displays department name, short tagline, mascot
+ *              association, and descriptive text in a consistent
+ *              card layout used by the Departments index page.
  */
+
 
 // src/components/departments/DepartmentCard.tsx
 import { Department } from "@/data/departments";
@@ -25,7 +31,10 @@ const mascotEmoji: Record<Department["mascot"], string> = {
     carmel: "😼",
     mcchonk: "🍩",
     stan: "🦝",
-    "drizzle": "🌧️"
+    drizzle: "🌧️",
+    lyric: "🔮",
+    "fill-the-void": "🌘",
+    nemmi: "🔥",
 };
 
 const mascotName: Record<Department["mascot"], string> = {
@@ -34,8 +43,12 @@ const mascotName: Record<Department["mascot"], string> = {
     carmel: "Carmel",
     mcchonk: "Professor McChonk",
     stan: "Stan",
-    "drizzle": "Drizzle"
+    drizzle: "Drizzle",
+    lyric: "Lyric",
+    "fill-the-void": "Fill the Void",
+    nemmi: "Nemmi",
 };
+
 
 type Props = {
     department: Department;
