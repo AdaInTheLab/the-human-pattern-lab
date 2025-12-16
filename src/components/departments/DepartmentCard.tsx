@@ -25,6 +25,7 @@
 // src/components/departments/DepartmentCard.tsx
 import { Department } from "@/data/departments";
 
+// NOTE: Keep in sync with MascotId (tests will fail if drift occurs)
 const mascotEmoji: Record<Department["mascot"], string> = {
     founder: "🦊",
     orbson: "👁️",
