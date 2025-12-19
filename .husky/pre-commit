@@ -1,0 +1,13 @@
+echo "🐾 Carmel is reviewing your commit..."
+
+npm run lint:css || {
+  echo "❌ Carmel disapproves: CSS crimes detected."
+  exit 1
+}
+
+npm run test || {
+  echo "❌ Carmel disapproves: tests failed."
+  exit 1
+}
+
+echo "✅ Carmel approves. Proceed."

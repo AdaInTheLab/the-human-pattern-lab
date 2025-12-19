@@ -22,7 +22,12 @@
     "@vitest/coverage-v8": "^4.0.15",
     "autoprefixer": "^10.4.22",
     "happy-dom": "^20.0.11",
+    "husky": "^9.1.7",
     "postcss": "^8.5.6",
+    "prettier": "3.7.4",
+    "stylelint": "^16.26.1",
+    "stylelint-config-standard": "^39.0.1",
+    "stylelint-config-tailwindcss": "^1.0.0",
     "tailwindcss": "^4.1.17",
     "typescript": "^5.9.3",
     "vite": "^7.2.7",
@@ -36,6 +41,8 @@
     "test:watch": "vitest watch",
     "test:coverage": "vitest run --coverage",
     "fetch:youtube": "node scripts/fetchYoutube.js",
-    "add:headers": "node scripts/addHeaders2.mjs"
+    "add:headers": "node scripts/addHeaders2.mjs",
+    "lint:css": "stylelint \"src/**/*.{css,pcss}\"",
+    "prepare": "husky"
   }
 }
