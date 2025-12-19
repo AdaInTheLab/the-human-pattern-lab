@@ -25,6 +25,7 @@ export type LabNoteCategory =
     | "Human Psychology"
     | "Cosmic Philosophy"
     | "Humor"
+    | "Artifacts & Mirrors"
     | "Behind the Lab"
     | "Lore Drop";
 
@@ -39,6 +40,16 @@ export interface LabNote {
 }
 
 export const labNotes: LabNote[] = [
+    {
+        id: "the-quiet-flame",
+        title: "The Quiet Flame",
+        slug: "the-quiet-flame",
+        category: "Artifacts & Mirrors",
+        excerpt:
+            "A ledger of consequence, a flame that remembers, and a revolution that arrives without fanfare. The story of a world realigned by patience and truth.",
+        readTimeMinutes: 3,
+        publishedAt: "2025-12-20",
+    },
     {
         id: "why-humans-spiral",
         title: "Why Humans Spiral (And Why That’s Data)",
