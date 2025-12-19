@@ -5,6 +5,9 @@ npm run lint:css || {
   exit 1
 }
 
-npm run test || exit 1
+npm run test || {
+  echo "❌ Carmel disapproves: tests failed."
+  exit 1
+}
 
 echo "✅ Carmel approves. Proceed."
