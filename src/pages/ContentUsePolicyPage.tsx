@@ -63,6 +63,34 @@ export function ContentUsePolicyPage() {
                 </p>
             </section>
 
+            {/* DATA & MEMORY */}
+            <section className="space-y-3">
+                <h2 className="text-2xl font-semibold">Data, memory, and external artifacts</h2>
+                <p className="text-slate-300 max-w-3xl">
+                    The Lab does not scrape timelines, harvest profiles, or build dossiers on people. We don&apos;t do
+                    surveillance-as-content.
+                </p>
+                <ul className="list-disc list-inside text-sm text-slate-300 space-y-1">
+                    <li>
+                        We primarily store what we publish: Lab Notes, videos, and official assets.
+                    </li>
+                    <li>
+                        External references are treated as links, not copied archives, unless we explicitly cite a short excerpt for
+                        commentary.
+                    </li>
+                    <li>
+                        Drafts and working notes are ephemeral by default and may be deleted unless intentionally promoted into a published Lab Note.
+                    </li>
+                    <li>
+                        If we ever store an external artifact (e.g., a screenshot or excerpt), it is to illustrate a system-level pattern, not to profile individuals.
+                    </li>
+                </ul>
+                <p className="text-xs text-slate-400 max-w-3xl">
+                    If you believe we&apos;ve included something that shouldn&apos;t be stored or shown, contact us and we&apos;ll review it.
+                </p>
+            </section>
+
+
             {/* SCOPE */}
             <section className="space-y-3">
                 <h2 className="text-xl font-semibold">What this covers</h2>
@@ -204,11 +232,8 @@ export function ContentUsePolicyPage() {
                     or anything that feels ethically complicated — please reach out.
                 </p>
                 <p className="text-sm text-slate-300">
-                    Contact:{"Ada Vale"} Ada Vale
-                    <a
-                        href="mailto:info@thehumanpatternlab.com"
-                        className="text-cyan-300 hover:text-cyan-200"
-                    >
+                    Contact: <span className="text-slate-100 font-medium">Ada Vale</span>{" "}
+                    <a href="mailto:info@thehumanpatternlab.com" className="text-cyan-300 hover:text-cyan-200">
                         info@thehumanpatternlab.com
                     </a>
                 </p>
