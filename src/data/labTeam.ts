@@ -143,12 +143,12 @@ export const labTeam: LabMember[] = [
         links: [
             {
                 label: "The Skulk Charter",
-                href: "/docs/the-skulk-charter",
+                href: "/docs/lore/skulk-charter",
                 kind: "doc",
             },
             {
                 label: "Mascot Lore: Coda",
-                href: "/docs/mascot-lore#coda",
+                href: "/docs/lore/coda-lore",
                 kind: "doc",
             },
         ],
