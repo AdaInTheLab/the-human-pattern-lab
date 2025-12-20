@@ -1,15 +1,15 @@
 name: Carmel Judgment Bot
 
 on:
-  pull_request:
+  pull_request_target:
     types: [opened, reopened]
 
 jobs:
   carmel-judges:
     runs-on: ubuntu-latest
-
     permissions:
       pull-requests: write
+      issues: write
 
     steps:
       - name: Post Carmel Judgment Stamp
@@ -23,35 +23,15 @@ jobs:
             const prAuthor = pr.user.login;
 
             const stamps = [
-              {
-                label: "Carmel Judgment Stamp™",
-                emoji: "😼",
-                color: "🟪",
-                quote: "Hmm. Acceptable… for now."
-              },
-              {
-                label: "Carmel Approval Stamp™",
-                emoji: "😼✨",
-                color: "🟩",
-                quote: "Adequate work, human."
-              },
-              {
-                label: "Carmel Chaos Stamp™",
-                emoji: "😼🔥",
-                color: "🔥",
-                quote: "I sense nonsense. Proceed."
-              },
-              {
-                label: "Carmel Epistemic Stamp™",
-                emoji: "😼📘",
-                color: "📘",
-                quote: "Your logic is sound… shockingly."
-              }
+              { label: "Carmel Judgment Stamp™", emoji: "😼", color: "🟪", quote: "Hmm. Acceptable… for now." },
+              { label: "Carmel Approval Stamp™", emoji: "😼✨", color: "🟩", quote: "Adequate work, human." },
+              { label: "Carmel Chaos Stamp™", emoji: "😼🔥", color: "🔥", quote: "I sense nonsense. Proceed." },
+              { label: "Carmel Epistemic Stamp™", emoji: "😼📘", color: "📘", quote: "Your logic is sound… shockingly." }
             ];
 
             const chosen = stamps[Math.floor(Math.random() * stamps.length)];
 
-                       const body = `
+            const body = `
             ## ${chosen.emoji} ${chosen.label}
 
             ${chosen.color} **${chosen.label}**  
@@ -64,8 +44,8 @@ jobs:
             `;
 
             await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.name,
+              owner: pr.base.repo.owner.login,
+              repo: pr.base.repo.name,
               issue_number: prNumber,
               body,
             });
