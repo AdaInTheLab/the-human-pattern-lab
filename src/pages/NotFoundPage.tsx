@@ -7,7 +7,7 @@ export default function NotFoundPage() {
         <div className="notfound-wrapper">
             <div className="notfound-card">
                 <img
-                    src="/public/assets/labteam/carmel.png"
+                    src="/assets/labteam/carmel.png"
                     alt="Carmel confused"
                     className="notfound-carmel"
                 />
