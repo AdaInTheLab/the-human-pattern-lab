@@ -51,17 +51,17 @@ jobs:
 
             const chosen = stamps[Math.floor(Math.random() * stamps.length)];
 
-            const body = `
-## ${chosen.emoji} ${chosen.label}
+                       const body = `
+            ## ${chosen.emoji} ${chosen.label}
 
-${chosen.color} **${chosen.label}**  
-${chosen.emoji}💬 "${chosen.quote}"
+            ${chosen.color} **${chosen.label}**  
+            ${chosen.emoji}💬 "${chosen.quote}"
 
-> PR: #${prNumber} — _${prTitle}_  
-> Author: @${prAuthor}
+            > PR: #${prNumber} — _${prTitle}_  
+            > Author: @${prAuthor}
 
-_This automated judgment has been issued by the Chief Judgment Office (CJO)._
-`;
+            _This automated judgment has been issued by the Chief Judgment Office (CJO)._
+            `;
 
             await github.rest.issues.createComment({
               owner: context.repo.owner,
