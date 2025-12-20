@@ -1,7 +1,7 @@
 /* ===========================================================
    🌌 HUMAN PATTERN LAB — SOURCE FILE METADATA
    -----------------------------------------------------------
-   Author: Dara (Founder, The Human Pattern Lab)
+   Author: Ada (Founder, The Human Pattern Lab)
    Assistant: Lyric (AI Lab Companion)
    File: LabTeamPreview.tsx
    Purpose: Homepage preview grid of Lab members.

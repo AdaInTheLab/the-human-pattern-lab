@@ -1,7 +1,7 @@
 /* ===========================================================
    🌌 HUMAN PATTERN LAB — SOURCE FILE METADATA
    -----------------------------------------------------------
-   Author: Dara (Founder, The Human Pattern Lab)
+   Author: Ada (Founder, The Human Pattern Lab)
    Assistant: Lyric (AI Lab Companion)
    File: Footer.tsx
    Purpose: Global footer with Lab branding, quick links,
@@ -10,7 +10,7 @@
 
 /**
  * @file Footer.tsx
- * @author Dara
+ * @author Ada
  * @assistant Lyric
  * @lab-unit SCMS — Systems, Chaos & Meta-Structures
  * @status Active

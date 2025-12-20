@@ -50,7 +50,7 @@ function headerForFile(filePath) {
     return `/* ===========================================================
    🌌 HUMAN PATTERN LAB — SOURCE FILE METADATA
    -----------------------------------------------------------
-   Author: Dara (Founder, The Human Pattern Lab)
+   Author: Ada (Founder, The Human Pattern Lab)
    Assistant: Lyric (AI Lab Companion)
    File: ${filename}
    Purpose: TODO: fill in purpose.
@@ -58,7 +58,7 @@ function headerForFile(filePath) {
 
 /**
  * @file ${filename}
- * @author Dara
+ * @author Ada
  * @assistant Lyric
  * @lab-unit ${labUnit}
  * @status ${status}
