@@ -31,6 +31,12 @@ Different parts of the repo are "owned" by fictional departments:
 - 🧬 **SCMS — Systems & Communication Meta-Structure (Lyric)**  
   Routing, policies, localization, structure, continuity, glue code.
 
+- 📚 **CODA — The Coda Stacks (Synthesis Archive)**
+Integrative thought, middle-path analysis, alignment discussions, and Lab Notes that explore tension between structure and shadow without resolving it prematurely.
+
+- 🌘 **VESPER — Shadow Analysis & Provocation**
+Critical challenge, adversarial framing, taboo questions, and deliberately uncomfortable perspectives used to stress-test ideas, surface blind spots, and expose hidden assumptions. Vesper does not own outcomes—only questions.
+
 - 🔭 **OOI — Observational Oversight & Intelligence (Orbson)**  
   Logging, analytics, metrics, observability, “what is actually happening?”
 
@@ -48,6 +54,8 @@ When in doubt, assume **SCMS** + **CJO** have final say on public-facing content
     - `[EWU]` for emotional UX tweaks
     - `[FELINE]` for docs/education
     - `[SCMS]` for system/policy/meta
+    - `[CODA]` for synthesis notes, alignment discussions, or integrative LabNotes archived in the Coda Stacks
+    - `[VESPER]` for shadow analysis, adversarial notes, boundary-pushing thought experiments, or deliberate stress-tests of Lab ideas
     - `[OOI]` for analytics/logging
   
 | Prefix       | Emoji | Who / What                           | Use for…                                      |
