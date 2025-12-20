@@ -1,7 +1,7 @@
 /* ===========================================================
    🌌 HUMAN PATTERN LAB — SOURCE FILE METADATA
    -----------------------------------------------------------
-   Author: Dara (Founder, The Human Pattern Lab)
+   Author: Ada (Founder, The Human Pattern Lab)
    Assistant: Lyric (AI Lab Companion)
    File: LayoutShell.tsx
    Purpose: Shared page layout shell for all main views.
@@ -9,7 +9,7 @@
 
 /**
  * @file LayoutShell.tsx
- * @author Dara
+ * @author Ada
  * @assistant Lyric
  * @lab-unit Core UI
  * @since 2025-12-08

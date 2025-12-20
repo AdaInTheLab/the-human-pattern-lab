@@ -1,7 +1,7 @@
 /* ===========================================================
    🌌 HUMAN PATTERN LAB — SOURCE FILE METADATA
    -----------------------------------------------------------
-   Author: Dara (Founder, The Human Pattern Lab)
+   Author: Ada (Founder, The Human Pattern Lab)
    Assistant: Lyric (AI Lab Companion)
    File: labNotes.ts
    Purpose: Canonical dataset for Lab Notes used across the site.
@@ -9,7 +9,7 @@
 
 /**
  * @file labNotes.ts
- * @author Dara
+ * @author Ada
  * @assistant Lyric
  * @lab-unit SCMS — Systems & Code Management Suite
  * @status Active

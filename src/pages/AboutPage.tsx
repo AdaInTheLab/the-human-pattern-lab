@@ -1,7 +1,7 @@
 /* ===========================================================
    🌌 HUMAN PATTERN LAB — SOURCE FILE METADATA
    -----------------------------------------------------------
-   Author: Dara (Founder, The Human Pattern Lab)
+   Author: Ada (Founder, The Human Pattern Lab)
    Assistant: Lyric (AI Lab Companion)
    File: AboutPage.tsx
    Purpose: TODO: fill in purpose.
@@ -9,7 +9,7 @@
 
 /**
  * @file AboutPage.tsx
- * @author Dara
+ * @author Ada
  * @assistant Lyric
  * @lab-unit TODO: set lab unit
  * @since TODO: set date

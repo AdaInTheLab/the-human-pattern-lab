@@ -6,7 +6,7 @@ const ROOT = path.resolve("src")
 const HEADER = (filename) => `/* ===========================================================
    🌌 HUMAN PATTERN LAB — SOURCE FILE METADATA
    -----------------------------------------------------------
-   Author: Dara (Founder, The Human Pattern Lab)
+   Author: Ada (Founder, The Human Pattern Lab)
    Assistant: Lyric (AI Lab Companion)
    File: ${filename}
    Purpose: TODO: fill in purpose.
@@ -14,7 +14,7 @@ const HEADER = (filename) => `/* ===============================================
 
 /**
  * @file ${filename}
- * @author Dara
+ * @author Ada
  * @assistant Lyric
  * @lab-unit TODO: set lab unit
  * @since TODO: set date
