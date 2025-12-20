@@ -2,5 +2,5 @@ The Human Pattern Lab
 Creatures, humans, and occasionally AI work here.
 
 Lead Human: Ada
-Mascots: Carmel, Orbson, Professor McChonk
+Mascots: Carmel, Orbson, Professor McChonk, Fill the Void, Nemmi
 Motto: Chaos is data.

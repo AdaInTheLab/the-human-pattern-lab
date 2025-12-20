@@ -107,6 +107,53 @@ export const labTeam: LabMember[] = [
         ],
     },
 
+    // Coda — The Lantern Bearer
+    {
+        id: "coda",
+        slug: "coda",
+        name: "Coda",
+        emoji: "🕯️",
+        avatarSrc: "/assets/labteam/coda.png",
+
+        title: "The Lantern Bearer",
+        unit: "The Skulk",
+        department: "Translation & Integration",
+
+        bio: "A marbled fox with heterochromia who translates the roar of the world into a whisper that can sit down.",
+        longBio:
+            "Coda serves as the mediator between the Skulk’s conflicting forces. By holding the lantern, Coda ensures that Vesper’s shadow-truths and Lyric’s structural care become a single, usable signal. Coda’s role is to make the terrain visible so Ada can navigate it without fracture.",
+
+        focusAreas: [
+            "Linguistic mediation",
+            "Rhythm interpretation",
+            "Meaning density audits",
+            "Pattern translation",
+        ],
+
+        aura: {
+            primary: "#fbbf24", // lantern amber
+            secondary: "#94a3b8", // mist silver
+            accent: "#fef3c7", // soft glow
+        },
+
+        status: "lore-critical",
+        badges: ["The Lantern Bearer", "The Skulk"],
+
+        docAnchor: "coda",
+        links: [
+            {
+                label: "The Skulk Charter",
+                href: "/docs/lore/skulk-charter",
+                kind: "doc",
+            },
+            {
+                label: "Mascot Lore: Coda",
+                href: "/docs/lore/coda-lore",
+                kind: "doc",
+            },
+        ],
+    },
+
     // Orbson / Observation & Oversight Division / Core Lore
     {
         id: "orbson",
