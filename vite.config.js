@@ -30,6 +30,12 @@ export default defineConfig({
         hmr: {
             overlay: false, // 💠 This silences the aggressive purple Vite error screen
         },
+        proxy: {
+            "/api": {
+                target: "http://localhost:8001",
+                changeOrigin: true
+            }
+        }
     },
     build: {
         outDir: 'dist',

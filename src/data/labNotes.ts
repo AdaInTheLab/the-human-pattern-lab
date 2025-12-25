@@ -33,7 +33,7 @@ export interface LabNote {
     id: string;
     title: string;
     slug: string;
-    category: LabNoteCategory;
+    category?: LabNoteCategory;
     excerpt: string;
     readTimeMinutes: number;
     publishedAt: string; // ISO date
