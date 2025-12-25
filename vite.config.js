@@ -27,6 +27,9 @@ export default defineConfig({
     server: {
         port: 5173,   // default, but explicit is nice
         open: true,   // auto-open browser when you run `npm run dev`
+        hmr: {
+            overlay: false, // 💠 This silences the aggressive purple Vite error screen
+        },
     },
     build: {
         outDir: 'dist',
