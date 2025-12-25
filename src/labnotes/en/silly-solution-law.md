@@ -2,6 +2,7 @@
 id: "law-of-the-unplugged-cable"
 type: "memo"
 title: "The Law of the Unplugged Cable"
+dept: "ada"
 subtitle: "Why the simplest, dumbest fixes hide behind the biggest headaches"
 published: "2025-02-13"
 tags: ["behind the lab", "systems"]

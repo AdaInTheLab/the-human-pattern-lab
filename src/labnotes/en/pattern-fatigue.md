@@ -2,6 +2,7 @@
 id: "pattern-fatigue"
 type: "paper"
 title: "Pattern Fatigue"
+dept: "Lyric"
 subtitle: "Why humans misread signals when overloaded"
 published: "2025-01-12"
 tags: ["behavior", "cognition"]
