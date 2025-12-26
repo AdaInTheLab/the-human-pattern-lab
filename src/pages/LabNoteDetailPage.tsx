@@ -28,7 +28,7 @@ import { Link, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 import { LayoutShell } from "@/components/layout/LayoutShell";
-import { fetchLabNoteById, getLabNotes, shouldUseApiNotes } from "@/lib/labNotes";
+import { fetchLabNoteBySlug, getLabNotes, shouldUseApiNotes } from "@/lib/labNotes";
 import type { LabNote } from "@/lib/labNotes";
 
 type RouteParams = {
@@ -53,7 +53,7 @@ export function LabNoteDetailPage() {
             setLoading(true);
             try {
                 const data = shouldUseApiNotes()
-                    ? await fetchLabNoteById(locale, id, controller.signal)
+                    ? await fetchLabNoteBySlug(locale, id, controller.signal)
                     : getLabNotes(locale).find((n) => n.id === id) ?? null;
 
                 if (!alive) return;

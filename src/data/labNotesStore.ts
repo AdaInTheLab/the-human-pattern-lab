@@ -20,7 +20,7 @@ export async function getAllLabNotes(): Promise<ApiLabNote[]> {
     throw new Error("getAllLabNotes() not implemented");
 }
 
-export async function getLabNoteById(id: string): Promise<ApiLabNote | null> {
+export async function getLabNoteBySlug(id: string): Promise<ApiLabNote | null> {
     const notes = await getAllLabNotes();
     return notes.find((n) => n.id === id) ?? null;
 }

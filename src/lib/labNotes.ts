@@ -1,7 +1,8 @@
 // src/lib/labNotes.ts
 
 export type LabNoteAttributes = {
-    id: string;
+    id: string;     // uuid
+    slug: string;   // public identity for URLs
     type?: "labnote" | "paper" | "memo";
     title: string;
     subtitle?: string;
@@ -16,14 +17,20 @@ export type LabNoteAttributes = {
     safer_landing?: boolean;
 };
 
+
+type LabNoteFrontmatter = Omit<LabNoteAttributes, "id" | "slug" | "department_id"> & {
+    id?: string;
+    slug?: string;
+    department_id?: string;
+};
+
 type LabNoteModule = {
-    attributes: LabNoteAttributes;
+    attributes: LabNoteFrontmatter;
     html: string;
     markdown: string;
 };
 
 export type LabNote = LabNoteAttributes & {
-    slug: string;
     contentHtml: string;
     contentMarkdown: string;
 };
@@ -39,7 +46,8 @@ const notesKoRaw = import.meta.glob("../labnotes/ko/*.md", {
 // --- 🌐 API MODE SUPPORT --------------------------------
 
 type ApiLabNote = {
-    id: string;               // slug-style id (e.g. "the-invitation")
+    id: string;          // uuid
+    slug: string;        // public identity for URLs
     title: string;
     subtitle?: string;
     summary?: string;
@@ -55,8 +63,8 @@ type ApiLabNote = {
 function normalizeApiNotes(apiNotes: ApiLabNote[]): LabNote[] {
     return apiNotes
         .map((n): LabNote => ({
-            id: n.id,
-            slug: n.id,
+            id: n.id,                  // uuid
+            slug: n.slug,              // url slug
             title: n.title,
 
             type: "labnote",
@@ -86,7 +94,7 @@ function normalizeApiNotes(apiNotes: ApiLabNote[]): LabNote[] {
 export async function fetchLabNotes(locale: string, signal?: AbortSignal): Promise<LabNote[]> {
     // If you later add locale support on the API, this is ready.
     // For now, locale is unused but kept for API parity with existing getters.
-    const res = await fetch("/api/lab-notes", { signal });
+    const res = await fetch("/lab-notes", { signal });
 
     if (!res.ok) {
         const text = await res.text().catch(() => "");
@@ -97,9 +105,9 @@ export async function fetchLabNotes(locale: string, signal?: AbortSignal): Promi
     return normalizeApiNotes(data);
 }
 
-export async function fetchLabNoteById(locale: string, id: string, signal?: AbortSignal): Promise<LabNote | null> {
-    // If your API supports /api/lab-notes/:slug mapped to LabNoteView, this works.
-    const res = await fetch(`/api/lab-notes/${encodeURIComponent(id)}`, { signal });
+export async function fetchLabNoteBySlug(locale: string, slug: string, signal?: AbortSignal): Promise<LabNote | null> {
+    // If your API supports /lab-notes/:slug mapped to LabNoteView, this works.
+    const res = await fetch(`/lab-notes/${encodeURIComponent(slug)}`, { signal });
 
     if (res.status === 404) return null;
     if (!res.ok) {
@@ -119,34 +127,32 @@ function normalizeNotes(raw: Record<string, LabNoteModule>): LabNote[] {
             const attrs = mod?.attributes;
             if (!attrs) return [];
 
-            const id = attrs.id || filePath.split("/").pop()?.replace(".md", "");
+            const filenameSlug = filePath.split("/").pop()?.replace(".md", "");
+            const slug = attrs.slug ?? filenameSlug;
+            if (!slug) return [];
+
+            const id = attrs.id ?? filenameSlug; // if you still want fallback
             if (!id) return [];
 
-            // Compute normalized department_id once, guaranteed string
             const department_id = (attrs.dept || attrs.department_id || "SCMS").toLowerCase();
 
-            // Build the full LabNote (no nulls, no missing required fields)
             const note: LabNote = {
                 ...attrs,
                 id,
-                slug: id,
-
+                slug,
                 department_id,
-
                 shadow_density: attrs.shadow_density ?? 4,
                 safer_landing: attrs.safer_landing ?? true,
                 type: attrs.type ?? "labnote",
                 status: attrs.status ?? "published",
-
                 contentHtml: mod.html,
-                contentMarkdown: mod.markdown
+                contentMarkdown: mod.markdown,
             };
 
-            // Filter drafts here (no type predicate required)
             if (note.status === "draft") return [];
-
             return [note];
         })
+
         .sort((a, b) => {
             if (!a.published || !b.published) return 0;
             return a.published < b.published ? 1 : -1;
@@ -162,7 +168,7 @@ export function getLabNotes(locale: string): LabNote[] {
     return locale.startsWith("ko") ? notesKo : notesEn;
 }
 
-export function getLabNoteById(locale: string, id: string): LabNote | null {
+export function getLabNoteBySlug(locale: string, id: string): LabNote | null {
     const list = getLabNotes(locale);
     // list is now an array of LabNote, so .find() will work perfectly
     return list.find((n) => n.id === id) ?? null;
