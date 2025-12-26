@@ -17,6 +17,8 @@
 
 // src/router/routes.tsx
 import {createBrowserRouter, useParams} from "react-router-dom";
+import { useEffect,  lazy, Suspense } from "react";
+import { useLocation } from "react-router-dom";
 
 import { Layout } from "@/components/layout/Layout";
 import { HomePage } from "@/pages/HomePage";
@@ -49,48 +51,65 @@ import {
     EwuDepartmentPage,
 } from "@/departments";
 
+function GATracker() {
+    const loc = useLocation();
+
+    useEffect(() => {
+        const id = import.meta.env.VITE_GA_ID as string | undefined;
+        if (!id || !window.gtag) return;
+
+        window.gtag("config", id, { page_path: loc.pathname + loc.search });
+    }, [loc]);
+
+    return null;
+}
+
+function PageLoader() {
+    return <div className="p-6 text-slate-300">Loading…</div>;
+}
+
 export const router = createBrowserRouter([
     {
         path: "/",
         element: <Layout />,
         children: [
-            { index: true, element: <HomePage /> },
+            { index: true, element: (<Suspense fallback={<PageLoader />}><HomePage /></Suspense>)},
 
-            { path: "about", element: <AboutPage /> },
-            { path: "departments", element: <DepartmentsPage /> },
+            { path: "about", element: (<Suspense fallback={<PageLoader />}><AboutPage /> </Suspense> )},
+            { path: "departments", element: (<Suspense fallback={<PageLoader />}><DepartmentsPage /></Suspense> ) },
 
             // Canonical department routes
-            { path: "departments/cjo", element: <CjoDepartmentPage /> },
-            { path: "departments/scms", element: <ScmsDepartmentPage /> },
-            { path: "departments/ood", element: <OodDepartmentPage /> },
-            { path: "departments/aoe", element: <AoeDepartmentPage /> },
-            { path: "departments/due", element: <DueDepartmentPage /> },
-            { path: "departments/feline", element: <FelineDepartmentPage /> },
-            { path: "departments/rbs", element: <RbsDepartmentPage /> },
-            { path: "departments/ewu", element: <EwuDepartmentPage /> },
+            { path: "departments/cjo", element: (<Suspense fallback={<PageLoader />}><CjoDepartmentPage /> </Suspense> )},
+            { path: "departments/scms", element: (<Suspense fallback={<PageLoader />}><ScmsDepartmentPage /></Suspense> ) },
+            { path: "departments/ood", element: (<Suspense fallback={<PageLoader />}><OodDepartmentPage /> </Suspense> )},
+            { path: "departments/aoe", element: (<Suspense fallback={<PageLoader />}><AoeDepartmentPage /></Suspense> ) },
+            { path: "departments/due", element: (<Suspense fallback={<PageLoader />}><DueDepartmentPage /></Suspense> ) },
+            { path: "departments/feline", element: (<Suspense fallback={<PageLoader />}><FelineDepartmentPage /></Suspense> ) },
+            { path: "departments/rbs", element: (<Suspense fallback={<PageLoader />}><RbsDepartmentPage /> </Suspense> )},
+            { path: "departments/ewu", element: (<Suspense fallback={<PageLoader />}><EwuDepartmentPage /></Suspense> ) },
 
             // Future-friendly dynamic detail route (if/when needed)
-            { path: "departments/:id", element: <DepartmentDetailPage /> },
+            { path: "departments/:id", element: (<Suspense fallback={<PageLoader />}><DepartmentDetailPage /></Suspense> ) },
 
-            { path: "lab-notes", element: <LabNotesPage /> },
+            { path: "lab-notes", element: (<Suspense fallback={<PageLoader />}><LabNotesPage /> </Suspense> )},
             { path: "lab-notes/:id", element: <LabNoteDetailPage /> },
             { path: "lab-notes/:slug", element: <LabNoteDetailPage /> },
 
-            { path: "videos", element: <VideoArchivePage /> },
+            { path: "videos", element: (<Suspense fallback={<PageLoader />}><VideoArchivePage /></Suspense> ) },
             { path: "videos/:slug", element: <VideoDetailPage /> },
 
-            { path: "content-use-policy", element: <ContentUsePolicyPage /> },
+            { path: "content-use-policy", element: (<Suspense fallback={<PageLoader />}><ContentUsePolicyPage /> </Suspense> )},
             { path: "merch", element: <MerchPage /> },
             { path: "contact", element: <ContactPage /> },
 
-            { path: "labteam", element: <LabTeamPage /> },
+            { path: "labteam", element: (<Suspense fallback={<PageLoader />}><LabTeamPage /></Suspense> ) },
             { path: "labteam/:memberId", element: <LabMemberDetailPage /> },
 
-            { path: "privacy-policy", element: <PrivacyPolicyPage /> },
+            { path: "privacy-policy", element: (<Suspense fallback={<PageLoader />}><PrivacyPolicyPage /> </Suspense> )},
 
-            { path: "login", element: <Login /> },
-            { path: "admin", element: <Admin /> }, // Protected admin den
-            { path: "admin/docs", element: <AdminApiDocsPage /> },
+            { path: "login", element: (<Suspense fallback={<PageLoader />}><Login /> </Suspense> )},
+            { path: "admin", element: (<Suspense fallback={<PageLoader />}><Admin /> </Suspense> )}, // Protected admin den
+            { path: "admin/docs", element: (<Suspense fallback={<PageLoader />}><AdminApiDocsPage /> </Suspense> )},
 
             { path: "*", element: <NotFoundPage /> },
         ],
