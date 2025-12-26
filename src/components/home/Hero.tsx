@@ -94,7 +94,7 @@ export function Hero() {
                 </div>
                 {/* EWU — Emotional Weather */}
                 <div className="rounded-2xl border border-white/10 bg-slate-950/30 p-4">
-                    <EmotionalWeatherCard id="ewu-hero-widget" variant="compact" />
+                    <EmotionalWeatherCard id="ewu-hero-widget" />
                 </div>
             </div>
         </section>
