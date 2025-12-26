@@ -19,6 +19,18 @@ jobs:
         with:
           node-version: "20"
 
+      - name: Debug lockfile
+        run: |
+          node -v
+          npm -v
+          ls -la
+          echo "package.json tree-sitter:"
+          grep -n '"tree-sitter"' package.json || true
+          echo "package-lock tree-sitter:"
+          grep -n "tree-sitter" package-lock.json | head -n 20 || true
+          echo "lockfileVersion:"
+          node -p "require('./package-lock.json').lockfileVersion"
+
       - name: Install dependencies
         run: npm ci
 
