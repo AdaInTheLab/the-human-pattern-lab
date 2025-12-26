@@ -19,18 +19,18 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Debug lockfile
+      - name: Preflight lock/package sanity
         run: |
           node -v
           npm -v
+          echo "branch/ref: $GITHUB_REF"
           ls -la
-          echo "package.json tree-sitter:"
-          grep -n '"tree-sitter"' package.json || true
-          echo "package-lock tree-sitter:"
-          grep -n "tree-sitter" package-lock.json | head -n 20 || true
-          echo "lockfileVersion:"
+          git status --porcelain=v1
+          node -p "require('./package.json').name"
           node -p "require('./package-lock.json').lockfileVersion"
-
+          node -p "Object.keys(require('./package-lock.json').packages || {}).length"
+          node -p "require('./package-lock.json').packages && require('./package-lock.json').packages[''] && require('./package-lock.json').packages[''].dependencies ? 'has root deps' : 'missing root deps'"
+      
       - name: Install dependencies
         run: npm ci
 
