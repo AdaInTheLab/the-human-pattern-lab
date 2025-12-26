@@ -33,9 +33,10 @@ import LabMemberDetailPage from "@/pages/LabMemberDetailPage";
 import { VideoDetailPage } from "@/pages/VideoDetailPage";
 import { DepartmentDetailPage } from "@/pages/DepartmentDetailPage";
 import PrivacyPolicyPage from "@/pages/PrivacyPolicyPage";
-import Login from '@/pages/Login'; // Your login page
-import Admin from '@/pages/Admin'; // The new admin UI
+import Login from '@/pages/admin/Login'; // Your login page
+import Admin from '@/pages/admin/Admin'; // The new admin UI
 import LabNoteDetailPage from "@/pages/LabNoteDetailPage";
+import AdminApiDocsPage from "@/pages/admin/AdminApiDocsPage";
 
 import {
     CjoDepartmentPage,
@@ -89,6 +90,7 @@ export const router = createBrowserRouter([
 
             { path: "login", element: <Login /> },
             { path: "admin", element: <Admin /> }, // Protected admin den
+            { path: "admin/docs", element: <AdminApiDocsPage /> },
 
             { path: "*", element: <NotFoundPage /> },
         ],
