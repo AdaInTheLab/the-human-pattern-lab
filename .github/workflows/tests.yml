@@ -19,18 +19,12 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Preflight lock/package sanity
+      - name: Show lock/manifest diff in this merge ref
         run: |
-          node -v
-          npm -v
-          echo "branch/ref: $GITHUB_REF"
-          ls -la
-          git status --porcelain=v1
-          node -p "require('./package.json').name"
-          node -p "require('./package-lock.json').lockfileVersion"
-          node -p "Object.keys(require('./package-lock.json').packages || {}).length"
-          node -p "require('./package-lock.json').packages && require('./package-lock.json').packages[''] && require('./package-lock.json').packages[''].dependencies ? 'has root deps' : 'missing root deps'"
-      
+          git --no-pager log -1 --oneline
+          git --no-pager diff --name-only HEAD~1..HEAD || true
+          git --no-pager diff -- package.json package-lock.json || true
+
       - name: Install dependencies
         run: npm ci
 
