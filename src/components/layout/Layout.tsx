@@ -25,7 +25,7 @@ import React, { ErrorInfo, ReactNode } from "react";
 import { NavLink, Outlet, ScrollRestoration } from "react-router-dom"
 import { ErrorBoundary } from 'react-error-boundary';
 import SystemFailurePage from '@/pages/SystemFailurePage';
-import { SiteHeader } from "./Header";
+import { TopNav } from "./Header";
 import { Footer } from "./Footer"
 
 interface Props {
@@ -76,7 +76,7 @@ export const Layout: React.FC = () => {
         <LabErrorBoundary>
             <div className="flex min-h-screen flex-col bg-slate-950 text-slate-50">
                 {/* Global header / nav */}
-                <SiteHeader />
+                <TopNav />
 
                 {/* Page content */}
                 <main className="flex-1">
