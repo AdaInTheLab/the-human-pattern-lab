@@ -15,7 +15,6 @@
     "react-error-boundary": "^6.0.0",
     "react-i18next": "^16.4.0",
     "react-router-dom": "^7.10.1",
-    "swagger-ui": "^5.31.0",
     "swagger-ui-react": "^5.31.0",
     "vite-plugin-markdown": "^2.2.0"
   },
