@@ -44,7 +44,7 @@ export type EmotionalWeatherProps = {
     id?: string;
     title?: string;
     className?: string;
-
+    density?: "compact" | "normal";
     /** Provide a signal explicitly (future: hook/API). Defaults to static. */
     signal?: EmotionalWeatherSignal;
 };
@@ -57,8 +57,8 @@ function TrendGlyph({ trend }: { trend: EmotionalWeatherSignal["temperature"]["t
 }
 
 export function EmotionalWeatherCard(props: EmotionalWeatherProps) {
-    const { id, title = "Emotional Weather", className, signal = EMOTIONAL_WEATHER_STATIC } = props;
-
+    const { id, title = "Emotional Weather", className, density = "normal", signal = EMOTIONAL_WEATHER_STATIC } = props;
+    const isCompact = density === "compact";
     const headingId = id ? `${id}__heading` : "emotional-weather__heading";
     const descId = id ? `${id}__desc` : "emotional-weather__desc";
 
@@ -71,7 +71,7 @@ export function EmotionalWeatherCard(props: EmotionalWeatherProps) {
             role="region"
         >
             <header>
-                <div className="flex items-start justify-between gap-4">
+                <div className={`mt-3 grid ${isCompact ? "grid-cols-1 gap-2.5" : "grid-cols-2 gap-2.5"}`}>
                     <div className="min-w-0">
                         <h2 id={headingId} className="text-sm font-semibold text-slate-100">
                             {title}
