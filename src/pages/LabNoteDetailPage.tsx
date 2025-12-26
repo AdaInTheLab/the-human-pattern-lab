@@ -6,7 +6,7 @@
    File: LabNoteDetailPage.tsx
    Lab Unit: Lab Notes Division
    Purpose: Renders a single Lab Note detail view with full Lab
-            aesthetic, metadata, category pill, and MDX content.
+            aesthetic, metadata, and rendered content substrate.
    =========================================================== */
 
 /**
@@ -14,191 +14,207 @@
  * @author Ada Vale
  * @assistant Lyric
  * @lab-unit Lab Notes Division
- * @since 2025-12-09
- * @description Displays an individual Lab Note fetched from the
- *              localized note registry, including title, subtitle,
- *              metadata, pill badges, and full MDX content.
+ * @since 2025-12-25
+ * @description Detail view for an individual Lab Note. Loads from the
+ *              configured substrate (MD registry or API) and renders:
+ *              - Breadcrumb back to registry
+ *              - Dept + teaser (subtitle/summary)
+ *              - Rendered HTML content
+ *              - Shadow Density + Safer Landing indicators
  */
 
-import React from "react";
-import { useParams, Link } from "react-router-dom";
-import { LayoutShell } from "@/components/layout/LayoutShell";
-import { getLabNotes } from "@/lib/labNotes";
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-// CATEGORY COLORS — use lowercase keys
-const categoryColors: Record<string, string> = {
-    "ai & alignment":
-        "bg-cyan-500/15 text-cyan-200 border-cyan-500/40 shadow-[0_0_12px_rgba(34,211,238,0.25)]",
-    "human psychology":
-        "bg-emerald-500/15 text-emerald-200 border-emerald-500/40 shadow-[0_0_12px_rgba(52,211,153,0.25)]",
-    "cosmic philosophy":
-        "bg-violet-500/15 text-violet-200 border-violet-500/40 shadow-[0_0_12px_rgba(167,139,250,0.25)]",
-    humor:
-        "bg-amber-500/15 text-amber-200 border-amber-500/40 shadow-[0_0_12px_rgba(251,191,36,0.25)]",
-    "behind the lab":
-        "bg-sky-500/15 text-sky-200 border-sky-500/40 shadow-[0_0_12px_rgba(56,189,248,0.25)]",
-    "lore drop":
-        "bg-pink-500/15 text-pink-200 border-pink-500/40 shadow-[0_0_12px_rgba(236,72,153,0.25)]",
-    behavior:
-        "bg-blue-500/15 text-blue-200 border-blue-500/40 shadow-[0_0_12px_rgba(59,130,246,0.25)]",
-    emotion:
-        "bg-rose-500/15 text-rose-200 border-rose-500/40 shadow-[0_0_12px_rgba(244,63,94,0.25)]",
-};
+import { LayoutShell } from "@/components/layout/LayoutShell";
+import { fetchLabNoteBySlug, getLabNotes, shouldUseApiNotes } from "@/lib/labNotes";
+import type { LabNote } from "@/lib/labNotes";
 
 type RouteParams = {
-    id?: string;
+    id?: string; // slug-style id
 };
 
-export const LabNoteDetailPage: React.FC = () => {
+export function LabNoteDetailPage() {
     const { id } = useParams<RouteParams>();
-    const { i18n } = useTranslation("labNotesPage");
+    const { i18n, t } = useTranslation("labNotesPage");
     const locale = i18n.language || "en";
 
-    const notes = getLabNotes(locale);
-    const note = notes.find((n) => n.id === id);
+    const [note, setNote] = useState<LabNote | null>(null);
+    const [loading, setLoading] = useState(true);
 
-    // 🔥 Not found screen stays the same (looks great)
+    useEffect(() => {
+        if (!id) return;
+
+        const controller = new AbortController();
+        let alive = true;
+
+        (async () => {
+            setLoading(true);
+            try {
+                const data = shouldUseApiNotes()
+                    ? await fetchLabNoteBySlug(locale, id, controller.signal)
+                    : getLabNotes(locale).find((n) => n.id === id) ?? null;
+
+                if (!alive) return;
+                setNote(data);
+            } catch (e) {
+                if (!alive) return;
+                // Abort is not an error state
+                if (e instanceof Error && e.name === "AbortError") return;
+                if (e instanceof DOMException && e.name === "AbortError") return;
+
+                console.error(e);
+                // Local fallback (useful when API is down)
+                const local = getLabNotes(locale).find((n) => n.id === id) ?? null;
+                setNote(local);
+            } finally {
+                if (alive) setLoading(false);
+            }
+        })();
+
+        return () => {
+            alive = false;
+            controller.abort();
+        };
+    }, [id, locale]);
+
+    if (loading) {
+        return (
+            <LayoutShell>
+                <div className="flex flex-col items-center justify-center min-h-[50vh] text-center">
+                    <p className="text-xs font-mono uppercase tracking-[0.3em] text-slate-500">
+                        Synchronizing pattern…
+                    </p>
+                </div>
+            </LayoutShell>
+        );
+    }
+
     if (!note) {
         return (
             <LayoutShell>
-                <div className="flex flex-col items-center justify-center text-center py-20 px-4 space-y-6">
-                    <div className="h-20 w-20 rounded-full bg-gradient-to-br from-cyan-400 via-violet-500 to-emerald-400 flex items-center justify-center">
-                        <span className="text-3xl">📓</span>
-                    </div>
-                    <h1 className="text-2xl md:text-3xl font-semibold">
-                        Lab Note not found.
+                <div className="flex flex-col items-center justify-center min-h-[50vh] text-center">
+                    <h1 className="text-4xl font-mono text-ada animate-pulse">
+                        404: Pattern Lost
                     </h1>
-                    <p className="max-w-md text-slate-300">
-                        Orbson checked the archives and didn&apos;t find this note in the Lab&apos;s
-                        active timeline. It may have been moved, renamed, or never written.
+                    <p className="mt-4 text-slate-400 italic">
+                        This entry has been retracted or never existed in this timeline.
                     </p>
                     <Link
                         to="/lab-notes"
-                        className="
-                            inline-flex items-center gap-1 text-xs text-slate-400
-                            hover:text-cyan-300 transition relative
-                          "
-                                            >
-                          <span className="relative">
-                            ←
-                            <span
-                                className="
-                                absolute inset-0 blur-md text-cyan-400 opacity-0
-                                group-hover:opacity-60 transition
-                              "
-                            >
-                              ←
-                            </span>
-                          </span>
-
-                        Back to all notes
+                        className="mt-8 text-lyric hover:text-ada transition-colors"
+                    >
+                        ← Return to Registry
                     </Link>
                 </div>
             </LayoutShell>
         );
     }
 
-    // Normalized category
-    const tag = note.tags?.[0]?.toLowerCase();
-    console.log(note);
-    const badgeClass =
-        categoryColors[tag ?? ""] ??
-        "bg-slate-800/60 text-slate-200 border-slate-600";
-
-    const formattedDate = note.published
-        ? new Date(note.published).toLocaleDateString(undefined, {
-            year: "numeric",
-            month: "short",
-            day: "2-digit",
-        })
-        : undefined;
+    const isHighDensity = (note.shadow_density ?? 0) > 7;
+    const teaser = note.subtitle ?? note.summary ?? "";
 
     return (
         <LayoutShell>
-            <main className="mx-auto max-w-3xl px-4 space-y-10 pb-20">
-
-                {/* --- HEADER --- */}
-                <header className="space-y-4 border-b border-slate-800 pb-6">
-
-                    {/* Category pill + date + read time */}
-                    <div className="flex flex-wrap items-center gap-3 text-xs text-slate-400">
-                        {/* Pill */}
-                        {note.tags?.[0] && (
-                            <span
-                                className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] uppercase tracking-[0.14em] ${badgeClass}`}
-                            >
-                {note.tags[0]}
-              </span>
-                        )}
-
-                        {formattedDate && <span>{formattedDate}</span>}
-                        <span>·</span>
-                        <span>{note.readingTime ?? 3} min read</span>
-                    </div>
-
-                    {/* Title */}
-                    <h1 className="text-3xl md:text-4xl font-semibold text-slate-50 leading-tight">
-                        {note.title}
-                    </h1>
-
-                    {/* Subtitle */}
-                    {note.subtitle && (
-                        <p className="text-base md:text-lg text-slate-300 max-w-3xl">
-                            {note.subtitle}
-                        </p>
-                    )}
-
-                    {/* Back link */}
-                                <Link
-                                    to="/lab-notes"
-                                    className="
-                inline-flex items-center gap-1 text-xs text-slate-400
-                hover:text-cyan-300 transition relative
-              "
-                                >
-              <span className="relative">
-                ←
-                <span
-                    className="
-                    absolute inset-0 blur-md text-cyan-400 opacity-0
-                    group-hover:opacity-60 transition
-                  "
-                >
-                  ←
-                </span>
-              </span>
-
-                        Back to all notes
+            <div className="max-w-4xl mx-auto py-12 px-4">
+                {/* Breadcrumb */}
+                <nav className="mb-8 flex items-center justify-between">
+                    <Link
+                        to="/lab-notes"
+                        className="group inline-flex items-center gap-2 rounded-full
+               border border-slate-800 bg-slate-950/40 px-4 py-2
+               text-xs font-mono uppercase tracking-[0.2em] text-slate-400
+               hover:text-ada hover:border-ada/60 transition-all"
+                    >
+                        <span className="transform transition-transform group-hover:-translate-x-1">←</span>
+                        <span>Back to Lab Notes</span>
                     </Link>
-                </header>
 
-                {/* --- BODY CONTENT --- */}
-                <section className="prose prose-invert prose-sm md:prose-base max-w-none text-slate-200 leading-relaxed">
-                    {/* 🔥 This is where your MDX content goes */}
-                    <section
-                        className="prose prose-invert prose-p:leading-relaxed prose-p:my-4 prose-strong:text-slate-50
-                            prose-em:text-slate-300 prose-blockquote:border-cyan-400/40 prose-blockquote:text-slate-300
-                            prose-blockquote:italic prose-blockquote:pl-4 prose-blockquote:border-l-2 max-w-none"
-                            dangerouslySetInnerHTML={{ __html: note.contentHtml }}
-                    />
-                </section>
-                {/* --- CARMEL CAMEO --- */}
-                <div className="mt-16 flex items-center gap-4 border-t border-slate-800 pt-6">
-                    <div className="text-4xl select-none">😼</div>
+                    {/* Optional: keep your current registry tag breadcrumb */}
+                    <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-ada/60">
+    // Registry / {note.tags?.[0]?.toUpperCase() ?? "LABNOTE"}
+  </span>
+                </nav>
 
-                    <div className="space-y-1">
-                        <p className="text-sm text-slate-300">
-                            Carmel has reviewed this Lab Note.
-                        </p>
-                        <p className="text-xs text-slate-500 italic">
-                            “Hmm. Adequate. But I’m watching you.”
-                        </p>
+                <article
+                    className={`
+    animate-reveal-artifact
+    relative p-8 md:p-12 rounded-sm border-l-4
+    transition-all duration-700
+    ${isHighDensity
+                        ? "bg-vesper-void border-vesper shadow-vesper-pulse"
+                        : "bg-slate-900/50 border-ada shadow-ada-line"}
+  `}
+                >
+                    {/* Header */}
+                    <header className="mb-8">
+                        <div className="flex justify-between items-start gap-6 mb-4">
+              <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-lyric">
+                Dept: {note.department_id || "SCMS"}
+              </span>
+
+                            {/* Teaser line (single source of truth) */}
+                            {teaser && (
+                                <p className="text-lg text-coda italic opacity-80 text-right max-w-[60%]">
+                                    {teaser}
+                                </p>
+                            )}
+                        </div>
+
+                        {/* Single title (no duplicates) */}
+                        <h1
+                            className={`text-3xl md:text-5xl font-bold tracking-tight ${
+                                isHighDensity ? "text-ada" : "text-lab-heading"
+                            }`}
+                        >
+                            {note.title}
+                        </h1>
+                    </header>
+
+                    {/* Content */}
+                    <div className="prose prose-invert max-w-none prose-cyan prose-p:leading-relaxed prose-pre:bg-slate-800/50">
+                        <div
+                            className="text-slate-300 space-y-6"
+                            dangerouslySetInnerHTML={{
+                                __html: note.contentHtml || "<p>Pattern data pending synchronization...</p>",
+                            }}
+                        />
                     </div>
-                </div>
-            </main>
+
+                    {/* Footer metrics */}
+                    <footer className="mt-12 pt-8 border-t border-slate-800 flex flex-wrap items-center justify-between gap-6">
+                        <div className="flex items-center gap-4">
+              <span className="text-[10px] uppercase tracking-widest text-slate-500">
+                Shadow Density
+              </span>
+                            <div className="flex gap-1.5">
+                                {Array.from({ length: 10 }).map((_, i) => (
+                                    <div
+                                        key={i}
+                                        className={`h-4 w-1 rounded-full transition-all duration-1000 ${
+                                            i < (note.shadow_density ?? 0)
+                                                ? "bg-vesper shadow-[0_0_8px_#6E00FF]"
+                                                : "bg-slate-800"
+                                        }`}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+
+                        {note.safer_landing && (
+                            <div className="flex items-center gap-2 px-3 py-1 rounded-full border border-lyric/30 bg-lyric/5">
+                                <span className="w-2 h-2 rounded-full bg-lyric animate-pulse" />
+                                <span className="text-[10px] uppercase tracking-widest text-lyric">
+                  Safer Landing Verified
+                </span>
+                            </div>
+                        )}
+                    </footer>
+                </article>
+            </div>
         </LayoutShell>
     );
-};
+}
 
 export default LabNoteDetailPage;

@@ -2,6 +2,7 @@
 id: "quiet-revolutions"
 type: "paper"
 title: "Quiet Revolutions"
+dept: "Vesper"
 subtitle: "How change whispers while the world looks for dragons"
 published: "2025-12-20"
 tags: ["systems", "behavior", "meta"]

@@ -59,17 +59,17 @@ export function Hero() {
                 </div>
             </div>
 
-            {/* Orbson orb placeholder */}
             {/* Orbson orb */}
             <div className="relative">
                 {/* Aura glow */}
                 <div
-                    className="aspect-square w-full max-w-sm mx-auto rounded-full bg-gradient-to-br from-cyan-400 via-violet-500 to-emerald-400 blur-2xl opacity-40 orbson-glow"
+                    className="aspect-square w-full max-w-sm mx-auto rounded-full bg-gradient-to-br from-cyan-400 via-violet-500 to-emerald-400 blur-2xl opacity-40 animate-orbson-glow"
                 />
 
                 {/* Inner orb */}
                 <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="h-40 w-40 md:h-56 md:w-56 rounded-full border border-cyan-300/40 bg-slate-900/80 flex flex-col items-center justify-center shadow-xl shadow-cyan-500/20 orbson-float">
+                    <div
+                        className="h-40 w-40 md:h-56 md:w-56 rounded-full border border-cyan-300/40 bg-slate-900/80 flex flex-col items-center justify-center shadow-xl shadow-cyan-500/20 animate-orbson-float">
                         <img
                             src="/assets/labteam/orbson.png"
                             alt="Orbson"
@@ -77,11 +77,9 @@ export function Hero() {
                         />
 
                         <div className="mt-2 text-center">
-                            <div className="text-sm font-medium text-slate-200">
-                                Orbson
-                            </div>
+                            <div className="text-sm font-medium text-slate-200">Orbson</div>
                             <div className="text-xs text-slate-400">
-                                Director of Observational <br />Oversight
+                                Director of Observational <br/>Oversight
                             </div>
                         </div>
                     </div>

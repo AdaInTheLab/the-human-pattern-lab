@@ -16,7 +16,7 @@
  */
 
 // src/router/routes.tsx
-import { createBrowserRouter } from "react-router-dom";
+import {createBrowserRouter, useParams} from "react-router-dom";
 
 import { Layout } from "@/components/layout/Layout";
 import { HomePage } from "@/pages/HomePage";
@@ -30,12 +30,13 @@ import { ContactPage } from "@/pages/ContactPage";
 import NotFoundPage from "@/pages/NotFoundPage";
 import LabTeamPage from "@/pages/LabTeamPage";
 import LabMemberDetailPage from "@/pages/LabMemberDetailPage";
-import { LabNoteDetailPage } from "@/pages/LabNoteDetailPage";
 import { VideoDetailPage } from "@/pages/VideoDetailPage";
 import { DepartmentDetailPage } from "@/pages/DepartmentDetailPage";
 import PrivacyPolicyPage from "@/pages/PrivacyPolicyPage";
-import Login from '@/pages/Login'; // Your login page
-import Admin from '@/pages/Admin'; // The new admin UI
+import Login from '@/pages/admin/Login'; // Your login page
+import Admin from '@/pages/admin/Admin'; // The new admin UI
+import LabNoteDetailPage from "@/pages/LabNoteDetailPage";
+import AdminApiDocsPage from "@/pages/admin/AdminApiDocsPage";
 
 import {
     CjoDepartmentPage,
@@ -73,6 +74,7 @@ export const router = createBrowserRouter([
 
             { path: "lab-notes", element: <LabNotesPage /> },
             { path: "lab-notes/:id", element: <LabNoteDetailPage /> },
+            { path: "lab-notes/:slug", element: <LabNoteDetailPage /> },
 
             { path: "videos", element: <VideoArchivePage /> },
             { path: "videos/:slug", element: <VideoDetailPage /> },
@@ -88,6 +90,7 @@ export const router = createBrowserRouter([
 
             { path: "login", element: <Login /> },
             { path: "admin", element: <Admin /> }, // Protected admin den
+            { path: "admin/docs", element: <AdminApiDocsPage /> },
 
             { path: "*", element: <NotFoundPage /> },
         ],
