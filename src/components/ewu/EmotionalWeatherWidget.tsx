@@ -79,6 +79,8 @@ export function EmotionalWeatherWidget({
     const updated = formatUpdatedTime(data.updatedAtISO);
     const emoji = conditionEmoji(data.condition);
 
+    const isWide = variant === "wide";
+
     return (
         <section
             aria-label="Emotional Weather"
@@ -87,7 +89,7 @@ export function EmotionalWeatherWidget({
                 "bg-slate-950/70 ring-1 ring-slate-800/70",
                 "shadow-[0_0_35px_rgba(15,23,42,0.85)]",
                 "backdrop-blur",
-                variant === "wide" ? "p-5 md:p-6" : "p-4",
+                isWide ? "p-5 md:p-6" : "p-4",
             ].join(" ")}
         >
             {/* soft aura */}
@@ -97,12 +99,19 @@ export function EmotionalWeatherWidget({
                 <div className="absolute inset-0 bg-gradient-to-b from-slate-900/10 via-transparent to-slate-950/30" />
             </div>
 
-            <div className="relative flex items-start justify-between gap-4">
-                <div className="min-w-0">
+            {/* CONTENT */}
+            <div
+                className={[
+                    "relative",
+                    isWide ? "md:grid md:grid-cols-[1fr,auto] md:items-start md:gap-6" : "flex items-start justify-between gap-4",
+                ].join(" ")}
+            >
+                {/* Left: main copy */}
+                <div className={isWide ? "min-w-0" : "min-w-0"}>
                     <div className="flex items-center gap-2">
-                        <span className="text-lg" aria-hidden="true">
-                            {emoji}
-                        </span>
+            <span className="text-lg" aria-hidden="true">
+              {emoji}
+            </span>
                         <p className="text-xs font-semibold tracking-[0.32em] text-cyan-300 uppercase">
                             Emotional Weather
                         </p>
@@ -112,26 +121,45 @@ export function EmotionalWeatherWidget({
                         {data.condition}
                     </h3>
 
-                    <p className="mt-1 text-sm text-slate-200/90">{data.headline}</p>
+                    <p className="mt-1 text-sm text-slate-200/90">
+                        {data.headline}
+                    </p>
 
                     {data.advisory ? (
-                        <p className="mt-2 text-xs text-slate-300/90">{data.advisory}</p>
+                        <p className="mt-2 text-xs text-slate-300/90">
+                            {data.advisory}
+                        </p>
                     ) : null}
 
-                    <p className="mt-3 text-[11px] text-slate-400">
+                    {/* Meta: in wide mode, keep this but reduce visual weight a tad */}
+                    <p className={isWide ? "mt-3 text-[11px] text-slate-500" : "mt-3 text-[11px] text-slate-400"}>
                         Updated {updated} • EWU intensity {data.intensity}/5
                     </p>
                 </div>
 
-                {/* tiny “barometer” pill */}
-                <div className="shrink-0">
-                    <div className="rounded-full bg-slate-900/70 px-3 py-1 text-[11px] text-slate-200 ring-1 ring-slate-700/60">
-                        Drizzle approved 🌦️
+                {/* Right: rail (wide only), otherwise inline pill */}
+                {isWide ? (
+                    <div className="mt-4 md:mt-0 md:flex md:flex-col md:items-end md:gap-2">
+                        <div className="rounded-full bg-slate-900/70 px-3 py-1 text-[11px] text-slate-200 ring-1 ring-slate-700/60">
+                            Drizzle approved 🌦️
+                        </div>
+
+                        {/* Optional: a tiny severity chip that makes desktop feel “designed” */}
+                        <div className="rounded-full bg-slate-900/50 px-3 py-1 text-[11px] text-slate-300 ring-1 ring-slate-800/60">
+                            Condition: {data.condition}
+                        </div>
                     </div>
-                </div>
+                ) : (
+                    <div className="shrink-0">
+                        <div className="rounded-full bg-slate-900/70 px-3 py-1 text-[11px] text-slate-200 ring-1 ring-slate-700/60">
+                            Drizzle approved 🌦️
+                        </div>
+                    </div>
+                )}
             </div>
         </section>
     );
 }
+
 
 export default EmotionalWeatherWidget;
