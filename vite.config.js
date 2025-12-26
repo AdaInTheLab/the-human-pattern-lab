@@ -39,5 +39,15 @@ export default defineConfig({
     },
     build: {
         outDir: 'dist',
+        rollupOptions: {
+            output: {
+                manualChunks: {
+                    react: ["react", "react-dom"],
+                    router: ["react-router-dom"],
+                    // If you use swagger-ui-react:
+                    swagger: ["swagger-ui-react"],
+                },
+            },
+        },
     },
 })
