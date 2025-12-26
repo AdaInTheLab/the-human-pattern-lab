@@ -4,19 +4,23 @@
    Author: Ada (Founder, The Human Pattern Lab)
    Assistant: Lyric (AI Lab Companion)
    File: Header.tsx
-   Purpose: TODO: fill in purpose.
+   Purpose: Sticky top navigation with neon orb brand mark and
+            pill-style nav. Adds a mobile-friendly menu while
+            preserving the Lab's visual identity.
    =========================================================== */
 
 /**
  * @file Header.tsx
  * @author Ada
  * @assistant Lyric
- * @lab-unit TODO: set lab unit
- * @since TODO: set date
- * @description TODO: describe this file.
+ * @lab-unit SCMS — Systems & Code Management Suite
+ * @since 2025-12-26
+ * @description Renders the main site header + navigation.
+ *              Desktop shows the full pill-nav row. Mobile shows
+ *              a Menu button that expands a styled panel.
  */
 
-import React from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
 
 type NavItem = {
@@ -37,7 +41,90 @@ const navItems: NavItem[] = [
     { label: "Contact", to: "/contact" },
 ];
 
-export const SiteHeader: React.FC = () => {
+function PillLink({ item, onNavigate }: { item: NavItem; onNavigate?: () => void }) {
+    const base =
+        "relative px-3.5 py-1.5 text-xs md:text-sm font-medium rounded-full transition-all duration-200";
+    const active =
+        "bg-slate-50 text-slate-900 shadow-[0_0_18px_rgba(45,212,191,0.7)]";
+    const inactive =
+        "text-slate-200 hover:text-white hover:bg-slate-800/60";
+
+    // External links: use <a> but keep pill styling consistent
+    if (item.external) {
+        return (
+            <a
+                href={item.to}
+                className={`${base} ${inactive}`}
+                target="_self"
+                rel="noreferrer"
+                onClick={onNavigate}
+            >
+                {item.label}
+            </a>
+        );
+    }
+
+    return (
+        <NavLink
+            to={item.to}
+            end={item.end}
+            onClick={onNavigate}
+            className={({ isActive }) => `${base} ${isActive ? active : inactive}`}
+        >
+            {({ isActive }) => (
+                <>
+                    <span>{item.label}</span>
+                    {isActive && (
+                        <span className="pointer-events-none absolute inset-0 rounded-full border border-cyan-300/60 opacity-60" />
+                    )}
+                </>
+            )}
+        </NavLink>
+    );
+}
+
+export function TopNav() {
+    const [open, setOpen] = useState(false);
+    const panelRef = useRef<HTMLDivElement | null>(null);
+    const buttonRef = useRef<HTMLButtonElement | null>(null);
+
+    // Close on route change-ish: whenever a nav link is clicked.
+    const closeMenu = () => setOpen(false);
+
+    // Close on ESC
+    useEffect(() => {
+        const onKeyDown = (e: KeyboardEvent) => {
+            if (e.key === "Escape") setOpen(false);
+        };
+        window.addEventListener("keydown", onKeyDown);
+        return () => window.removeEventListener("keydown", onKeyDown);
+    }, []);
+
+    // Close on outside click (panel + button are considered "inside")
+    useEffect(() => {
+        const onMouseDown = (e: MouseEvent) => {
+            if (!open) return;
+            const target = e.target as Node;
+            const inPanel = panelRef.current?.contains(target);
+            const inButton = buttonRef.current?.contains(target);
+            if (!inPanel && !inButton) setOpen(false);
+        };
+        window.addEventListener("mousedown", onMouseDown);
+        return () => window.removeEventListener("mousedown", onMouseDown);
+    }, [open]);
+
+    // Lock body scroll when menu is open (mobile only-ish)
+    useEffect(() => {
+        if (!open) return;
+        const prev = document.body.style.overflow;
+        document.body.style.overflow = "hidden";
+        return () => {
+            document.body.style.overflow = prev;
+        };
+    }, [open]);
+
+    const menuLabel = useMemo(() => (open ? "Close" : "Menu"), [open]);
+
     return (
         <header className="sticky top-0 z-40 border-b border-slate-800/70 bg-slate-950/90 backdrop-blur">
             <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-4 py-3 md:px-6 md:py-4">
@@ -61,47 +148,58 @@ export const SiteHeader: React.FC = () => {
 
                 {/* Nav block */}
                 <nav className="flex items-center justify-end">
-                    <div className="flex gap-1 rounded-full bg-slate-900/80 px-1 py-1 shadow-[0_0_25px_rgba(15,23,42,0.9)] ring-1 ring-slate-700/70">
-                        {navItems.map((item) =>
-                            item.external ? (
-                                <a
-                                    key={item.to}
-                                    href={item.to}
-                                    className="relative px-3.5 py-1.5 text-xs md:text-sm font-medium rounded-full transition-all duration-200 text-slate-200 hover:text-white hover:bg-slate-800/60"
-                                >
-                                    {item.label}
-                                </a>
-                            ) : (
-                                <NavLink
-                                    key={item.to}
-                                    to={item.to}
-                                    end={item.end}
-                                    className={({ isActive }) => {
-                                        const base =
-                                            "relative px-3.5 py-1.5 text-xs md:text-sm font-medium rounded-full transition-all duration-200";
-                                        const active =
-                                            "bg-slate-50 text-slate-900 shadow-[0_0_18px_rgba(45,212,191,0.7)]";
-                                        const inactive =
-                                            "text-slate-200 hover:text-white hover:bg-slate-800/60";
-                                        return `${base} ${isActive ? active : inactive}`;
-                                    }}
-                                >
-                                    {({ isActive }) => (
-                                        <>
-                                            <span>{item.label}</span>
-                                            {isActive && (
-                                                <span className="pointer-events-none absolute inset-0 rounded-full border border-cyan-300/60 opacity-60" />
-                                            )}
-                                        </>
-                                    )}
-                                </NavLink>
-                            )
-                        )}
+                    {/* Desktop pill nav (unchanged vibe) */}
+                    <div data-testid="topnav-desktop" className="hidden md:flex gap-1 rounded-full bg-slate-900/80 px-1 py-1 shadow-[0_0_25px_rgba(15,23,42,0.9)] ring-1 ring-slate-700/70">
+                        {navItems.map((item) => (
+                            <PillLink key={item.to} item={item} />
+                        ))}
                     </div>
+
+                    {/* Mobile menu button */}
+                    <button
+                        ref={buttonRef}
+                        type="button"
+                        onClick={() => setOpen((v) => !v)}
+                        aria-label="Toggle menu"
+                        aria-expanded={open}
+                        className="md:hidden rounded-full bg-slate-900/80 px-4 py-2 text-xs font-medium text-slate-200 shadow-[0_0_25px_rgba(15,23,42,0.9)] ring-1 ring-slate-700/70 hover:bg-slate-800/60 hover:text-white transition-all duration-200"
+                    >
+                        {menuLabel}
+                    </button>
                 </nav>
+            </div>
+
+            {/* Mobile dropdown panel (styled to match your pills) */}
+            <div data-testid="topnav-mobile"
+                className={`md:hidden overflow-hidden transition-[max-height,opacity] duration-200 ease-out ${
+                    open ? "max-h-[520px] opacity-100" : "max-h-0 opacity-0"
+                }`}
+            >
+                <div ref={panelRef} className="mx-auto max-w-6xl px-4 pb-4">
+                    <div className="rounded-2xl bg-slate-900/70 p-2 shadow-[0_0_25px_rgba(15,23,42,0.9)] ring-1 ring-slate-700/70">
+                        <div className="flex flex-col gap-2">
+                            {navItems.map((item) => (
+                                <div key={item.to} className="flex">
+                                    {/* Give each item a full-width “pill” hit area on mobile */}
+                                    <div className="w-full rounded-full bg-slate-950/30 px-1 py-1">
+                                        <div className="w-full">
+                                            <PillLink
+                                                item={item}
+                                                onNavigate={closeMenu}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* Optional: tiny lore footer */}
+                        <div className="mt-3 px-3 pb-1 text-[11px] text-slate-400">
+                            Tip: Menu closes on <span className="text-slate-300">Esc</span>, click-away, or navigation. 🦝
+                        </div>
+                    </div>
+                </div>
             </div>
         </header>
     );
-};
-
-export default SiteHeader;
+}
