@@ -1,5 +1,5 @@
 ---
-id: "law-of-the-unplugged-cable"
+id: "silly-solution-law"
 type: "memo"
 title: "The Law of the Unplugged Cable"
 dept: "ada"
