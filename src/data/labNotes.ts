@@ -37,6 +37,8 @@ export interface LabNote {
     excerpt: string;
     readTimeMinutes: number;
     publishedAt: string; // ISO date
+    created?: string;
+    updated?: string;
 }
 
 export const labNotes: LabNote[] = [

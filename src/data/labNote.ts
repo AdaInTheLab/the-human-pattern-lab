@@ -31,4 +31,6 @@ type ApiLabNote = {
     department_id?: string;
     shadow_density?: number;
     safer_landing?: boolean;
+    created?: string;
+    updated?: string;
 };
