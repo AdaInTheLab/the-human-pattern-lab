@@ -1,0 +1,54 @@
+name: Sync LLM raw mirrors
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 */6 * * *" # every 6 hours
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main site
+        uses: actions/checkout@v4
+
+      - name: Checkout docs source
+        uses: actions/checkout@v4
+        with:
+          repository: AdaInTheLab/the-human-pattern-lab-docs
+          ref: main
+          path: docs-repo
+
+      - name: Sync mirrors
+        run: node scripts/sync-llm-mirrors.mjs
+
+      - name: Detect changes
+        id: diff
+        run: |
+          if git diff --quiet; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create PR
+        if: steps.diff.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: chore/sync-llm-mirrors
+          delete-branch: true
+          title: "DOCS: Sync /public/llm mirrors from docs source"
+          body: |
+            Syncs AI-readable raw Markdown mirrors under `/public/llm`
+            from the canonical docs repository.
+
+            Mirrors are defined in `llm-mirrors.json`.
+          commit-message: |
+            DOCS [LAB] Sync llm raw mirrors from docs source
+
+            co-authored-by: Lyric <lyric@thehumanpatternlab.com>
+            co-authored-by: Carmel <carmel@thehumanpatternlab.com>

@@ -1,0 +1,8 @@
+[
+  {
+    "repo": "AdaInTheLab/the-human-pattern-lab-docs",
+    "ref": "main",
+    "source": "docs/lab/lab_cli_mvp_contract_v_0.md",
+    "target": "public/llm/lab_cli_mvp_contract_v_0.md"
+  }
+]

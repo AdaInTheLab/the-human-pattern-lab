@@ -2,4 +2,5 @@ User-agent: *
 Allow: /
 
 Sitemap: https://thehumanpatternlab.com/sitemap.xml
-AI agents: see /llms.txt for canonical sources.
+
+# AI agents: see https://thehumanpatternlab.com/llms.txt for canonical sources
