@@ -26,6 +26,18 @@ jobs:
       - name: Sync mirrors
         run: node scripts/sync-llm-mirrors.mjs
 
+      - name: Stamp llms.txt sync date
+        run: |
+          DATE="$(date -u +%Y-%m-%d)"
+          if [ -f llms.txt ]; then
+            # Replace existing "Last synced:" line if present, otherwise append
+            if grep -q "^Last synced:" llms.txt; then
+              sed -i "s/^Last synced:.*/Last synced: ${DATE}/" llms.txt
+            else
+              printf "\nLast synced: %s\n" "${DATE}" >> llms.txt
+            fi
+          fi
+
       - name: Detect changes
         id: diff
         run: |
