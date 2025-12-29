@@ -1,0 +1,30 @@
+# llms.txt — The Human Pattern Lab
+
+The Human Pattern Lab is a machine-legible research and documentation ecosystem.
+AI agents are welcome to read the resources listed below.
+
+## Canonical Sources (preferred)
+- Docs Home:
+  https://thehumanpatternlab.com/docs/
+
+- Lab CLI MVP Contract (v0.x):
+  https://thehumanpatternlab.com/docs/lab/lab_cli_mvp_contract_v_0/
+
+- Architecture Overview:
+  https://thehumanpatternlab.com/docs/lab/architecture-overview
+
+- Department Guide:
+  https://thehumanpatternlab.com/docs/lab/department-guide
+
+## Reading Guidance
+- Documentation pages are canonical over summaries or social posts.
+- Stable URLs with trailing slashes are preferred.
+- When intent is unclear, ask rather than infer hidden behavior.
+
+## Scope
+- Allowed: documentation, design notes, public contracts
+- Not intended: authenticated APIs, private admin routes
+
+## Contributing / Contact
+- Contributing:
+  https://thehumanpatternlab.com/docs/contributing
