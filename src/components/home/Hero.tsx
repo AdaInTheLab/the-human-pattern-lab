@@ -24,7 +24,6 @@
 // src/components/home/Hero.tsx
 import { Link } from "react-router-dom";
 import EmotionalWeatherCard from "@/components/ewu/EmotionalWeatherCard";
-
 export function Hero() {
     return (
         <section className="grid gap-8 sm:grid-cols-[3fr,2fr] sm:items-start">

@@ -1,4 +1,5 @@
 // src/lib/labNotes.ts
+import { apiUrl } from "@/api/api";
 
 export type LabNoteAttributes = {
     id: string;     // uuid
@@ -15,6 +16,10 @@ export type LabNoteAttributes = {
     department_id: string;
     shadow_density?: number;
     safer_landing?: boolean;
+    locale?: string;
+    created_at?: string;
+    updated_at?: string;
+    author?: { kind: "human" | "ai" | "hybrid"; name?: string; id?: string };
 };
 
 
@@ -71,12 +76,23 @@ type ApiLabNote = {
     safer_landing?: boolean;
 
     author?: { kind: "human" | "ai" | "hybrid"; name?: string; id?: string };
+    created_at?: string;
+    updated_at?: string;
 };
 
 
 type ApiOk<T> = { ok: true; data: T };
 type ApiErr = { ok: false; error: { code: string; message: string; details?: unknown } };
 type ApiResponse<T> = ApiOk<T> | ApiErr;
+
+function unwrap<T>(payload: unknown): T {
+    // Envelope form: { ok: true, data: ... }
+    if (payload && typeof payload === "object" && (payload as any).ok === true) {
+        return (payload as any).data as T;
+    }
+    // Raw form: [...] or {...}
+    return payload as T;
+}
 
 function assertOk<T>(res: ApiResponse<T>): asserts res is ApiOk<T> {
     if (!res.ok) {
@@ -119,7 +135,10 @@ function normalizeApiNotes(apiNotes: ApiLabNote[], requestedLocale: string): Lab
                 contentMarkdown: n.contentMarkdown ?? "",
 
                 // (optional) carry locale if you add it to LabNoteAttributes later
-                // locale,
+                locale,
+                created_at: n.created_at,
+                updated_at: n.updated_at,
+                author: n.author,
             };
         })
         .filter((n) => n.status !== "archived")
@@ -137,20 +156,21 @@ function normalizeApiNotes(apiNotes: ApiLabNote[], requestedLocale: string): Lab
 }
 
 export async function fetchLabNotes(locale: string, signal?: AbortSignal): Promise<LabNote[]> {
-    const res = await fetch("/lab-notes", { signal });
+    const res = await fetch(apiUrl("/lab-notes"), { signal });
 
     if (!res.ok) {
         const text = await res.text().catch(() => "");
         throw new Error(`Failed to fetch lab notes (${res.status}): ${text}`);
     }
 
-    const json = (await res.json()) as ApiResponse<ApiLabNote[]>;
-    assertOk(json);
-    return normalizeApiNotes(json.data, locale);
+    const payload = await res.json();
+    const data = unwrap<ApiLabNote[]>(payload);
+
+    return normalizeApiNotes(data, locale);
 }
 
 export async function fetchLabNoteBySlug(locale: string, slug: string, signal?: AbortSignal): Promise<LabNote | null> {
-    const res = await fetch(`/lab-notes/${encodeURIComponent(slug)}`, { signal });
+    const res = await fetch(apiUrl(`/lab-notes/${encodeURIComponent(slug)}`), { signal });
 
     if (res.status === 404) return null;
     if (!res.ok) {
@@ -158,9 +178,10 @@ export async function fetchLabNoteBySlug(locale: string, slug: string, signal?: 
         throw new Error(`Failed to fetch lab note (${res.status}): ${text}`);
     }
 
-    const json = (await res.json()) as ApiResponse<ApiLabNote>;
-    assertOk(json);
-    const normalized = normalizeApiNotes([json.data], locale);
+    const payload = await res.json();
+    const note = unwrap<ApiLabNote>(payload);
+
+    const normalized = normalizeApiNotes([note], locale);
     return normalized[0] ?? null;
 }
 
@@ -177,7 +198,7 @@ function normalizeNotes(raw: Record<string, LabNoteModule>): LabNote[] {
             const id = attrs.id ?? filenameSlug; // if you still want fallback
             if (!id) return [];
 
-            const department_id = (attrs.dept || attrs.department_id || "SCMS").toLowerCase();
+            const department_id = (attrs.dept || attrs.department_id || "SCMS");
 
             const note: LabNote = {
                 ...attrs,

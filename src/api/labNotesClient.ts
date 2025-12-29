@@ -1,3 +1,5 @@
+import {apiUrl} from "@/api/api";
+
 export type LabNoteStatus = "draft" | "published" | "archived";
 export type LabNoteType = "labnote" | "paper" | "memo";
 export type AuthorKind = "human" | "ai" | "hybrid";
@@ -43,7 +45,7 @@ export type ApiErr = { ok: false; error: { code: string; message: string; detail
 export type ApiResponse<T> = ApiOk<T> | ApiErr;
 
 export async function fetchLabNotes(signal?: AbortSignal): Promise<LabNote[]> {
-    const res = await fetch("/lab-notes", { signal });
+    const res = await fetch(apiUrl("/lab-notes"), { signal });
 
     if (!res.ok) {
         const text = await res.text().catch(() => "");

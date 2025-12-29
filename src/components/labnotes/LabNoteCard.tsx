@@ -84,13 +84,16 @@ type Props = {
 
 export function LabNoteCard({ note, index }: Props) {
     const { t } = useTranslation("labNotesPage");
-
-    const rawId = note.dept?.toLowerCase() || note.department_id || "scms";
+    // Prefer canonical department_id; dept is optional label
+    const rawId = note.department_id || note.dept || "SCMS";
     const deptKey = getDeptKey(rawId);
+    // Better label fallback now that type exists
+    const tag = note.tags?.[0] || (note.type ? note.type.toUpperCase() : "NOTE");
+    // Clamp shadow density to 0–10
+    const shadow = Math.max(0, Math.min(10, Math.round(note.shadow_density ?? 0)));
+    const teaser = note.subtitle ?? note.summary ?? "";
     const styles = allStyles[deptKey] || allStyles.scms;
 
-    const teaser = note.subtitle ?? note.summary ?? "";
-    const tag = note.tags?.[0] || "LOG";
 
     return (
         <article
@@ -152,10 +155,10 @@ export function LabNoteCard({ note, index }: Props) {
                             {/* Default: excerpt */}
                             <p
                                 className="
-      text-sm text-slate-400 leading-relaxed line-clamp-3
-      transition-all duration-500 ease-out
-      group-hover:opacity-0 group-hover:-translate-y-1
-    "
+                                  text-sm text-slate-400 leading-relaxed line-clamp-3
+                                  transition-all duration-500 ease-out
+                                  group-hover:opacity-0 group-hover:-translate-y-1
+                                "
                             >
                                 {note.summary}
                             </p>
@@ -163,11 +166,11 @@ export function LabNoteCard({ note, index }: Props) {
                             {/* Hover: concept signals */}
                             <div
                                 className="
-      absolute inset-0
-      opacity-0 translate-y-1
-      transition-all duration-500 ease-out delay-75
-      group-hover:opacity-100 group-hover:translate-y-0
-    "
+                                  absolute inset-0
+                                  opacity-0 translate-y-1
+                                  transition-all duration-500 ease-out delay-75
+                                  group-hover:opacity-100 group-hover:translate-y-0
+                                "
                             >
                                 <div className="space-y-3">
                                     <div className="flex items-center justify-between">
@@ -185,7 +188,7 @@ export function LabNoteCard({ note, index }: Props) {
                                     {/* Shadow density bars */}
                                     <div className="flex gap-1.5 items-end">
                                         {Array.from({ length: 10 }).map((_, i) => {
-                                            const active = i < (note.shadow_density ?? 0);
+                                            const active = i < shadow;
 
                                             return (
                                                 <span
