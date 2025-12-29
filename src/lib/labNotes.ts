@@ -1,5 +1,5 @@
 // src/lib/labNotes.ts
-import { apiUrl } from "@/api/api";
+import {apiBaseUrl} from "@/api/api";
 
 export type LabNoteAttributes = {
     id: string;     // uuid
@@ -80,11 +80,6 @@ type ApiLabNote = {
     updated_at?: string;
 };
 
-
-type ApiOk<T> = { ok: true; data: T };
-type ApiErr = { ok: false; error: { code: string; message: string; details?: unknown } };
-type ApiResponse<T> = ApiOk<T> | ApiErr;
-
 function unwrap<T>(payload: unknown): T {
     // Envelope form: { ok: true, data: ... }
     if (payload && typeof payload === "object" && (payload as any).ok === true) {
@@ -94,20 +89,16 @@ function unwrap<T>(payload: unknown): T {
     return payload as T;
 }
 
-function assertOk<T>(res: ApiResponse<T>): asserts res is ApiOk<T> {
-    if (!res.ok) {
-        throw new Error(`API error ${res.error.code}: ${res.error.message}`);
-    }
-}
-
 function normalizeApiNotes(apiNotes: ApiLabNote[], requestedLocale: string): LabNote[] {
     return apiNotes
         .map((n): LabNote => {
-            const published = n.published ?? "";
+            const published = (n.published ?? "").trim();
             const derivedStatus: LabNoteAttributes["status"] = published ? "published" : "draft";
 
-            const department_id = (n.department_id ?? "SCMS").toLowerCase();
+            const department_id = n.department_id ?? "SCMS";
             const locale = (n.locale ?? requestedLocale ?? "en").toLowerCase();
+
+            const shadow_density = Math.max(0, Math.min(10, Math.round(n.shadow_density ?? 4)));
 
             return {
                 id: n.id,
@@ -117,24 +108,20 @@ function normalizeApiNotes(apiNotes: ApiLabNote[], requestedLocale: string): Lab
                 subtitle: n.subtitle,
                 summary: n.summary ?? "",
 
-                // NEW fields (exposed if present)
                 type: n.type ?? "labnote",
                 status: n.status ?? derivedStatus,
                 dept: n.dept,
 
-                // existing
                 department_id,
                 published: published || undefined,
                 tags: n.tags ?? [],
                 readingTime: n.readingTime ?? 5,
-                shadow_density: n.shadow_density ?? 4,
+                shadow_density,
                 safer_landing: n.safer_landing ?? true,
 
-                // content
                 contentHtml: n.contentHtml ?? "",
                 contentMarkdown: n.contentMarkdown ?? "",
 
-                // (optional) carry locale if you add it to LabNoteAttributes later
                 locale,
                 created_at: n.created_at,
                 updated_at: n.updated_at,
@@ -143,7 +130,6 @@ function normalizeApiNotes(apiNotes: ApiLabNote[], requestedLocale: string): Lab
         })
         .filter((n) => n.status !== "archived")
         .sort((a, b) => {
-            // Published first (newest -> oldest), then drafts by title
             const ap = a.published ?? "";
             const bp = b.published ?? "";
 
@@ -151,13 +137,16 @@ function normalizeApiNotes(apiNotes: ApiLabNote[], requestedLocale: string): Lab
             if (ap && !bp) return -1;
             if (!ap && bp) return 1;
 
+            const at = a.created_at ?? a.updated_at ?? "";
+            const bt = b.created_at ?? b.updated_at ?? "";
+            if (at && bt) return at < bt ? 1 : -1;
+
             return a.title.localeCompare(b.title);
         });
 }
 
 export async function fetchLabNotes(locale: string, signal?: AbortSignal): Promise<LabNote[]> {
-    const res = await fetch(apiUrl("/lab-notes"), { signal });
-
+    const res = await fetch(`${apiBaseUrl}/lab-notes`, { signal });
     if (!res.ok) {
         const text = await res.text().catch(() => "");
         throw new Error(`Failed to fetch lab notes (${res.status}): ${text}`);
@@ -169,8 +158,12 @@ export async function fetchLabNotes(locale: string, signal?: AbortSignal): Promi
     return normalizeApiNotes(data, locale);
 }
 
-export async function fetchLabNoteBySlug(locale: string, slug: string, signal?: AbortSignal): Promise<LabNote | null> {
-    const res = await fetch(apiUrl(`/lab-notes/${encodeURIComponent(slug)}`), { signal });
+export async function fetchLabNoteBySlug(
+    locale: string,
+    slug: string,
+    signal?: AbortSignal
+): Promise<LabNote | null> {
+    const res = await fetch(`${apiBaseUrl}/lab-notes/${encodeURIComponent(slug)}`, { signal });
 
     if (res.status === 404) return null;
     if (!res.ok) {
@@ -180,17 +173,16 @@ export async function fetchLabNoteBySlug(locale: string, slug: string, signal?: 
 
     const payload = await res.json();
     const note = unwrap<ApiLabNote>(payload);
-
-    const normalized = normalizeApiNotes([note], locale);
-    return normalized[0] ?? null;
+    return normalizeApiNotes([note], locale)[0] ?? null;
 }
+
 
 function normalizeNotes(raw: Record<string, LabNoteModule>): LabNote[] {
     return Object.entries(raw)
         .flatMap(([filePath, mod]): LabNote[] => {
             const attrs = mod?.attributes;
-            if (!attrs) return [];
 
+            if (!attrs) return [];
             const filenameSlug = filePath.split("/").pop()?.replace(".md", "");
             const slug = attrs.slug ?? filenameSlug;
             if (!slug) return [];
@@ -199,7 +191,7 @@ function normalizeNotes(raw: Record<string, LabNoteModule>): LabNote[] {
             if (!id) return [];
 
             const department_id = (attrs.dept || attrs.department_id || "SCMS");
-
+            const isKo = filePath.includes("/ko/");
             const note: LabNote = {
                 ...attrs,
                 id,
@@ -211,6 +203,7 @@ function normalizeNotes(raw: Record<string, LabNoteModule>): LabNote[] {
                 status: attrs.status ?? "published",
                 contentHtml: mod.html,
                 contentMarkdown: mod.markdown,
+                locale: isKo ? "ko" : "en",
             };
 
             if (note.status === "draft") return [];

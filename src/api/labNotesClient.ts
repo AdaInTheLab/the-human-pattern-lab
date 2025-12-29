@@ -1,4 +1,4 @@
-import {apiUrl} from "@/api/api";
+import {apiBaseUrl} from "@/api/api";
 
 export type LabNoteStatus = "draft" | "published" | "archived";
 export type LabNoteType = "labnote" | "paper" | "memo";
@@ -40,23 +40,30 @@ export interface LabNote {
     author?: LabNoteAuthor;       // NEW
 }
 
-export type ApiOk<T> = { ok: true; data: T };
-export type ApiErr = { ok: false; error: { code: string; message: string; details?: unknown } };
-export type ApiResponse<T> = ApiOk<T> | ApiErr;
+function unwrap<T>(payload: unknown): T {
+    // Envelope form: { ok: true, data: ... }
+    if (payload && typeof payload === "object" && (payload as any).ok === true) {
+        return (payload as any).data as T;
+    }
+    // Raw form: [...] or {...}
+    return payload as T;
+}
 
 export async function fetchLabNotes(signal?: AbortSignal): Promise<LabNote[]> {
-    const res = await fetch(apiUrl("/lab-notes"), { signal });
+    const res = await fetch(`${apiBaseUrl}/lab-notes`, { signal });
 
     if (!res.ok) {
         const text = await res.text().catch(() => "");
         throw new Error(`Failed to fetch lab notes (${res.status}): ${text}`);
     }
 
-    const json = (await res.json()) as ApiResponse<LabNote[]>;
+    const payload = await res.json();
+    const data = unwrap<LabNote[]>(payload);
 
-    if (!json.ok) {
-        throw new Error(`Failed to fetch lab notes: ${json.error.code}: ${json.error.message}`);
+    // Optional safety: reject non-arrays early
+    if (!Array.isArray(data)) {
+        throw new Error("Unexpected lab-notes response shape (expected array).");
     }
 
-    return json.data;
+    return data;
 }
