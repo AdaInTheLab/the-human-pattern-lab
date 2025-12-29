@@ -46,54 +46,97 @@ const notesKoRaw = import.meta.glob("../labnotes/ko/*.md", {
 // --- 🌐 API MODE SUPPORT --------------------------------
 
 type ApiLabNote = {
-    id: string;          // uuid
-    slug: string;        // public identity for URLs
+    id: string;
+    slug: string;
+
+    type?: "labnote" | "paper" | "memo";
+    status?: "published" | "draft" | "archived";
+
     title: string;
     subtitle?: string;
     summary?: string;
-    contentHtml?: string;      // currently excerpt-derived
-    published?: string;       // "YYYY-MM-DD"
+
+    contentHtml?: string;
+    contentMarkdown?: string;
+
+    published?: string; // "" or YYYY-MM-DD
     tags?: string[];
     readingTime?: number;
-    department_id?: string;   // likely "SCMS" (maybe uppercase)
+
+    dept?: string;
+    department_id?: string;
+    locale?: string;
+
     shadow_density?: number;
     safer_landing?: boolean;
+
+    author?: { kind: "human" | "ai" | "hybrid"; name?: string; id?: string };
 };
 
-function normalizeApiNotes(apiNotes: ApiLabNote[]): LabNote[] {
+
+type ApiOk<T> = { ok: true; data: T };
+type ApiErr = { ok: false; error: { code: string; message: string; details?: unknown } };
+type ApiResponse<T> = ApiOk<T> | ApiErr;
+
+function assertOk<T>(res: ApiResponse<T>): asserts res is ApiOk<T> {
+    if (!res.ok) {
+        throw new Error(`API error ${res.error.code}: ${res.error.message}`);
+    }
+}
+
+function normalizeApiNotes(apiNotes: ApiLabNote[], requestedLocale: string): LabNote[] {
     return apiNotes
-        .map((n): LabNote => ({
-            id: n.id,                  // uuid
-            slug: n.slug,              // url slug
-            title: n.title,
+        .map((n): LabNote => {
+            const published = n.published ?? "";
+            const derivedStatus: LabNoteAttributes["status"] = published ? "published" : "draft";
 
-            type: "labnote",
-            status: "published",
+            const department_id = (n.department_id ?? "SCMS").toLowerCase();
+            const locale = (n.locale ?? requestedLocale ?? "en").toLowerCase();
 
-            department_id: (n.department_id ?? "scms").toLowerCase(),
+            return {
+                id: n.id,
+                slug: n.slug,
+                title: n.title,
 
-            shadow_density: n.shadow_density ?? 4,
-            safer_landing: n.safer_landing ?? true,
+                subtitle: n.subtitle,
+                summary: n.summary ?? "",
 
-            tags: n.tags ?? [],
-            readingTime: n.readingTime ?? 5,
+                // NEW fields (exposed if present)
+                type: n.type ?? "labnote",
+                status: n.status ?? derivedStatus,
+                dept: n.dept,
 
-            contentHtml: n.contentHtml ?? "",
-            contentMarkdown: "",
-            summary: n.summary ?? "",
+                // existing
+                department_id,
+                published: published || undefined,
+                tags: n.tags ?? [],
+                readingTime: n.readingTime ?? 5,
+                shadow_density: n.shadow_density ?? 4,
+                safer_landing: n.safer_landing ?? true,
 
-            ...(n.subtitle ? { subtitle: n.subtitle } : {}),
-            ...(n.published ? { published: n.published } : {})
-        }))
+                // content
+                contentHtml: n.contentHtml ?? "",
+                contentMarkdown: n.contentMarkdown ?? "",
+
+                // (optional) carry locale if you add it to LabNoteAttributes later
+                // locale,
+            };
+        })
+        .filter((n) => n.status !== "archived")
         .sort((a, b) => {
-            if (!a.published || !b.published) return 0;
-            return a.published < b.published ? 1 : -1;
+            // Published first (newest -> oldest), then drafts by title
+            const ap = a.published ?? "";
+            const bp = b.published ?? "";
+
+            if (ap && bp) return ap < bp ? 1 : -1;
+            if (ap && !bp) return -1;
+            if (!ap && bp) return 1;
+
+            return a.title.localeCompare(b.title);
         });
 }
 
 export async function fetchLabNotes(locale: string, signal?: AbortSignal): Promise<LabNote[]> {
-    // If you later add locale support on the API, this is ready.
-    // For now, locale is unused but kept for API parity with existing getters.
     const res = await fetch("/lab-notes", { signal });
 
     if (!res.ok) {
@@ -101,12 +144,12 @@ export async function fetchLabNotes(locale: string, signal?: AbortSignal): Promi
         throw new Error(`Failed to fetch lab notes (${res.status}): ${text}`);
     }
 
-    const data = (await res.json()) as ApiLabNote[];
-    return normalizeApiNotes(data);
+    const json = (await res.json()) as ApiResponse<ApiLabNote[]>;
+    assertOk(json);
+    return normalizeApiNotes(json.data, locale);
 }
 
 export async function fetchLabNoteBySlug(locale: string, slug: string, signal?: AbortSignal): Promise<LabNote | null> {
-    // If your API supports /lab-notes/:slug mapped to LabNoteView, this works.
     const res = await fetch(`/lab-notes/${encodeURIComponent(slug)}`, { signal });
 
     if (res.status === 404) return null;
@@ -115,11 +158,11 @@ export async function fetchLabNoteBySlug(locale: string, slug: string, signal?: 
         throw new Error(`Failed to fetch lab note (${res.status}): ${text}`);
     }
 
-    const data = (await res.json()) as ApiLabNote;
-    const normalized = normalizeApiNotes([data]);
+    const json = (await res.json()) as ApiResponse<ApiLabNote>;
+    assertOk(json);
+    const normalized = normalizeApiNotes([json.data], locale);
     return normalized[0] ?? null;
 }
-
 
 function normalizeNotes(raw: Record<string, LabNoteModule>): LabNote[] {
     return Object.entries(raw)
@@ -168,10 +211,9 @@ export function getLabNotes(locale: string): LabNote[] {
     return locale.startsWith("ko") ? notesKo : notesEn;
 }
 
-export function getLabNoteBySlug(locale: string, id: string): LabNote | null {
+export function getLabNoteBySlug(locale: string, slug: string): LabNote | null {
     const list = getLabNotes(locale);
-    // list is now an array of LabNote, so .find() will work perfectly
-    return list.find((n) => n.id === id) ?? null;
+    return list.find((n) => n.slug === slug) ?? null;
 }
 
 const USE_API_NOTES = import.meta.env.VITE_NOTES_SOURCE === "api";
