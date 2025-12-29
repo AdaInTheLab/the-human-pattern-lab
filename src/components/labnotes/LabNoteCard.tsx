@@ -85,16 +85,15 @@ type Props = {
 export function LabNoteCard({ note, index }: Props) {
     const { t } = useTranslation("labNotesPage");
     // Prefer canonical department_id; dept is optional label
-    const rawId = note.department_id || note.dept || "SCMS";
-    const deptKey = getDeptKey(rawId);
+    const deptKey = (note.dept ?? note.department_id ?? "scms").toLowerCase();
+    const style = allStyles[deptKey] ?? allStyles.scms;
     // Better label fallback now that type exists
     const tag = note.tags?.[0] || (note.type ? note.type.toUpperCase() : "NOTE");
     // Clamp shadow density to 0–10
     const shadow = Math.max(0, Math.min(10, Math.round(note.shadow_density ?? 0)));
     const teaser = note.subtitle ?? note.summary ?? "";
     const styles = allStyles[deptKey] || allStyles.scms;
-
-
+    
     return (
         <article
             style={{ animationDelay: `${index * 100}ms`, opacity: 0 }}
