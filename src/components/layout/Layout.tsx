@@ -70,9 +70,10 @@ class LabErrorBoundary extends React.Component<Props, State> {
 }
 
 export default LabErrorBoundary;
-
+console.log("[NOTES SOURCE]", import.meta.env.VITE_NOTES_SOURCE, "[API BASE]", import.meta.env.VITE_API_BASE_URL);
 export const Layout: React.FC = () => {
     return (
+
         <LabErrorBoundary>
             <div className="flex min-h-screen flex-col bg-slate-950 text-slate-50">
                 {/* Global header / nav */}
