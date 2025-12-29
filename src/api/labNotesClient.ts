@@ -43,7 +43,7 @@ export type ApiErr = { ok: false; error: { code: string; message: string; detail
 export type ApiResponse<T> = ApiOk<T> | ApiErr;
 
 export async function fetchLabNotes(signal?: AbortSignal): Promise<LabNote[]> {
-    const res = await fetch("/api/lab-notes", { signal });
+    const res = await fetch("/lab-notes", { signal });
 
     if (!res.ok) {
         const text = await res.text().catch(() => "");
