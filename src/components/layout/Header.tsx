@@ -128,6 +128,12 @@ export function TopNav() {
     return (
         <header className="sticky top-0 z-40 border-b border-slate-800/70 bg-slate-950/90 backdrop-blur">
             <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-4 py-3 md:px-6 md:py-4">
+                {import.meta.env.DEV && (
+                    <span className="text-xs opacity-50">
+                    notes: {import.meta.env.VITE_NOTES_SOURCE}
+                  </span>
+                )}
+
                 {/* Brand block */}
                 <div className="flex items-center gap-3 md:gap-4">
                     {/* Neon orb logo */}
