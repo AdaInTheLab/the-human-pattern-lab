@@ -27,6 +27,7 @@ import { useEffect, useState } from "react";
 import { getLabNotes, fetchLabNotes, shouldUseApiNotes } from "@/lib/labNotes";
 import type { LabNote } from "@/lib/labNotes";
 import { LabNoteCard } from "@/components/labnotes/LabNoteCard";
+import {LabNotesGrid, LabNotesGridSkeleton} from "@/components/labnotes/LabNotesGridSkeleton";
 
 export function LabNotesPage() {
     const { t, i18n } = useTranslation("labNotesPage");
@@ -89,12 +90,11 @@ export function LabNotesPage() {
             )}
 
             {/* Notes grid */}
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {notes.map((note, index) => (
-                    <LabNoteCard key={note.id} note={note} index={index} />
-                ))}
-            </div>
-
+            {loading ? (
+            <LabNotesGridSkeleton count={9} />
+            ) : (
+            <LabNotesGrid notes={notes} />
+            ) }
             {/* 🧬 Tailwind anchor: Forces compiler to recognize Lab frequencies */}
             <div className="hidden border-coda border-vesper border-lyric text-coda text-vesper text-lyric from-coda/20 from-vesper/20 from-lyric/20" />
         </LayoutShell>
