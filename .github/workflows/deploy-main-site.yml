@@ -22,6 +22,17 @@ jobs:
 
       - name: Build site
         run: npm run build
+        env:
+          VITE_API_BASE_URL: https://thehumanpatternlab.com/api
+          VITE_NOTES_SOURCE: api
+
+      - name: Debug env
+        run: |
+          echo "VITE_API_BASE_URL=$VITE_API_BASE_URL"
+          echo "VITE_NOTES_SOURCE=$VITE_NOTES_SOURCE"
+        env:
+          VITE_API_BASE_URL: https://thehumanpatternlab.com/api
+          VITE_NOTES_SOURCE: api
 
       - name: Deploy via SFTP
         uses: wlixcc/SFTP-Deploy-Action@v1.2.4
@@ -33,3 +44,4 @@ jobs:
           local_path: './dist/*'
           remote_path: '${{ secrets.SFTP_PATH }}'
           delete_remote_files: false
+
