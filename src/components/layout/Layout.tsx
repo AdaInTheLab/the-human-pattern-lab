@@ -70,7 +70,7 @@ class LabErrorBoundary extends React.Component<Props, State> {
 }
 
 export default LabErrorBoundary;
-console.log("[NOTES SOURCE]", import.meta.env.VITE_NOTES_SOURCE, "[API BASE]", import.meta.env.VITE_API_BASE_URL);
+// console.log("[NOTES SOURCE]", import.meta.env.VITE_NOTES_SOURCE, "[API BASE]", import.meta.env.VITE_API_BASE_URL);
 export const Layout: React.FC = () => {
     return (
 

@@ -65,7 +65,7 @@ function initGA(measurementId: string) {
         anonymize_ip: true, // optional, but nice
     });
 }
-console.log("[NOTES SOURCE]", import.meta.env.VITE_NOTES_SOURCE, "[API BASE]", import.meta.env.VITE_API_BASE_URL);
+// console.log("[NOTES SOURCE]", import.meta.env.VITE_NOTES_SOURCE, "[API BASE]", import.meta.env.VITE_API_BASE_URL);
 
 if (GA_ID) initGA(GA_ID);
 
