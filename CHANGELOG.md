@@ -1,5 +1,12 @@
-### 2025-12-29
 
+### FOXFIRE [CORE] stabilize env loading, auth bootstrap, and schema meta 🦊🔥
+- Load .env + .env.<NODE_ENV> deterministically
+- Unblock session auth across ports
+- Self-heal schema_meta on fresh DBs
+- Restore single source of truth for schema version
+- Eliminate startup crash cascade (env → auth → db)
+
+### 2025-12-29
 
 ### FIX [SCMS] align lab notes fetch with API envelope + support new fields 🧬
 ### FIX [SCMS] support raw or enveloped Lab Notes API responses 🧬

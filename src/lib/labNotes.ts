@@ -37,7 +37,7 @@ type LabNoteModule = {
 
 export type LabNote = LabNoteAttributes & {
     contentHtml: string;
-    contentMarkdown: string;
+    content_ref?: string;
 };
 
 const notesEnRaw = import.meta.glob("../labnotes/en/*.md", {
@@ -62,7 +62,7 @@ type ApiLabNote = {
     summary?: string;
 
     contentHtml?: string;
-    contentMarkdown?: string;
+    content_ref?: string;
 
     published?: string; // "" or YYYY-MM-DD
     tags?: string[];
@@ -80,6 +80,10 @@ type ApiLabNote = {
     updated_at?: string;
 };
 
+function baseLocale(loc?: string) {
+    return (loc ?? "en").toLowerCase().split("-")[0];
+}
+
 function unwrap<T>(payload: unknown): T {
     // Envelope form: { ok: true, data: ... }
     if (payload && typeof payload === "object" && (payload as any).ok === true) {
@@ -89,15 +93,28 @@ function unwrap<T>(payload: unknown): T {
     return payload as T;
 }
 
+async function hydrateMarkdownIfNeeded(note: LabNote, signal?: AbortSignal): Promise<LabNote> {
+    if ((note.contentHtml ?? "").trim() || !note.content_ref) return note;
+
+    const res = await fetch(note.content_ref, { signal });
+    if (!res.ok) return note;
+
+    const md = await res.text();
+    // if you have a markdown->html pipeline client-side, do it here.
+    // otherwise, just keep content_ref for later and return unchanged:
+    return { ...note };
+}
+
 function normalizeApiNotes(apiNotes: ApiLabNote[], requestedLocale: string): LabNote[] {
+    const wanted = baseLocale(requestedLocale);
+    const hasWanted = apiNotes.some(n => baseLocale(n.locale) === wanted);
     return apiNotes
         .map((n): LabNote => {
             const published = (n.published ?? "").trim();
             const derivedStatus: LabNoteAttributes["status"] = published ? "published" : "draft";
-
             const department_id = n.department_id ?? "SCMS";
             const locale = (n.locale ?? requestedLocale ?? "en").toLowerCase();
-
+            const content_ref = n.content_ref; // only use what API provides
             const shadow_density = Math.max(0, Math.min(10, Math.round(n.shadow_density ?? 4)));
 
             return {
@@ -120,7 +137,6 @@ function normalizeApiNotes(apiNotes: ApiLabNote[], requestedLocale: string): Lab
                 safer_landing: n.safer_landing ?? true,
 
                 contentHtml: n.contentHtml ?? "",
-                contentMarkdown: n.contentMarkdown ?? "",
 
                 locale,
                 created_at: n.created_at,
@@ -128,7 +144,13 @@ function normalizeApiNotes(apiNotes: ApiLabNote[], requestedLocale: string): Lab
                 author: n.author,
             };
         })
+
         .filter((n) => n.status !== "archived")
+        .filter((n) => baseLocale(n.locale) === wanted)
+        .filter((n) => {
+            const l = baseLocale(n.locale);
+            return hasWanted ? l === wanted : l === "en";
+        })
         .sort((a, b) => {
             const ap = a.published ?? "";
             const bp = b.published ?? "";
@@ -173,7 +195,10 @@ export async function fetchLabNoteBySlug(
 
     const payload = await res.json();
     const note = unwrap<ApiLabNote>(payload);
-    return normalizeApiNotes([note], locale)[0] ?? null;
+    const normalized = normalizeApiNotes([note], locale)[0] ?? null;
+    if (!normalized) return null;
+
+    return hydrateMarkdownIfNeeded(normalized, signal);
 }
 
 
@@ -202,7 +227,6 @@ function normalizeNotes(raw: Record<string, LabNoteModule>): LabNote[] {
                 type: attrs.type ?? "labnote",
                 status: attrs.status ?? "published",
                 contentHtml: mod.html,
-                contentMarkdown: mod.markdown,
                 locale: isKo ? "ko" : "en",
             };
 
