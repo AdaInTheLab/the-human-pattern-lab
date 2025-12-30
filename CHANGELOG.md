@@ -1,5 +1,18 @@
-### 2025-12-29
+## [0.6.2] — Cognitive Hygiene
 
+### Changed
+- Updated Lab Note data shape to surface newly supported database fields (metadata, safety flags, coherence scoring).
+- Relocated `NotesStore` to its canonical home to reduce cross-context coupling and improve architectural clarity.
+
+### Added
+- New Lab Note documenting context switching, interruptions, and their impact on cognitive flow and error rates.
+
+### Notes
+- No intended behavioral or visual UI changes.
+- This release prioritizes cognitive load reduction, data integrity, and future extensibility.
+
+
+### 2025-12-29
 
 ### FIX [SCMS] align lab notes fetch with API envelope + support new fields 🧬
 ### FIX [SCMS] support raw or enveloped Lab Notes API responses 🧬

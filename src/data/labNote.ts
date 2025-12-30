@@ -24,7 +24,8 @@ type ApiLabNote = {
     title: string;
     subtitle?: string;
     summary?: string;
-    contentHtml: string;      // can be full HTML, not just excerpt
+    contentHtml: string;
+    content_ref?: string;// can be full HTML, not just excerpt
     published?: string;
     tags?: string[];
     readingTime?: number;
