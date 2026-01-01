@@ -85,13 +85,35 @@ function baseLocale(loc?: string) {
 }
 
 function unwrap<T>(payload: unknown): T {
-    // Envelope form: { ok: true, data: ... }
-    if (payload && typeof payload === "object" && (payload as any).ok === true) {
-        return (payload as any).data as T;
+    if (!payload || typeof payload !== "object") {
+        return payload as T;
     }
-    // Raw form: [...] or {...}
+
+    const p = payload as any;
+
+    // Envelope form: { ok: true, data: ... }
+    if (p.ok === true) {
+        if (!("data" in p)) {
+            throw new Error("API envelope ok=true but missing data");
+        }
+        return p.data as T;
+    }
+
+    // Explicit failure envelope: { ok: false, error?: ... }
+    if (p.ok === false) {
+        const msg =
+            typeof p.error === "string"
+                ? p.error
+                : p.error
+                    ? JSON.stringify(p.error)
+                    : "Unknown API error";
+        throw new Error(`API error envelope: ${msg}`);
+    }
+
+    // Raw form
     return payload as T;
 }
+
 
 async function hydrateMarkdownIfNeeded(note: LabNote, signal?: AbortSignal): Promise<LabNote> {
     if ((note.contentHtml ?? "").trim() || !note.content_ref) return note;
@@ -185,21 +207,44 @@ export async function fetchLabNoteBySlug(
     slug: string,
     signal?: AbortSignal
 ): Promise<LabNote | null> {
-    const res = await fetch(`${apiBaseUrl}/lab-notes/${encodeURIComponent(slug)}`, { signal });
+    const url = `${apiBaseUrl}/lab-notes/${encodeURIComponent(slug)}`;
+    const res = await fetch(url, { signal });
 
     if (res.status === 404) return null;
+
     if (!res.ok) {
-        const text = await res.text().catch(() => "");
-        throw new Error(`Failed to fetch lab note (${res.status}): ${text}`);
+        // Keep errors readable; avoid dumping full HTML bodies into logs.
+        let detail = "";
+        try {
+            const ct = res.headers.get("content-type") ?? "";
+            if (ct.includes("application/json")) {
+                const j = await res.json();
+                detail = typeof j === "string" ? j : JSON.stringify(j);
+            } else {
+                detail = await res.text();
+            }
+        } catch {
+            // ignore
+        }
+
+        // Trim so we don’t end up with 80KB of HTML in an error message
+        if (detail.length > 500) detail = detail.slice(0, 500) + "…";
+
+        throw new Error(`Failed to fetch lab note (${res.status}) ${detail ? `- ${detail}` : ""}`);
     }
 
     const payload = await res.json();
-    const note = unwrap<ApiLabNote>(payload);
-    const normalized = normalizeApiNotes([note], locale)[0] ?? null;
+
+    // unwrap() might return undefined/null if the payload shape isn’t as expected
+    const apiNote = unwrap<ApiLabNote>(payload);
+    if (!apiNote) return null;
+
+    const normalized = normalizeApiNotes([apiNote], locale)[0] ?? null;
     if (!normalized) return null;
 
     return hydrateMarkdownIfNeeded(normalized, signal);
 }
+
 
 
 function normalizeNotes(raw: Record<string, LabNoteModule>): LabNote[] {
@@ -252,11 +297,4 @@ export function getLabNotes(locale: string): LabNote[] {
 export function getLabNoteBySlug(locale: string, slug: string): LabNote | null {
     const list = getLabNotes(locale);
     return list.find((n) => n.slug === slug) ?? null;
-}
-
-const USE_API_NOTES = import.meta.env.VITE_NOTES_SOURCE === "api";
-// set to "md" or "api" (default to md if unset)
-
-export function shouldUseApiNotes(): boolean {
-    return USE_API_NOTES;
 }

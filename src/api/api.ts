@@ -1,3 +1,3 @@
 export const apiBaseUrl =
-    (import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8001/api")
+    (import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8001")
         .replace(/\/+$/, "");

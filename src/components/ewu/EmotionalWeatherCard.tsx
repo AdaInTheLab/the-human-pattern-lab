@@ -45,7 +45,7 @@ export type EmotionalWeatherProps = {
     title?: string;
     className?: string;
     density?: "compact" | "normal";
-    /** Provide a signal explicitly (future: hook/API). Defaults to static. */
+    /** Provide a signal explicitly (future: hook). Defaults to static. */
     signal?: EmotionalWeatherSignal;
 };
 
