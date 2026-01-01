@@ -28,7 +28,7 @@ import { Link, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 import { LayoutShell } from "@/components/layout/LayoutShell";
-import { fetchLabNoteBySlug, getLabNotes, shouldUseApiNotes } from "@/lib/labNotes";
+import { fetchLabNoteBySlug, getLabNotes } from "@/lib/labNotes";
 import type { LabNote } from "@/lib/labNotes";
 
 type RouteParams = {
@@ -51,20 +51,25 @@ export function LabNoteDetailPage() {
 
         (async () => {
             setLoading(true);
+
             try {
-                const data = shouldUseApiNotes()
-                    ? await fetchLabNoteBySlug(locale, id, controller.signal)
-                    : getLabNotes(locale).find((n) => n.id === id) ?? null;
+                const data = await fetchLabNoteBySlug(locale, id, controller.signal);
 
                 if (!alive) return;
                 setNote(data);
             } catch (e) {
                 if (!alive) return;
+
                 // Abort is not an error state
-                if (e instanceof Error && e.name === "AbortError") return;
-                if (e instanceof DOMException && e.name === "AbortError") return;
+                if (
+                    (e instanceof Error && e.name === "AbortError") ||
+                    (e instanceof DOMException && e.name === "AbortError")
+                ) {
+                    return;
+                }
 
                 console.error(e);
+
                 // Local fallback (useful when API is down)
                 const local = getLabNotes(locale).find((n) => n.id === id) ?? null;
                 setNote(local);
@@ -72,6 +77,7 @@ export function LabNoteDetailPage() {
                 if (alive) setLoading(false);
             }
         })();
+
 
         return () => {
             alive = false;

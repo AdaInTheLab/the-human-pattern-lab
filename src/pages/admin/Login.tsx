@@ -29,7 +29,7 @@ const Login = () => {
             <h1 className="text-4xl mb-6">Shadow Fox Den</h1>
             <p className="text-lg mb-8">Only the worthy enter...</p>
             <a
-                href="/api/auth/github"
+                href="/auth/github"
                 className="bg-purple-600 px-8 py-4 rounded-lg text-xl hover:bg-purple-700"
             >
                 Login with GitHub

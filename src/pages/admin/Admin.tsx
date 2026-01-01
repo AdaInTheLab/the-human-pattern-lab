@@ -37,7 +37,7 @@ const Admin = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch('/api/admin/notes')
+        fetch('/admin/notes')
             .then(res => {
                 if (!res.ok) navigate('/login');
                 return res.json();
@@ -53,7 +53,7 @@ const Admin = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         const method = editingId ? 'PUT' : 'POST';
-        const url = editingId ? `/api/admin/notes/${editingId}` : '/api/admin/notes';
+        const url = editingId ? `/admin/notes/${editingId}` : '/admin/notes';
 
         const res = await fetch(url, {
             method,
@@ -62,7 +62,7 @@ const Admin = () => {
         });
 
         if (res.ok) {
-            setNotes(await (await fetch('/api/admin/notes')).json());
+            setNotes(await (await fetch('/admin/notes')).json());
             setForm({
                 id: '',
                 title: '',
@@ -83,9 +83,9 @@ const Admin = () => {
 
     const handleDelete = async (id: string) => {
         if (!confirm('Delete this note?')) return;
-        const res = await fetch(`/api/admin/notes/${id}`, { method: 'DELETE' });
+        const res = await fetch(`/admin/notes/${id}`, { method: 'DELETE' });
         if (res.ok) {
-            setNotes(await (await fetch('/api/admin/notes')).json());
+            setNotes(await (await fetch('/admin/notes')).json());
         }
     };
 

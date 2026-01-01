@@ -24,7 +24,7 @@
 import { LayoutShell } from "@/components/layout/LayoutShell";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
-import { getLabNotes, fetchLabNotes, shouldUseApiNotes } from "@/lib/labNotes";
+import { getLabNotes, fetchLabNotes} from "@/lib/labNotes";
 import type { LabNote } from "@/lib/labNotes";
 import { LabNoteCard } from "@/components/labnotes/LabNoteCard";
 import {LabNotesGrid, LabNotesGridSkeleton} from "@/components/labnotes/LabNotesGridSkeleton";
@@ -43,15 +43,15 @@ export function LabNotesPage() {
         async function load() {
             setLoading(true);
             try {
-                const data = shouldUseApiNotes()
-                    ? await fetchLabNotes(locale, controller.signal)
-                    : getLabNotes(locale);
-
+                const data = await fetchLabNotes(locale, controller.signal);
                 if (alive) setNotes(data as any);
             } catch (e) {
                 // Abort is not an error state
                 if (e instanceof Error && e.name === "AbortError") return;
-                if (alive) setNotes(getLabNotes(locale));
+
+                // Optional: set an error state instead of swapping sources
+                console.error("Failed to load Lab Notes:", e);
+                if (alive) setNotes([] as any); // or keep previous notes
             } finally {
                 if (alive) setLoading(false);
             }
