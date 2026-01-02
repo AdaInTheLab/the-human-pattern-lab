@@ -3,13 +3,18 @@ id: "silly-solution-law"
 type: "memo"
 title: "The Law of the Unplugged Cable"
 dept: "ada"
+department_id: "AV"
 subtitle: "Why the simplest, dumbest fixes hide behind the biggest headaches"
 published: "2025-02-13"
+status: "published"
+locale: "en"
 tags: ["behind the lab", "systems"]
 summary: "A short memo on the Lab’s newest canon proverb — and why tiny oversights cause massive chaos."
-readingTime: 2
-status: "published"
+read_time_minutes: 2
+shadow_density: 2
+safer_landing: true
 ---
+
 
 ## The Law
 

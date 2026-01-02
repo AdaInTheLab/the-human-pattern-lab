@@ -3,13 +3,18 @@ id: "quiet-revolutions"
 type: "paper"
 title: "Quiet Revolutions"
 dept: "Vesper"
+department_id: "VESPER"
 subtitle: "How change whispers while the world looks for dragons"
 published: "2025-12-20"
+status: "published"
+locale: "en"
 tags: ["systems", "behavior", "meta"]
 summary: "A starry-eyed look at how real transformation rarely arrives with thunder—often it's a ledger, a flame, or a single aligned choice that quietly realigns everything."
-readingTime: 5
-status: "published"
+read_time_minutes: 5
+shadow_density: 3
+safer_landing: true
 ---
+
 
 There’s a myth humans love: revolution as spectacle.  
 Fire in the streets. Swords clashing. Crowns toppled in a single dramatic night.

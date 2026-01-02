@@ -1,22 +1,24 @@
 ---
-id: test-suite-unhaunted
-type: labnote
-title: The Test Suite Is No Longer Haunted
-subtitle: On wiring, boundaries, and why “it works” is not enough
-category: systems
-department_id: SCMS
-published: 2025-12-30
-status: published
+id: "test-suite-unhaunted"
+type: "labnote"
+title: "The Test Suite Is No Longer Haunted"
+subtitle: "On wiring, boundaries, and why “it works” is not enough"
+category: "systems"
+department_id: "SCMS"
+published: "2025-12-30"
+status: "published"
+locale: "en"
 tags:
-  - testing
-  - architecture
-  - systems-thinking
-  - reliability
-  - ai-collaboration
+  - "testing"
+  - "architecture"
+  - "systems-thinking"
+  - "reliability"
+  - "ai-collaboration"
 shadow_density: 2
 safer_landing: true
 read_time_minutes: 4
 ---
+
 
 ## Pattern Observed
 

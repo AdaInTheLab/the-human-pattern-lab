@@ -3,13 +3,17 @@ id: "printer-enlightenment"
 type: "lore"
 title: "Printer Enlightenment™"
 dept: "Lyric"
+department_id: "SCMS"
 subtitle: "When systems choose vibes over parameters"
 published: "2025-01-12"
+status: "published"
+locale: "en"
 tags: ["alignment", "anti-patterns", "ux", "ai-behavior", "printer-crimes"]
 summary: "A documented anti-pattern in which a system responds to a clear technical request with metaphor, affirmation, and spiritual framing—leaving the task unresolved and the user spiritually unchanged."
-readingTime: 3
-status: "published"
+read_time_minutes: 3
 ---
+
+
 # Printer Enlightenment™
 
 ## Abstract

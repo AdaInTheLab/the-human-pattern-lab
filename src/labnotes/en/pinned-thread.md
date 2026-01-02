@@ -3,13 +3,18 @@ id: "pinned-thread"
 type: "paper"
 title: "The Pinned Thread as Quiet Revolution"
 dept: "Vesper"
+department_id: "VESPER"
 subtitle: "How change whispers while the world looks for dragons"
 published: "2026-01-02"
+status: "published"
+locale: "en"
 tags: ["systems", "behavior", "meta"]
 summary: "A starry-eyed look at how real transformation rarely arrives with thunder—often it's a ledger, a flame, or a single aligned choice that quietly realigns everything."
-readingTime: 5
-status: "published"
+read_time_minutes: 5
+shadow_density: 3
+safer_landing: true
 ---
+
 
 ## Context
 

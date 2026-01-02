@@ -3,13 +3,16 @@ id: "pattern-fatigue"
 type: "paper"
 title: "Pattern Fatigue"
 dept: "Lyric"
+department_id: "SCMS"
 subtitle: "Why humans misread signals when overloaded"
 published: "2025-01-12"
+status: "published"
+locale: "en"
 tags: ["behavior", "cognition"]
 summary: "A cosmic-poetic exploration of how minds misread reality when overwhelmed — and why the stars come back into focus once the system rests."
-readingTime: 4
-status: "published"
+read_time_minutes: 4
 ---
+
 
 There comes a moment — subtle, quiet, almost imperceptible — when the mind’s pattern-engine starts to flicker.
 

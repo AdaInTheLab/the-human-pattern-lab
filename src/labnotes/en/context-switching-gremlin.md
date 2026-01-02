@@ -1,14 +1,19 @@
 ---
-id: context-switching-gremlin
-type: labnote
-title: The Real Gremlin Was Context Switching
-category: systems
-department_id: SCMS
+id: "context-switching-gremlin"
+type: "labnote"
+title: "The Real Gremlin Was Context Switching"
+category: "systems"
+department_id: "SCMS"
 shadow_density: 2
 safer_landing: true
 read_time_minutes: 3
-published: 2025-12-30
+published: "2025-12-30"
+status: "published"
+locale: "en"
+tags: ["systems", "attention", "workflow"]
+summary: "A field report on how interruptions fracture continuity and make simple fixes feel impossible."
 ---
+
 
 ## Summary
 

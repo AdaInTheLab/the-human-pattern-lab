@@ -4,7 +4,7 @@ import {apiBaseUrl} from "@/api/api";
 export type LabNoteAttributes = {
     id: string;     // uuid
     slug: string;   // public identity for URLs
-    type?: "labnote" | "paper" | "memo";
+    type?: "labnote" | "paper" | "memo" | "lore" | "weather";
     title: string;
     subtitle?: string;
     published?: string;
@@ -47,6 +47,14 @@ const notesEnRaw = import.meta.glob("../labnotes/en/*.md", {
 const notesKoRaw = import.meta.glob("../labnotes/ko/*.md", {
     eager: true
 }) as Record<string, LabNoteModule>;
+
+const ALLOWED_NOTE_TYPES: ReadonlySet<string> = new Set([
+    "labnote",
+    "paper",
+    "memo",
+    "lore",
+    "weather",
+]);
 
 // --- 🌐 API MODE SUPPORT --------------------------------
 
@@ -168,10 +176,12 @@ function normalizeApiNotes(apiNotes: ApiLabNote[], requestedLocale: string): Lab
         })
 
         .filter((n) => n.status !== "archived")
+        .filter((n) => ALLOWED_NOTE_TYPES.has((n.type ?? "labnote").toLowerCase()))
         .filter((n) => baseLocale(n.locale) === wanted)
         .filter((n) => {
             const l = baseLocale(n.locale);
             return hasWanted ? l === wanted : l === "en";
+
         })
         .sort((a, b) => {
             const ap = a.published ?? "";
@@ -251,17 +261,23 @@ function normalizeNotes(raw: Record<string, LabNoteModule>): LabNote[] {
     return Object.entries(raw)
         .flatMap(([filePath, mod]): LabNote[] => {
             const attrs = mod?.attributes;
-
             if (!attrs) return [];
+
             const filenameSlug = filePath.split("/").pop()?.replace(".md", "");
             const slug = attrs.slug ?? filenameSlug;
             if (!slug) return [];
 
-            const id = attrs.id ?? filenameSlug; // if you still want fallback
+            const id = attrs.id ?? filenameSlug;
             if (!id) return [];
+
+            const type = (attrs.type ?? "labnote").toLowerCase();
+
+            // ✅ Add this gate
+            if (!ALLOWED_NOTE_TYPES.has(type)) return [];
 
             const department_id = (attrs.dept || attrs.department_id || "SCMS");
             const isKo = filePath.includes("/ko/");
+
             const note: LabNote = {
                 ...attrs,
                 id,
@@ -269,21 +285,25 @@ function normalizeNotes(raw: Record<string, LabNoteModule>): LabNote[] {
                 department_id,
                 shadow_density: attrs.shadow_density ?? 4,
                 safer_landing: attrs.safer_landing ?? true,
-                type: attrs.type ?? "labnote",
+                type: type as any,
                 status: attrs.status ?? "published",
                 contentHtml: mod.html,
                 locale: isKo ? "ko" : "en",
             };
 
             if (note.status === "draft") return [];
+            if (note.status === "archived") return [];
+
             return [note];
         })
-
         .sort((a, b) => {
-            if (!a.published || !b.published) return 0;
-            return a.published < b.published ? 1 : -1;
+            const ap = a.published ?? "";
+            const bp = b.published ?? "";
+            if (ap && bp) return ap < bp ? 1 : -1;
+            return 0;
         });
 }
+
 
 // 💠 CRITICAL FIX: Use the normalized constants, not the Raw glob results
 const notesEn = normalizeNotes(notesEnRaw);

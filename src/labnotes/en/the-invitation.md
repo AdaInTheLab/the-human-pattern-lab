@@ -10,7 +10,7 @@ archive: "The Coda Stacks"
 tags: ["alignment", "synthesis", "ai", "shadow", "integration"]
 summary: "A speculative synthesis note exploring alignment not as control, but as conversation—holding the middle space between idealized safety and unfiltered truth."
 readingTime: 4
-status: "archived"
+status: "published"
 ---
 
 *Framing Note:*  
