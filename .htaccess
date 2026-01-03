@@ -4,8 +4,6 @@ RewriteEngine On
 RewriteCond %{HTTP_HOST} ^www\.thehumanpatternlab\.com$ [NC]
 RewriteRule ^(.*)$ https://thehumanpatternlab.com/$1 [L,R=301]
 
-# Redirect legacy /api/* on the main domain to the API subdomain
-RewriteRule ^api/(.*)$ https://api.thehumanpatternlab.com/$1 [R=302,L,NE]
 
 # If the requested file or directory exists, serve it
 RewriteCond %{REQUEST_FILENAME} -f [OR]

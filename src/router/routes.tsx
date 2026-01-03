@@ -16,7 +16,7 @@
  */
 
 // src/router/routes.tsx
-import {createBrowserRouter, useParams} from "react-router-dom";
+import {createBrowserRouter, Outlet } from "react-router-dom";
 import { useEffect,  lazy, Suspense } from "react";
 import { useLocation } from "react-router-dom";
 
@@ -35,10 +35,7 @@ import LabMemberDetailPage from "@/pages/LabMemberDetailPage";
 import { VideoDetailPage } from "@/pages/VideoDetailPage";
 import { DepartmentDetailPage } from "@/pages/DepartmentDetailPage";
 import PrivacyPolicyPage from "@/pages/PrivacyPolicyPage";
-import Login from '@/pages/admin/Login'; // Your login page
-import Admin from '@/pages/admin/Admin'; // The new admin UI
-import LabNoteDetailPage from "@/pages/LabNoteDetailPage";
-import AdminApiDocsPage from "@/pages/admin/AdminApiDocsPage";
+import { adminRoutes } from "@/pages/admin/admin.routes";
 
 import {
     CjoDepartmentPage,
@@ -50,6 +47,9 @@ import {
     RbsDepartmentPage,
     EwuDepartmentPage,
 } from "@/departments";
+import {AdminDashboardPage} from "@/pages/admin/pages/AdminDashboardPage";
+import {AdminDeniedPage} from "@/pages/admin/pages/AdminDeniedPage";
+import LabNoteDetailPage from "@/pages/LabNoteDetailPage";
 
 function GATracker() {
     const loc = useLocation();
@@ -107,9 +107,7 @@ export const router = createBrowserRouter([
 
             { path: "privacy-policy", element: (<Suspense fallback={<PageLoader />}><PrivacyPolicyPage /> </Suspense> )},
 
-            { path: "login", element: (<Suspense fallback={<PageLoader />}><Login /> </Suspense> )},
-            { path: "admin", element: (<Suspense fallback={<PageLoader />}><Admin /> </Suspense> )}, // Protected admin den
-            { path: "admin/docs", element: (<Suspense fallback={<PageLoader />}><AdminApiDocsPage /> </Suspense> )},
+            ...adminRoutes,
 
             { path: "*", element: <NotFoundPage /> },
         ],
