@@ -13,7 +13,7 @@ import { apiBaseUrl } from "@/api/api";
 
 export function AdminLoginPage() {
     const navigate = useNavigate();
-   
+
     return (
         <div className="min-h-screen bg-black text-zinc-200 flex items-center justify-center px-6">
             <div className="max-w-md w-full text-center space-y-8">
@@ -33,8 +33,9 @@ export function AdminLoginPage() {
                 </p>
 
                 <div className="pt-4">
-                    <a
-                        href={`${apiBaseUrl}/auth/github`}
+                    <button
+                        type="button"
+                        onClick={() => window.location.assign(`${apiBaseUrl}/auth/github`)}
                         className="
                           inline-flex items-center justify-center
                           px-8 py-4 rounded-xl
@@ -48,7 +49,7 @@ export function AdminLoginPage() {
                         "
                     >
                         Authenticate via GitHub
-                    </a>
+                    </button>
                 </div>
 
                 <p className="pt-6 text-xs text-zinc-600 italic">
