@@ -12,6 +12,7 @@ export function AdminGate() {
 
     useEffect(() => {
         // ✅ If dev bypass is enabled, don't gate the UI at all
+
         if (devBypass) {
             setStatus("ok");
             return;
@@ -26,13 +27,22 @@ export function AdminGate() {
                 if (!res.ok) throw new Error("auth/me failed");
 
                 const data = await res.json();
-                const user = data?.user ?? null;
 
-                // Not logged in -> go to login
+                // accept common shapes
+                const user =
+                    data?.user ??
+                    data?.me ??
+                    data?.data?.user ??
+                    data?.data?.me ??
+                    (data?.id ? data : null);
+
+                console.log("[AdminGate] auth/me", { status: res.status, data });
+
                 if (!user) {
                     navigate("/login", { replace: true });
                     return;
                 }
+
 
                 if (alive) setStatus("ok");
             } catch {
