@@ -8,10 +8,12 @@
    =========================================================== */
 
 import { useNavigate } from "react-router-dom";
+import { apiBaseUrl } from "@/api/api";
+
 
 export function AdminLoginPage() {
     const navigate = useNavigate();
-
+   
     return (
         <div className="min-h-screen bg-black text-zinc-200 flex items-center justify-center px-6">
             <div className="max-w-md w-full text-center space-y-8">
@@ -32,7 +34,7 @@ export function AdminLoginPage() {
 
                 <div className="pt-4">
                     <a
-                        href="/auth/github"
+                        href={`${apiBaseUrl}/auth/github`}
                         className="
                           inline-flex items-center justify-center
                           px-8 py-4 rounded-xl
