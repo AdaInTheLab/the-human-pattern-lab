@@ -24,10 +24,9 @@
 import { LayoutShell } from "@/components/layout/LayoutShell";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
-import { getLabNotes, fetchLabNotes} from "@/lib/labNotes";
+import { getNotesIndex } from "@/lib/notesIndex";
 import type { LabNote } from "@/lib/labNotes";
-import { LabNoteCard } from "@/components/labnotes/LabNoteCard";
-import {LabNotesGrid, LabNotesGridSkeleton} from "@/components/labnotes/LabNotesGridSkeleton";
+import { LabNotesGrid, LabNotesGridSkeleton } from "@/components/labnotes/LabNotesGridSkeleton";
 
 export function LabNotesPage() {
     const { t, i18n } = useTranslation("labNotesPage");
@@ -43,15 +42,12 @@ export function LabNotesPage() {
         async function load() {
             setLoading(true);
             try {
-                const data = await fetchLabNotes(locale, controller.signal);
-                if (alive) setNotes(data as any);
+                const data = await getNotesIndex(locale, controller.signal);
+                if (alive) setNotes(data);
             } catch (e) {
-                // Abort is not an error state
                 if (e instanceof Error && e.name === "AbortError") return;
-
-                // Optional: set an error state instead of swapping sources
                 console.error("Failed to load Lab Notes:", e);
-                if (alive) setNotes([] as any); // or keep previous notes
+                if (alive) setNotes([]);
             } finally {
                 if (alive) setLoading(false);
             }
@@ -66,7 +62,6 @@ export function LabNotesPage() {
 
     return (
         <LayoutShell>
-            {/* Header: Archive atmosphere */}
             <header className="mb-12 space-y-2">
                 <h1 className="text-4xl font-bold tracking-tight text-slate-50">
                     {t("title")}
@@ -76,7 +71,6 @@ export function LabNotesPage() {
                 </p>
             </header>
 
-            {/* States */}
             {loading && (
                 <p className="mb-6 text-xs font-mono text-slate-500">
                     Loading Lab Notes…
@@ -89,13 +83,8 @@ export function LabNotesPage() {
                 </p>
             )}
 
-            {/* Notes grid */}
-            {loading ? (
-            <LabNotesGridSkeleton count={9} />
-            ) : (
-            <LabNotesGrid notes={notes} />
-            ) }
-            {/* 🧬 Tailwind anchor: Forces compiler to recognize Lab frequencies */}
+            {loading ? <LabNotesGridSkeleton count={9} /> : <LabNotesGrid notes={notes} />}
+
             <div className="hidden border-coda border-vesper border-lyric text-coda text-vesper text-lyric from-coda/20 from-vesper/20 from-lyric/20" />
         </LayoutShell>
     );
