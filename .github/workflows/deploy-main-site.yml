@@ -46,7 +46,9 @@ jobs:
       - name: Publish Lab Notes into lab-api
         run: |
           rsync -avz --delete \
+            -e "ssh -o StrictHostKeyChecking=no" \
             ./src/labnotes/ \
-            ${{ secrets.DH_USER }}@${{ secrets.DH_HOST }}:/home/humanpatternlab/lab-api/content/labnotes/
+            "${{ secrets.SFTP_USER }}@${{ secrets.SFTP_HOST }}:/home/humanpatternlab/lab-api/content/labnotes/"
+
 
 
