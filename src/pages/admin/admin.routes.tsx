@@ -16,42 +16,44 @@ function PageLoader() {
 }
 
 export const adminRoutes = [
-    // Public (NOT behind AdminLayout)
     {
-        path: "login",
-        element: (
-            <Suspense fallback={<PageLoader />}>
-                <AdminLoginPage />
-            </Suspense>
-        ),
-    },
-
-    // Public (inside AdminLayout is optional; I like it outside so it feels "blocked")
-    {
-        path: "denied",
-        element: (
-            <Suspense fallback={<PageLoader />}>
-                <AdminDeniedPage />
-            </Suspense>
-        ),
-    },
-
-    // Guarded admin area
-    {
+        // ✅ Single admin root
         path: "admin",
-        element: <AdminGate />,
         children: [
+            // ✅ Public admin routes
             {
-                element: <AdminLayout />,
-                children: [
-                    { index: true, element: <Navigate to="dashboard" replace /> },
-                    { path: "dashboard", element: <AdminDashboardPage /> },
-                    { path: "notes", element: <AdminNotesPage /> },
-                    { path: "docs", element: <AdminApiDocsPage /> },
+                path: "login",
+                element: (
+                    <Suspense fallback={<PageLoader />}>
+                        <AdminLoginPage />
+                    </Suspense>
+                ),
+            },
+            {
+                path: "denied",
+                element: (
+                    <Suspense fallback={<PageLoader />}>
+                        <AdminDeniedPage />
+                    </Suspense>
+                ),
+            },
 
-                    { path: "*", element: <Navigate to="dashboard" replace /> },
+            // ✅ Guarded admin routes
+            {
+                element: <AdminGate />,
+                children: [
+                    {
+                        element: <AdminLayout />,
+                        children: [
+                            { index: true, element: <Navigate to="dashboard" replace /> },
+                            { path: "dashboard", element: <AdminDashboardPage /> },
+                            { path: "notes", element: <AdminNotesPage /> },
+                            { path: "docs", element: <AdminApiDocsPage /> },
+                            { path: "*", element: <Navigate to="dashboard" replace /> },
+                        ],
+                    },
                 ],
             },
         ],
-    }
+    },
 ];
