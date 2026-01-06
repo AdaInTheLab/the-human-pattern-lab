@@ -22,7 +22,7 @@ export function AdminNotesPage() {
     const refreshNotes = async () => {
         const res = await fetch(`${API}/admin/notes`, { credentials: "include" });
 
-        if (res.status === 401) return navigate("/login");
+        if (res.status === 401) return navigate("/admin/login");
         if (res.status === 403) return navigate("/admin/denied");
         if (!res.ok) throw new Error("Failed to load notes");
 
@@ -30,7 +30,7 @@ export function AdminNotesPage() {
     };
 
     useEffect(() => {
-        refreshNotes().catch(() => navigate("/login"));
+        refreshNotes().catch(() => navigate("/admin/login"));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [API, navigate]);
 
@@ -66,7 +66,7 @@ export function AdminNotesPage() {
             body: JSON.stringify(form),
         });
 
-        if (res.status === 401) return navigate("/login");
+        if (res.status === 401) return navigate("/admin/login");
         if (res.status === 403) return navigate("/admin/denied");
 
         if (res.ok) {
@@ -88,7 +88,7 @@ export function AdminNotesPage() {
             credentials: "include",
         });
 
-        if (res.status === 401) return navigate("/login");
+        if (res.status === 401) return navigate("/admin/login");
         if (res.status === 403) return navigate("/admin/denied");
 
         if (res.ok) await refreshNotes();
