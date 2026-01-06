@@ -43,3 +43,10 @@ jobs:
           remote_path: '${{ secrets.SFTP_PATH }}'
           delete_remote_files: false
 
+      - name: Publish Lab Notes into lab-api
+        run: |
+          rsync -avz --delete \
+            ./src/labnotes/ \
+            ${{ secrets.DH_USER }}@${{ secrets.DH_HOST }}:/home/humanpatternlab/lab-api/content/labnotes/
+
+
