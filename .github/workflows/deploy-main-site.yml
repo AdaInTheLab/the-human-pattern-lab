@@ -43,12 +43,17 @@ jobs:
           remote_path: '${{ secrets.SFTP_PATH }}'
           delete_remote_files: false
 
-      - name: Publish Lab Notes into lab-api
-        run: |
-          rsync -avz --delete \
-            -e "ssh -o StrictHostKeyChecking=no" \
-            ./src/labnotes/ \
-            "${{ secrets.SFTP_USER }}@${{ secrets.SFTP_HOST }}:/home/humanpatternlab/lab-api/content/labnotes/"
+      - name: Publish Lab Notes into lab-api (SFTP)
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+        with:
+          server: ${{ secrets.SFTP_HOST }}
+          username: ${{ secrets.SFTP_USER }}
+          password: ${{ secrets.SFTP_PASS }}
+          port: 22
+          local_path: './src/labnotes/*'
+          remote_path: '/home/humanpatternlab/lab-api/content/labnotes'
+          delete_remote_files: false
+
 
 
 
