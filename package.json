@@ -46,6 +46,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
+    "sync:labnotes": "tsx src/scripts/syncLabNotesFromMd.ts",
     "test": "vitest",
     "test:watch": "vitest watch",
     "test:coverage": "vitest run --coverage",
