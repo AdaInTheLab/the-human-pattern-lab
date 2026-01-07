@@ -152,6 +152,10 @@ export function AdminNotesPage() {
         await refreshNotes();
     };
 
+    const EXCERPT_SOFT_LIMIT = 280;
+    const excerptLength = form.excerpt.length;
+    const overLimit = excerptLength > EXCERPT_SOFT_LIMIT;
+
     return (
         <div className="space-y-6">
             {/* Header */}
@@ -317,16 +321,39 @@ export function AdminNotesPage() {
                         </div>
 
                         <div className="space-y-2">
-                            <label className="text-xs uppercase tracking-widest text-zinc-500">
-                                Excerpt
+                            <label className="block space-y-1">
+                                  <span className="text-xs font-mono uppercase tracking-widest text-zinc-400">
+                                    Excerpt (preview surface)
+                                  </span>
+
+                                <textarea
+                                    name="excerpt"
+                                    value={form.excerpt}
+                                    onChange={handleChange}
+                                    className={`
+                              h-24 w-full resize-y rounded-lg
+                              border bg-zinc-950/40 px-3 py-2 text-zinc-100
+                              ${overLimit ? "border-vesper/60 ring-1 ring-vesper/40" : "border-zinc-800"}
+                            `}
+                                                            placeholder="Short summary shown in lists"
+                                                        />
+
+                                                        <div
+                                                            className={`
+                              flex justify-between text-xs font-mono
+                              ${overLimit ? "text-vesper" : "text-zinc-500"}
+                            `}
+                                                        >
+                            <span>
+                              Used on cards and previews. Full body lives in MD source.
+                            </span>
+
+                                                            <span>
+                              {excerptLength} / {EXCERPT_SOFT_LIMIT}
+                                                                {overLimit && " · preview overflow"}
+                            </span>
+                                </div>
                             </label>
-                            <textarea
-                                name="excerpt"
-                                value={form.excerpt}
-                                onChange={handleChange}
-                                className="h-24 w-full rounded-lg border border-zinc-800 bg-zinc-950/40 px-3 py-2 text-zinc-100"
-                                placeholder="Short summary shown in lists"
-                            />
                         </div>
 
                         <div className="flex flex-wrap gap-2">
