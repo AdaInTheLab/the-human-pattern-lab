@@ -43,16 +43,40 @@ jobs:
           remote_path: '${{ secrets.SFTP_PATH }}'
           delete_remote_files: false
 
-      - name: Publish Lab Notes into lab-api (SFTP)
+      - name: Debug Lab Notes (runner)
+        run: |
+          echo "PWD=$(pwd)"
+          ls -la ./src/labnotes || true
+          echo "EN:"
+          ls -la ./src/labnotes/en || true
+          echo "KO:"
+          ls -la ./src/labnotes/ko || true
+          echo "Counts:"
+          echo "EN md count: $(ls - ./src/labnotes/en/*.md 2>/dev/null | wc -l)"
+          echo "KO md count: $(ls -1 ./src/labnotes/ko/*.md 2>/dev/null | wc -l)"
+
+      - name: Publish Lab Notes EN into lab-api (SFTP)
         uses: wlixcc/SFTP-Deploy-Action@v1.2.4
         with:
           server: ${{ secrets.SFTP_HOST }}
           username: ${{ secrets.SFTP_USER }}
           password: ${{ secrets.SFTP_PASS }}
           port: 22
-          local_path: './src/labnotes/*'
-          remote_path: '/home/humanpatternlab/lab-api/content/labnotes'
+          local_path: './src/labnotes/en/*'
+          remote_path: '/home/humanpatternlab/lab-api/content/labnotes/en'
           delete_remote_files: false
+
+      - name: Publish Lab Notes KO into lab-api (SFTP)
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+        with:
+          server: ${{ secrets.SFTP_HOST }}
+          username: ${{ secrets.SFTP_USER }}
+          password: ${{ secrets.SFTP_PASS }}
+          port: 22
+          local_path: './src/labnotes/ko/*'
+          remote_path: '/home/humanpatternlab/lab-api/content/labnotes/ko'
+          delete_remote_files: false
+
 
 
 
