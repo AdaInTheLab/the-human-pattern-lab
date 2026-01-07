@@ -30,6 +30,7 @@
 // src/components/labnotes/LabNoteCard.tsx
 import React from "react";
 import { Link } from "react-router-dom";
+const { i18n } = useTranslation("labNotesPage");
 import { useTranslation } from "react-i18next";
 import type { LabNote } from "@/lib/labNotes";
 
@@ -83,6 +84,7 @@ type Props = {
 };
 
 export function LabNoteCard({ note, index }: Props) {
+    const locale = i18n.language || "en";
     const { t } = useTranslation("labNotesPage");
     // Prefer canonical department_id; dept is optional label
     const deptKey = (note.dept ?? note.department_id ?? "scms").toLowerCase();
@@ -236,7 +238,7 @@ export function LabNoteCard({ note, index }: Props) {
         </span>
 
                 <Link
-                    to={`/lab-notes/${note.slug}`}
+                    to={`/${locale}/lab-notes/${note.slug}`}
                     className={`text-xs font-bold uppercase tracking-widest transition-all ${styles.text} hover:tracking-[0.2em]`}
                 >
                     {t("readMore", { defaultValue: "Open Note" })} →

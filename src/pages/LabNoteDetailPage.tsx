@@ -32,19 +32,21 @@ import { fetchLabNoteBySlug, getLabNotes } from "@/lib/labNotes";
 import type { LabNote } from "@/lib/labNotes";
 
 type RouteParams = {
-    id?: string; // slug-style id
+    slug?: string;
+    locale?: string; // if you add :locale routes
 };
 
 export function LabNoteDetailPage() {
-    const { id } = useParams<RouteParams>();
+    const { slug, locale: routeLocale } = useParams<RouteParams>();
     const { i18n, t } = useTranslation("labNotesPage");
-    const locale = i18n.language || "en";
+    const locale = routeLocale || i18n.language || "en";
+    const base = `/${locale}`;
 
     const [note, setNote] = useState<LabNote | null>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (!id) return;
+        if (!slug) return;
 
         const controller = new AbortController();
         let alive = true;
@@ -53,7 +55,7 @@ export function LabNoteDetailPage() {
             setLoading(true);
 
             try {
-                const data = await fetchLabNoteBySlug(locale, id, controller.signal);
+                const data = await fetchLabNoteBySlug(locale, slug, controller.signal);
 
                 if (!alive) return;
                 setNote(data);
@@ -71,7 +73,7 @@ export function LabNoteDetailPage() {
                 console.error(e);
 
                 // Local fallback (useful when API is down)
-                const local = getLabNotes(locale).find((n) => n.id === id) ?? null;
+                const local = getLabNotes(locale).find((n) => n.id === slug) ?? null;
                 setNote(local);
             } finally {
                 if (alive) setLoading(false);
@@ -83,7 +85,7 @@ export function LabNoteDetailPage() {
             alive = false;
             controller.abort();
         };
-    }, [id, locale]);
+    }, [slug, locale]);
 
     if (loading) {
         return (
@@ -108,7 +110,7 @@ export function LabNoteDetailPage() {
                         This entry has been retracted or never existed in this timeline.
                     </p>
                     <Link
-                        to="/lab-notes"
+                        to={`${base}/lab-notes`}
                         className="mt-8 text-lyric hover:text-ada transition-colors"
                     >
                         ← Return to Registry
@@ -127,7 +129,7 @@ export function LabNoteDetailPage() {
                 {/* Breadcrumb */}
                 <nav className="mb-8 flex items-center justify-between">
                     <Link
-                        to="/lab-notes"
+                        to={`${base}/lab-notes`}
                         className="group inline-flex items-center gap-2 rounded-full
                border border-slate-800 bg-slate-950/40 px-4 py-2
                text-xs font-mono uppercase tracking-[0.2em] text-slate-400
