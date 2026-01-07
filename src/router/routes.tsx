@@ -91,9 +91,13 @@ export const router = createBrowserRouter([
             // Future-friendly dynamic detail route (if/when needed)
             { path: "departments/:id", element: (<Suspense fallback={<PageLoader />}><DepartmentDetailPage /></Suspense> ) },
 
+            // List
             { path: "lab-notes", element: (<Suspense fallback={<PageLoader />}><LabNotesPage /> </Suspense> )},
-            { path: "lab-notes/:id", element: <LabNoteDetailPage /> },
+            { path: ":locale/lab-notes", element: (<Suspense fallback={<PageLoader />}><LabNotesPage /> </Suspense> )},
+
+            // Detail (pick ONE param name; use slug)
             { path: "lab-notes/:slug", element: <LabNoteDetailPage /> },
+            { path: ":locale/lab-notes/:slug", element: <LabNoteDetailPage /> },
 
             { path: "videos", element: (<Suspense fallback={<PageLoader />}><VideoArchivePage /></Suspense> ) },
             { path: "videos/:slug", element: <VideoDetailPage /> },
