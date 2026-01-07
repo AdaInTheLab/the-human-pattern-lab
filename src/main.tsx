@@ -40,6 +40,41 @@ export {};
 
 const GA_ID = import.meta.env.VITE_GA_ID as string | undefined;
 
+class RootErrorBoundary extends React.Component<
+    { children: React.ReactNode },
+    { hasError: boolean; error?: unknown }
+> {
+    state = { hasError: false as boolean, error: undefined as unknown };
+
+    static getDerivedStateFromError(error: unknown) {
+        return { hasError: true, error };
+    }
+
+    componentDidCatch(error: unknown) {
+        console.error("[HPL] Uncaught render error:", error);
+    }
+
+    render() {
+        if (this.state.hasError) {
+            return (
+                <div className="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center p-6">
+                    <div className="max-w-xl space-y-3 rounded-xl border border-slate-800 bg-slate-900/30 p-6">
+                        <div className="text-xs font-mono uppercase tracking-widest text-slate-400">
+                            HPL Recovery Mode
+                        </div>
+                        <div className="text-lg font-semibold">Something crashed during render.</div>
+                        <div className="text-sm text-slate-300">
+                            Check the console for details. If this is production, we can add a safer fallback path.
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+        return this.props.children;
+    }
+}
+
+
 function initGA(measurementId: string) {
     // 1) Create dataLayer + gtag stub immediately
     window.dataLayer = window.dataLayer ?? [];
@@ -70,6 +105,8 @@ if (GA_ID) initGA(GA_ID);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
-        <RouterProvider router={router} />
+        <RootErrorBoundary>
+            <RouterProvider router={router} />
+        </RootErrorBoundary>
     </React.StrictMode>
 );
