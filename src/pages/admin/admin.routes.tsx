@@ -10,6 +10,7 @@ import { AdminDeniedPage } from "@/pages/admin/pages/AdminDeniedPage";
 import { AdminDashboardPage } from "@/pages/admin/pages/AdminDashboardPage";
 import { AdminNotesPage } from "@/pages/admin/pages/AdminNotesPage";
 import AdminApiDocsPage from "@/pages/admin/AdminApiDocsPage";
+import { AdminTokensPage } from "@/pages/admin/pages/AdminTokensPage";
 
 function PageLoader() {
     return <div className="p-6 text-slate-300">Loading…</div>;
@@ -48,6 +49,7 @@ export const adminRoutes = [
                             { index: true, element: <Navigate to="dashboard" replace /> },
                             { path: "dashboard", element: <AdminDashboardPage /> },
                             { path: "notes", element: <AdminNotesPage /> },
+                            { path: "tokens", element: <AdminTokensPage /> },
                             { path: "docs", element: <AdminApiDocsPage /> },
                             { path: "*", element: <Navigate to="dashboard" replace /> },
                         ],
