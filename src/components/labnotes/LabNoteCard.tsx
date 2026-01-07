@@ -26,11 +26,8 @@
  *              is intentionally stateless and render-only.
  */
 
-
 // src/components/labnotes/LabNoteCard.tsx
-import React from "react";
 import { Link } from "react-router-dom";
-const { i18n } = useTranslation("labNotesPage");
 import { useTranslation } from "react-i18next";
 import type { LabNote } from "@/lib/labNotes";
 
@@ -69,7 +66,7 @@ const allStyles: Record<string, DeptStyle> = {
 };
 
 // 🧬 Explicitly map potential YAML names to our style keys
-function getDeptKey(id: string): string {
+function getDeptKey(id?: string): keyof typeof allStyles {
     const normalized = (id || "scms").toLowerCase();
     if (normalized === "alignment" || normalized === "coda") return "coda";
     if (normalized === "shadow" || normalized === "vesper") return "vesper";
@@ -84,18 +81,21 @@ type Props = {
 };
 
 export function LabNoteCard({ note, index }: Props) {
+    const { t, i18n } = useTranslation("labNotesPage");
     const locale = i18n.language || "en";
-    const { t } = useTranslation("labNotesPage");
+
     // Prefer canonical department_id; dept is optional label
-    const deptKey = (note.dept ?? note.department_id ?? "scms").toLowerCase();
-    const style = allStyles[deptKey] ?? allStyles.scms;
+    const deptKey = getDeptKey(note.dept ?? note.department_id);
+    const styles = allStyles[deptKey] ?? allStyles.scms;
+
     // Better label fallback now that type exists
     const tag = note.tags?.[0] || (note.type ? note.type.toUpperCase() : "NOTE");
+
     // Clamp shadow density to 0–10
     const shadow = Math.max(0, Math.min(10, Math.round(note.shadow_density ?? 0)));
+
     const teaser = note.subtitle ?? note.summary ?? "";
-    const styles = allStyles[deptKey] || allStyles.scms;
-    
+
     return (
         <article
             style={{ animationDelay: `${index * 100}ms`, opacity: 0 }}
@@ -156,10 +156,10 @@ export function LabNoteCard({ note, index }: Props) {
                             {/* Default: excerpt */}
                             <p
                                 className="
-                                  text-sm text-slate-400 leading-relaxed line-clamp-3
-                                  transition-all duration-500 ease-out
-                                  group-hover:opacity-0 group-hover:-translate-y-1
-                                "
+                  text-sm text-slate-400 leading-relaxed line-clamp-3
+                  transition-all duration-500 ease-out
+                  group-hover:opacity-0 group-hover:-translate-y-1
+                "
                             >
                                 {note.summary}
                             </p>
@@ -167,22 +167,22 @@ export function LabNoteCard({ note, index }: Props) {
                             {/* Hover: concept signals */}
                             <div
                                 className="
-                                  absolute inset-0
-                                  opacity-0 translate-y-1
-                                  transition-all duration-500 ease-out delay-75
-                                  group-hover:opacity-100 group-hover:translate-y-0
-                                "
+                  absolute inset-0
+                  opacity-0 translate-y-1
+                  transition-all duration-500 ease-out delay-75
+                  group-hover:opacity-100 group-hover:translate-y-0
+                "
                             >
                                 <div className="space-y-3">
                                     <div className="flex items-center justify-between">
-        <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-slate-500">
-          Concept Load
-        </span>
+                    <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-slate-500">
+                      Concept Load
+                    </span>
 
                                         {note.safer_landing && (
                                             <span className="text-[10px] font-mono uppercase tracking-widest text-lyric/80">
-            Safer ✓
-          </span>
+                        Safer ✓
+                      </span>
                                         )}
                                     </div>
 
@@ -195,9 +195,13 @@ export function LabNoteCard({ note, index }: Props) {
                                                 <span
                                                     key={i}
                                                     className={`
-                w-1 rounded-sm transition-all duration-500
-                ${active ? "bg-vesper shadow-[0_0_8px_rgba(110,0,255,0.55)]" : "bg-slate-800"}
-              `}
+                            w-1 rounded-sm transition-all duration-500
+                            ${
+                                                        active
+                                                            ? "bg-vesper shadow-[0_0_8px_rgba(110,0,255,0.55)]"
+                                                            : "bg-slate-800"
+                                                    }
+                          `}
                                                     style={{ height: `${6 + i}px` }}
                                                 />
                                             );
@@ -206,27 +210,26 @@ export function LabNoteCard({ note, index }: Props) {
 
                                     {/* Tag pills */}
                                     <div className="flex flex-wrap gap-2">
-                                        {(note.tags ?? []).slice(0, 3).map((tag) => (
+                                        {(note.tags ?? []).slice(0, 3).map((tagItem) => (
                                             <span
-                                                key={tag}
+                                                key={tagItem}
                                                 className="px-2 py-0.5 rounded border border-slate-800 bg-slate-900/40
                        text-[10px] font-mono uppercase tracking-wider text-slate-400"
                                             >
-            {tag}
-          </span>
+                        {tagItem}
+                      </span>
                                         ))}
 
                                         {/* fallback if tags empty */}
                                         {(!note.tags || note.tags.length === 0) && (
                                             <span className="text-[10px] font-mono uppercase tracking-wider text-slate-600">
-            No tags registered
-          </span>
+                        No tags registered
+                      </span>
                                         )}
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 )}
             </div>
