@@ -13,13 +13,28 @@ export function AdminNotesPage() {
         id: "",
         title: "",
         slug: "",
+        locale: "en",
+        type: "labnote",
+        status: "draft",
+
+        department_id: "SCMS",
+        dept: "",
+
         category: "",
         excerpt: "",
-        content_html: "",          // ✅ add
+        summary: "",
+
+        content_markdown: "",
+
+        shadow_density: 4,
+        coherence_score: 1.0,
+        safer_landing: true,
         read_time_minutes: 5,
         published_at: new Date().toISOString().split("T")[0],
     });
+
     const [editingId, setEditingId] = useState<string | null>(null);
+    const isEditing = Boolean(editingId);
 
     const refreshNotes = async () => {
         const res = await fetch(`${API}/admin/notes`, { credentials: "include" });
@@ -65,9 +80,22 @@ export function AdminNotesPage() {
             id: "",
             title: "",
             slug: "",
+            locale: "en",
+            type: "labnote",
+            status: "draft",
+
+            department_id: "SCMS",
+            dept: "",
+
             category: "",
             excerpt: "",
-            content_html: "",          // ✅ add
+            summary: "",
+
+            content_markdown: "",
+
+            shadow_density: 4,
+            coherence_score: 1.0,
+            safer_landing: true,
             read_time_minutes: 5,
             published_at: new Date().toISOString().split("T")[0],
         });
@@ -102,20 +130,39 @@ export function AdminNotesPage() {
         resetForm();
     };
 
+    const handleEdit = async (note: any) => {
+        // optional but recommended: fetch full record (includes content_markdown)
+        const res = await fetch(
+            `${API}/admin/notes/${encodeURIComponent(note.slug)}?locale=${encodeURIComponent(note.locale ?? "en")}`,
+            { credentials: "include" }
+        );
+        const full = res.ok ? await res.json() : note;
 
-    const handleEdit = (note: any) => {
         setForm({
-            id: note.id ?? "",
-            title: note.title ?? "",
-            slug: note.slug ?? "",
-            category: note.category ?? "",
-            excerpt: note.excerpt ?? "",
-            content_html: note.content_html ?? "",
-            read_time_minutes: Number(note.read_time_minutes ?? 5),
-            published_at: (note.published_at ?? new Date().toISOString()).split("T")[0],
-        });
-        setEditingId(note.id);
+            id: full.id ?? "",
+            title: full.title ?? "",
+            slug: full.slug ?? "",
+            locale: full.locale ?? "en",
+            type: full.type ?? "labnote",
+            status: full.status ?? "draft",
 
+            department_id: full.department_id ?? "SCMS",
+            dept: full.dept ?? "",
+
+            category: full.category ?? "",
+            excerpt: full.excerpt ?? "",
+            summary: full.summary ?? "",
+
+            content_markdown: full.content_markdown ?? "",
+
+            shadow_density: Number(full.shadow_density ?? 4),
+            coherence_score: Number(full.coherence_score ?? 1.0),
+            safer_landing: Boolean(full.safer_landing ?? true),
+            read_time_minutes: Number(full.read_time_minutes ?? 5),
+            published_at: (full.published_at ?? new Date().toISOString()).split("T")[0],
+        });
+
+        setEditingId(full.id);
     };
 
     const handleDelete = async (id: string) => {
@@ -153,7 +200,7 @@ export function AdminNotesPage() {
     };
 
     const EXCERPT_SOFT_LIMIT = 280;
-    const excerptLength = form.excerpt.length;
+    const excerptLength = form.summary.length;
     const overLimit = excerptLength > EXCERPT_SOFT_LIMIT;
 
     return (
@@ -245,7 +292,6 @@ export function AdminNotesPage() {
                 </div>
             </Panel>
 
-
             {/* Editor */}
             <Panel title={editingId ? "Edit Note" : "New Note"} >
                 <Panel title={editingId ? "Edit Note" : "New Note"}>
@@ -264,7 +310,7 @@ export function AdminNotesPage() {
                                     required
                                 />
                             </div>
-
+                            {/* SLUG*/}
                             <div className="space-y-2">
                                 <label className="text-xs uppercase tracking-widest text-zinc-500">
                                     Slug
@@ -279,6 +325,45 @@ export function AdminNotesPage() {
                                 />
                             </div>
 
+                            {/* DEPARTMENT / TYPE / LOCALE */}
+                            <div className="grid gap-4 md:grid-cols-3">
+                                <div className="space-y-2">
+                                    <label className="text-xs uppercase tracking-widest text-zinc-500">Department</label>
+                                    <input name="department_id" value={form.department_id}
+                                           readOnly={isEditing}
+                                           onChange={handleChange}
+                                           className={`w-full rounded-lg border px-3 py-2 ${
+                                               isEditing
+                                                   ? "border-zinc-800 bg-zinc-950/40 text-zinc-400 cursor-not-allowed"
+                                                   : "border-zinc-800 bg-zinc-950/40 text-zinc-100"
+                                           }`} />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-xs uppercase tracking-widest text-zinc-500">Type</label>
+                                    <input name="type" value={form.type}
+                                           readOnly={isEditing}
+                                           onChange={handleChange}
+                                           className={`w-full rounded-lg border px-3 py-2 ${
+                                               isEditing
+                                                   ? "border-zinc-800 bg-zinc-950/40 text-zinc-400 cursor-not-allowed"
+                                                   : "border-zinc-800 bg-zinc-950/40 text-zinc-100"
+                                           }`} />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-xs uppercase tracking-widest text-zinc-500">Locale</label>
+                                    <input name="locale" value={form.locale}
+                                           readOnly={isEditing}
+                                           onChange={handleChange}
+                                           className={`w-full rounded-lg border px-3 py-2 ${
+                                               isEditing
+                                                   ? "border-zinc-800 bg-zinc-950/40 text-zinc-400 cursor-not-allowed"
+                                                   : "border-zinc-800 bg-zinc-950/40 text-zinc-100"
+                                           }`} />
+                                </div>
+                            </div>
+
+
+                            {/* CATEGORY */}
                             <div className="space-y-2">
                                 <label className="text-xs uppercase tracking-widest text-zinc-500">
                                     Category
@@ -292,19 +377,41 @@ export function AdminNotesPage() {
                                 />
                             </div>
 
-                            <div className="space-y-2">
-                                <label className="text-xs uppercase tracking-widest text-zinc-500">
-                                    Published Date
-                                </label>
-                                <input
-                                    type="date"
-                                    name="published_at"
-                                    value={form.published_at}
-                                    onChange={handleChange}
-                                    className="w-full rounded-lg border border-zinc-800 bg-zinc-950/40 px-3 py-2 text-zinc-100"
-                                />
+                            <div className="grid grid-cols-2 gap-4">
+                                {/* PUBLISHED DATE */}
+                                <div className="space-y-2">
+                                    <label className="text-xs uppercase tracking-widest text-zinc-500">
+                                        Published Date
+                                    </label>
+                                    <input
+                                        type="date"
+                                        name="published_at"
+                                        value={form.published_at}
+                                        onChange={handleChange}
+                                        className="w-full rounded-lg border border-zinc-800 bg-zinc-950/40 px-3 py-2 text-zinc-100"
+                                    />
+                                </div>
+
+                                {/* STATUS */}
+                                <div className="space-y-2">
+                                    <label className="text-xs uppercase tracking-widest text-zinc-500">
+                                        Status
+                                    </label>
+                                    <select
+                                        name="status"
+                                        value={form.status}
+                                        onChange={handleChange as any}
+                                        className="w-full rounded-lg border border-zinc-800 bg-zinc-950/40 px-3 py-2 text-zinc-100"
+                                    >
+                                        <option value="draft">draft</option>
+                                        <option value="published">published</option>
+                                        <option value="archived">archived</option>
+                                    </select>
+                                </div>
                             </div>
 
+
+                            {/* READ TIME */}
                             <div className="space-y-2">
                                 <label className="text-xs uppercase tracking-widest text-zinc-500">
                                     Read Time (minutes)
@@ -320,6 +427,7 @@ export function AdminNotesPage() {
                             </div>
                         </div>
 
+                        {/* EXCERPT */}
                         <div className="space-y-2">
                             <label className="block space-y-1">
                                   <span className="text-xs font-mono uppercase tracking-widest text-zinc-400">
@@ -327,8 +435,8 @@ export function AdminNotesPage() {
                                   </span>
 
                                 <textarea
-                                    name="excerpt"
-                                    value={form.excerpt}
+                                    name="summary"
+                                    value={form.summary}
                                     onChange={handleChange}
                                     className={`
                               h-24 w-full resize-y rounded-lg
@@ -356,6 +464,21 @@ export function AdminNotesPage() {
                             </label>
                         </div>
 
+                        {/* BODY */}
+                        <div className="space-y-2">
+                            <label className="text-xs uppercase tracking-widest text-zinc-500">
+                                Body (Markdown)
+                            </label>
+                            <textarea
+                                name="content_markdown"
+                                value={form.content_markdown}
+                                onChange={handleChange}
+                                className="h-80 w-full resize-y rounded-lg border border-zinc-800 bg-zinc-950/40 px-3 py-2 font-mono text-zinc-100"
+                                placeholder="# Title\n\nWrite the note body here…"
+                            />
+                        </div>
+
+                        {/* SUBMIT BUTTON */}
                         <div className="flex flex-wrap gap-2">
                             <button
                                 type="submit"

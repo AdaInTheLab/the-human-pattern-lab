@@ -124,16 +124,16 @@ export function AdminApiDocsPage() {
                     <div>
                         <p className="text-sm text-zinc-400 mb-2">Create / upsert note</p>
                         <CodeBlock>{`curl -i -X POST "${API}/admin/notes" \\
-  -H "Content-Type: application/json" \\
-  --cookie-jar cookies.txt --cookie cookies.txt \\
-  -d '{
-    "title": "The Quiet Flame",
-    "slug": "the-quiet-flame",
-    "category": "labnote",
-    "excerpt": "Some knowledge is meant to warm, not burn.",
-    "read_time_minutes": 3,
-    "published_at": "2026-01-02"
-  }'`}</CodeBlock>
+                                      -H "Content-Type: application/json" \\
+                                      --cookie-jar cookies.txt --cookie cookies.txt \\
+                                      -d '{
+                                        "title": "The Quiet Flame",
+                                        "slug": "the-quiet-flame",
+                                        "category": "labnote",
+                                        "excerpt": "Some knowledge is meant to warm, not burn.",
+                                        "read_time_minutes": 3,
+                                        "published_at": "2026-01-02"
+                                      }'`}</CodeBlock>
                     </div>
                 </div>
             </Panel>
