@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { apiBaseUrl } from '@/api/api';
 
 type SyncResult = {
     ok: true;
@@ -18,15 +19,17 @@ type SyncError = {
 type Result = SyncResult | SyncError | null;
 
 export function SyncLabNotesPanel() {
+
     const [syncing, setSyncing] = useState(false);
     const [result, setResult] = useState<Result>(null);
 
     async function runSync() {
+        console.log("[UI] Sync clicked");
         setSyncing(true);
         setResult(null);
 
         try {
-            const res = await fetch("/api/admin/notes/sync", {
+            const res = await fetch(`${apiBaseUrl}/admin/notes/sync`, {
                 method: "POST",
                 credentials: "include",
                 headers: { "Content-Type": "application/json" },

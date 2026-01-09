@@ -1,5 +1,5 @@
 // src/pages/admin/pages/AdminTokensPage.tsx
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { apiBaseUrl } from "@/api/api";
 
 type TokenRow = {
@@ -12,60 +12,112 @@ type TokenRow = {
     last_used_at: string | null;
 };
 
+type LoadState =
+    | { status: "loading" }
+    | { status: "error"; message: string; code?: number }
+    | { status: "ready" };
+
+function formatMaybeDate(iso: string | null) {
+    if (!iso) return "—";
+    const d = new Date(iso);
+    if (Number.isNaN(d.getTime())) return iso; // fallback: show raw
+    return d.toLocaleString();
+}
+
+function parseTokensPayload(json: any): TokenRow[] {
+    // Accept a few shapes so the page doesn’t break when backend evolves:
+    // { data: [...] }
+    // { tokens: [...] }
+    // { data: { tokens: [...] } }
+    const direct = json?.data ?? json?.tokens ?? json?.data?.tokens;
+    if (Array.isArray(direct)) return direct as TokenRow[];
+    return [];
+}
+
 export function AdminTokensPage() {
     const API = apiBaseUrl;
     const [tokens, setTokens] = useState<TokenRow[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+    const [state, setState] = useState<LoadState>({ status: "loading" });
+
+    // stable key in case apiBaseUrl is derived; avoids weird reruns
+    const url = useMemo(() => `${API}/admin/tokens`, [API]);
 
     useEffect(() => {
-        let alive = true;
+        const controller = new AbortController();
 
         (async () => {
+            setState({ status: "loading" });
             try {
-                const res = await fetch(`${API}/admin/tokens`, {
+                const res = await fetch(url, {
                     credentials: "include",
                     headers: { Accept: "application/json" },
+                    signal: controller.signal,
                 });
 
                 if (!res.ok) {
-                    throw new Error(`HTTP ${res.status}`);
+                    // Try to extract server-provided message
+                    let serverMsg = "";
+                    try {
+                        const maybeJson = await res.json();
+                        serverMsg = maybeJson?.error ?? maybeJson?.message ?? "";
+                    } catch {
+                        // ignore json parse errors; maybe non-json
+                    }
+
+                    const hint =
+                        res.status === 401
+                            ? "Not authenticated (401). Try logging in again."
+                            : res.status === 403
+                                ? "Authenticated but not authorized (403)."
+                                : res.status >= 500
+                                    ? "Server error. Check API logs."
+                                    : "Request failed.";
+
+                    throw Object.assign(new Error(serverMsg || hint), { code: res.status });
                 }
 
                 const json = await res.json();
-                if (!alive) return;
+                const rows = parseTokensPayload(json);
 
-                setTokens(json.data ?? []);
+                setTokens(rows);
+                setState({ status: "ready" });
             } catch (e: any) {
-                if (!alive) return;
-                setError(e?.message ?? "Failed to load tokens");
-            } finally {
-                if (alive) setLoading(false);
+                if (e?.name === "AbortError") return;
+
+                setState({
+                    status: "error",
+                    message: e?.message ?? "Failed to load tokens",
+                    code: e?.code,
+                });
             }
         })();
 
-        return () => {
-            alive = false;
-        };
-    }, [API]);
+        return () => controller.abort();
+    }, [url]);
 
-    if (loading) {
+    if (state.status === "loading") {
         return <div className="p-6 text-zinc-300">Loading API tokens…</div>;
     }
 
-    if (error) {
+    if (state.status === "error") {
         return (
-            <div className="p-6 text-red-400">
-                Failed to load tokens: {error}
+            <div className="p-6">
+                <div className="text-red-400 font-medium">Failed to load tokens</div>
+                <div className="text-zinc-400 text-sm mt-1">
+                    {state.code ? `HTTP ${state.code} — ` : null}
+                    {state.message}
+                </div>
+                <div className="text-zinc-500 text-xs mt-3">
+                    If this is a 401/403, it’s an auth/permissions issue. If it’s 5xx,
+                    it’s backend.
+                </div>
             </div>
         );
     }
 
     return (
         <div className="p-6">
-            <h2 className="text-xl font-semibold text-zinc-100 mb-4">
-                API Tokens
-            </h2>
+            <h2 className="text-xl font-semibold text-zinc-100 mb-4">API Tokens</h2>
 
             {tokens.length === 0 ? (
                 <div className="text-zinc-400">No tokens minted yet.</div>
@@ -84,13 +136,13 @@ export function AdminTokensPage() {
                         <tr key={t.id} className="border-t border-zinc-800">
                             <td className="px-3 py-2">{t.label}</td>
                             <td className="px-3 py-2 font-mono text-xs">
-                                {t.scopes.join(", ")}
+                                {t.scopes?.length ? t.scopes.join(", ") : "—"}
                             </td>
                             <td className="px-3 py-2 text-center">
                                 {t.is_active ? "✅" : "❌"}
                             </td>
                             <td className="px-3 py-2 text-xs text-zinc-400">
-                                {t.last_used_at ?? "—"}
+                                {formatMaybeDate(t.last_used_at)}
                             </td>
                         </tr>
                     ))}

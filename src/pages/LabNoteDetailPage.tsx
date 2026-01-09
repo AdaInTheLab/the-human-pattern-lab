@@ -27,18 +27,21 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+
 import { LayoutShell } from "@/components/layout/LayoutShell";
-import { fetchLabNoteBySlug, getLabNotes } from "@/lib/labNotes";
+import { fetchLabNoteBySlug } from "@/lib/labNotes";
 import type { LabNote } from "@/lib/labNotes";
 
 type RouteParams = {
     slug?: string;
-    locale?: string; // if you add :locale routes
+    locale?: string;
 };
 
 export function LabNoteDetailPage() {
     const { slug, locale: routeLocale } = useParams<RouteParams>();
-    const { i18n, t } = useTranslation("labNotesPage");
+    const { i18n } = useTranslation("labNotesPage");
     const locale = routeLocale || i18n.language || "en";
     const base = `/${locale}`;
 
@@ -56,13 +59,11 @@ export function LabNoteDetailPage() {
 
             try {
                 const data = await fetchLabNoteBySlug(locale, slug, controller.signal);
-
                 if (!alive) return;
                 setNote(data);
             } catch (e) {
                 if (!alive) return;
 
-                // Abort is not an error state
                 if (
                     (e instanceof Error && e.name === "AbortError") ||
                     (e instanceof DOMException && e.name === "AbortError")
@@ -71,15 +72,11 @@ export function LabNoteDetailPage() {
                 }
 
                 console.error(e);
-
-                // Local fallback (useful when API is down)
-                const local = getLabNotes(locale).find((n) => n.id === slug) ?? null;
-                setNote(local);
+                setNote(null);
             } finally {
                 if (alive) setLoading(false);
             }
         })();
-
 
         return () => {
             alive = false;
@@ -123,6 +120,11 @@ export function LabNoteDetailPage() {
     const isHighDensity = (note.shadow_density ?? 0) > 7;
     const teaser = note.subtitle ?? note.summary ?? "";
 
+    const html = (note as any).contentHtml || (note as any).content_html || "";
+    const markdown = note.contentMarkdown || (note as any).content_markdown || "";
+    const hasHtml = html.trim().length > 0;
+    const hasMarkdown = markdown.trim().length > 0
+
     return (
         <LayoutShell>
             <div className="max-w-4xl mx-auto py-12 px-4">
@@ -139,21 +141,21 @@ export function LabNoteDetailPage() {
                         <span>Back to Lab Notes</span>
                     </Link>
 
-                    {/* Optional: keep your current registry tag breadcrumb */}
                     <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-ada/60">
-    // Registry / {note.tags?.[0]?.toUpperCase() ?? "LABNOTE"}
-  </span>
+            {/* Registry / {note.tags?.[0]?.toUpperCase() ?? "LABNOTE"} */}
+                        Registry / {note.tags?.[0]?.toUpperCase() ?? "LABNOTE"}
+          </span>
                 </nav>
 
                 <article
                     className={`
-    animate-reveal-artifact
-    relative p-8 md:p-12 rounded-sm border-l-4
-    transition-all duration-700
-    ${isHighDensity
+            animate-reveal-artifact
+            relative p-8 md:p-12 rounded-sm border-l-4
+            transition-all duration-700
+            ${isHighDensity
                         ? "bg-vesper-void border-vesper shadow-vesper-pulse"
                         : "bg-slate-900/50 border-ada shadow-ada-line"}
-  `}
+          `}
                 >
                     {/* Header */}
                     <header className="mb-8">
@@ -162,7 +164,6 @@ export function LabNoteDetailPage() {
                 Dept: {note.department_id || "SCMS"}
               </span>
 
-                            {/* Teaser line (single source of truth) */}
                             {teaser && (
                                 <p className="text-lg text-coda italic opacity-80 text-right max-w-[60%]">
                                     {teaser}
@@ -170,7 +171,6 @@ export function LabNoteDetailPage() {
                             )}
                         </div>
 
-                        {/* Single title (no duplicates) */}
                         <h1
                             className={`text-3xl md:text-5xl font-bold tracking-tight ${
                                 isHighDensity ? "text-ada" : "text-lab-heading"
@@ -182,12 +182,20 @@ export function LabNoteDetailPage() {
 
                     {/* Content */}
                     <div className="prose prose-invert max-w-none prose-cyan prose-p:leading-relaxed prose-pre:bg-slate-800/50">
-                        <div
-                            className="text-slate-300 space-y-6"
-                            dangerouslySetInnerHTML={{
-                                __html: note.contentHtml || "<p>Pattern data pending synchronization...</p>",
-                            }}
-                        />
+                        {hasHtml ? (
+                            <div
+                                className="text-slate-300 space-y-6"
+                                dangerouslySetInnerHTML={{ __html: html }}
+                            />
+                        ) : hasMarkdown ? (
+                            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                                {markdown}
+                            </ReactMarkdown>
+                        ) : (
+                            <div className="text-slate-300">
+                                <p>Pattern data pending synchronization...</p>
+                            </div>
+                        )}
                     </div>
 
                     {/* Footer metrics */}
