@@ -12,6 +12,7 @@ export function AdminNotesPage() {
     const [form, setForm] = useState({
         id: "",
         title: "",
+        subtitle: "",
         slug: "",
         locale: "en",
         type: "labnote",
@@ -19,6 +20,7 @@ export function AdminNotesPage() {
 
         department_id: "SCMS",
         dept: "",
+        card_style: "",
 
         category: "",
         excerpt: "",
@@ -79,6 +81,7 @@ export function AdminNotesPage() {
         setForm({
             id: "",
             title: "",
+            subtitle: "",
             slug: "",
             locale: "en",
             type: "labnote",
@@ -86,6 +89,7 @@ export function AdminNotesPage() {
 
             department_id: "SCMS",
             dept: "",
+            card_style: "",
 
             category: "",
             excerpt: "",
@@ -101,6 +105,15 @@ export function AdminNotesPage() {
         });
         setEditingId(null);
     };
+
+    const CARD_STYLE_OPTIONS = [
+        { value: "", label: "Auto (from department)" },
+        { value: "scms", label: "SCMS (neutral)" },
+        { value: "vesper", label: "Vesper (purple)" },
+        { value: "sage", label: "Sage (emerald)" },
+        { value: "lyric", label: "Lyric (neon green)" },
+        { value: "coda", label: "Coda (amber)" },
+    ];
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -141,6 +154,7 @@ export function AdminNotesPage() {
         setForm({
             id: full.id ?? "",
             title: full.title ?? "",
+            subtitle: full.subtitle ?? "",
             slug: full.slug ?? "",
             locale: full.locale ?? "en",
             type: full.type ?? "labnote",
@@ -148,6 +162,7 @@ export function AdminNotesPage() {
 
             department_id: full.department_id ?? "SCMS",
             dept: full.dept ?? "",
+            card_style: full.card_style ?? "",
 
             category: full.category ?? "",
             excerpt: full.excerpt ?? "",
@@ -310,6 +325,19 @@ export function AdminNotesPage() {
                                     required
                                 />
                             </div>
+                            {/* SUBTITLE*/}
+                            <label className="block">
+                                <div className="text-xs uppercase tracking-widest text-zinc-400 mb-2">
+                                    Subtitle <span className="text-zinc-600">(card hook)</span>
+                                </div>
+                                <input
+                                    value={form.subtitle ?? ""}
+                                    onChange={(e) => setForm((p) => ({ ...p, subtitle: e.target.value }))}
+                                    className="w-full rounded-lg border border-zinc-800 bg-zinc-950 px-3 py-2 text-zinc-100"
+                                    placeholder="One sentence. Shows on cards + hover."
+                                    maxLength={180}
+                                />
+                            </label>
                             {/* SLUG*/}
                             <div className="space-y-2">
                                 <label className="text-xs uppercase tracking-widest text-zinc-500">
@@ -363,19 +391,61 @@ export function AdminNotesPage() {
                             </div>
 
 
-                            {/* CATEGORY */}
-                            <div className="space-y-2">
-                                <label className="text-xs uppercase tracking-widest text-zinc-500">
-                                    Category
+                            {/* CATEGORY / READ TIME / STYLE */}
+                            <div className="grid gap-6 md:grid-cols-3">
+                                {/* Category */}
+                                <label className="block">
+                                    <div className="mb-2 text-xs uppercase tracking-widest text-zinc-500">
+                                        Category
+                                    </div>
+                                    <input
+                                        name="category"
+                                        value={form.category}
+                                        onChange={handleChange}
+                                        className="w-full rounded-lg border border-zinc-800 bg-zinc-950/40 px-3 py-2 text-zinc-100"
+                                        placeholder="systems / lore / debug / etc"
+                                    />
                                 </label>
-                                <input
-                                    name="category"
-                                    value={form.category}
-                                    onChange={handleChange}
-                                    className="w-full rounded-lg border border-zinc-800 bg-zinc-950/40 px-3 py-2 text-zinc-100"
-                                    placeholder="systems / lore / debug / etc"
-                                />
+
+                                {/* Read Time */}
+                                <label className="block">
+                                    <div className="mb-2 text-xs uppercase tracking-widest text-zinc-500">
+                                        Read Time (minutes)
+                                    </div>
+                                    <input
+                                        type="number"
+                                        min={1}
+                                        name="read_time_minutes"
+                                        value={form.read_time_minutes}
+                                        onChange={handleChange}
+                                        className="w-full rounded-lg border border-zinc-800 bg-zinc-950/40 px-3 py-2 text-zinc-100"
+                                    />
+                                </label>
+
+                                {/* Card Style */}
+                                <label className="block">
+                                    <div className="mb-2 text-xs uppercase tracking-widest text-zinc-400">
+                                        Card Style <span className="text-zinc-600">(override)</span>
+                                    </div>
+                                    <select
+                                        value={form.card_style ?? ""}
+                                        onChange={(e) =>
+                                            setForm((p) => ({ ...p, card_style: e.target.value }))
+                                        }
+                                        className="w-full rounded-lg border border-zinc-800 bg-zinc-950 px-3 py-2 text-zinc-100"
+                                    >
+                                        {CARD_STYLE_OPTIONS.map((o) => (
+                                            <option key={o.value} value={o.value}>
+                                                {o.label}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    <div className="mt-1 text-[11px] text-zinc-500">
+                                        Presentation only. Does not change ownership/department.
+                                    </div>
+                                </label>
                             </div>
+
 
                             <div className="grid grid-cols-2 gap-4">
                                 {/* PUBLISHED DATE */}
@@ -408,22 +478,6 @@ export function AdminNotesPage() {
                                         <option value="archived">archived</option>
                                     </select>
                                 </div>
-                            </div>
-
-
-                            {/* READ TIME */}
-                            <div className="space-y-2">
-                                <label className="text-xs uppercase tracking-widest text-zinc-500">
-                                    Read Time (minutes)
-                                </label>
-                                <input
-                                    type="number"
-                                    min={1}
-                                    name="read_time_minutes"
-                                    value={form.read_time_minutes}
-                                    onChange={handleChange}
-                                    className="w-full rounded-lg border border-zinc-800 bg-zinc-950/40 px-3 py-2 text-zinc-100"
-                                />
                             </div>
                         </div>
 

@@ -19,6 +19,7 @@ export type LabNoteAttributes = {
     status?: "published" | "draft" | "archived";
 
     dept?: string;
+    card_style?: string;
     department_id: string;
 
     shadow_density?: number;
@@ -73,6 +74,7 @@ type ApiLabNoteIndexItem = {
 
     created_at?: string;
     updated_at?: string;
+    card_style?: string;
 };
 
 type ApiLabNoteDetail = ApiLabNoteIndexItem & {
@@ -157,6 +159,7 @@ function normalizeIndex(apiNotes: ApiLabNoteIndexItem[], requestedLocale: string
 
                 created_at: n.created_at,
                 updated_at: n.updated_at,
+                card_style: n.card_style,
             };
         })
         .filter((n) => n.status !== "archived")

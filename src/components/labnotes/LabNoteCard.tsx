@@ -84,8 +84,12 @@ export function LabNoteCard({ note, index }: Props) {
     const guestKey = getGuestKey(note as any);
     const guest = guestKey ? (GUEST_STYLES[guestKey] ?? GUEST_STYLES.copilot) : null;
 
-    const deptKey = getDeptKey(note.dept ?? note.department_id);
-    const styles = DEPT_STYLES[deptKey] ?? DEPT_STYLES.scms;
+    const styleKey = note.card_style
+        ? String(note.card_style).toLowerCase()
+        : getDeptKey(note.dept ?? note.department_id);
+
+    const styles = DEPT_STYLES[styleKey] ?? DEPT_STYLES.scms;
+
 
     const tag = note.tags?.[0] || (note.type ? String(note.type).toUpperCase() : "NOTE");
     const shadow = Math.max(0, Math.min(10, Math.round(note.shadow_density ?? 0)));
