@@ -1,8 +1,8 @@
 // src/components/labnotes/LabNotesGridSkeleton.tsx
 import React from "react";
 import { LabNoteCardSkeleton } from "@/components/labnotes/LabNoteCardSkeleton";
-import {LabNote} from "@/lib/labNotes";
-import {LabNoteCard} from "@/components/labnotes/LabNoteCard";
+import type { LabNote } from "@/lib/labNotes";
+import { LabNoteCard } from "@/components/labnotes/LabNoteCard";
 
 export function LabNotesGridSkeleton({ count = 6 }: { count?: number }) {
     return (
@@ -13,11 +13,12 @@ export function LabNotesGridSkeleton({ count = 6 }: { count?: number }) {
         </div>
     );
 }
+
 export function LabNotesGrid({ notes }: { notes: LabNote[] }) {
     return (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {notes.map((n) => (
-                <LabNoteCard key={n.id} note={n} index={0} />
+            {notes.map((n, i) => (
+                <LabNoteCard key={n.id} note={n} index={i} />
             ))}
         </div>
     );

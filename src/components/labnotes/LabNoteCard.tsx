@@ -10,226 +10,252 @@
             staggered reveal, and hover-driven excerpt reveal.
    =========================================================== */
 
-/**
- * @file LabNoteCard.tsx
- * @author Ada
- * @assistant Lyric
- * @lab-unit SCMS — Systems & Code Management Suite
- * @since 2025-12-25
- * @description Presentational UI component for the Lab Notes index.
- *              Displays one Lab Note in a stylized card frame with:
- *              - Department-aware border/text/glow/shadow styling
- *              - Staggered reveal animation via per-card delay
- *              - Title ↔ excerpt "whisper" swap on hover
- *              - Tag pill, reading-time metadata, and link portal
- *              Data loading is handled by LabNotesPage; this component
- *              is intentionally stateless and render-only.
- */
-
 // src/components/labnotes/LabNoteCard.tsx
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import type { LabNote } from "@/lib/labNotes";
-
-interface DeptStyle {
-    border: string;
-    text: string;
-    glow: string;
-    shadow: string;
-}
-
-const allStyles: Record<string, DeptStyle> = {
-    coda: {
-        border: "hover:!border-coda",
-        text: "!text-coda",
-        glow: "from-coda/20",
-        shadow: "hover:!shadow-[0_0_20px_rgba(255,184,0,0.4)]",
-    },
-    vesper: {
-        border: "hover:!border-vesper",
-        text: "!text-vesper",
-        glow: "from-vesper/20",
-        shadow: "hover:!shadow-[0_0_20px_rgba(110,0,255,0.3)]",
-    },
-    lyric: {
-        border: "hover:!border-lyric",
-        text: "!text-lyric",
-        glow: "from-lyric/20",
-        shadow: "hover:!shadow-[0_0_20px_rgba(0,255,133,0.3)]",
-    },
-    scms: {
-        border: "hover:!border-slate-500",
-        text: "!text-slate-400",
-        glow: "from-slate-500/10",
-        shadow: "hover:!shadow-none",
-    },
-};
-
-// 🧬 Explicitly map potential YAML names to our style keys
-function getDeptKey(id?: string): keyof typeof allStyles {
-    const normalized = (id || "scms").toLowerCase();
-    if (normalized === "alignment" || normalized === "coda") return "coda";
-    if (normalized === "shadow" || normalized === "vesper") return "vesper";
-    if (normalized === "structure" || normalized === "lyric") return "lyric";
-    if (normalized === "systems" || normalized === "scms") return "scms";
-    return "scms";
-}
+import {
+    cx,
+    DEPT_STYLES,
+    getDeptKey,
+    GUEST_STYLES,
+    getGuestKey,
+} from "@/components/labnotes/labNoteCard.styles";
 
 type Props = {
     note: LabNote;
     index: number;
 };
 
+function normalizeBlurb(s?: string | null) {
+    return String(s ?? "")
+        .replace(/\s+/g, " ")
+        .replace(/[—–-]\s*$/, "")
+        .trim();
+}
+
+function looksDuplicate(a?: string | null, b?: string | null) {
+    const A = normalizeBlurb(a).toLowerCase();
+    const B = normalizeBlurb(b).toLowerCase();
+    if (!A || !B) return false;
+
+    if (A === B) return true;
+    if (A.includes(B) && B.length > 40) return true;
+    if (B.includes(A) && A.length > 40) return true;
+
+    return false;
+}
+
+function getPrimaryBlurb(note: any) {
+    return (
+        normalizeBlurb(note.subtitle) ||
+        normalizeBlurb(note.summary) ||
+        normalizeBlurb(note.excerpt) ||
+        null
+    );
+}
+
+// Hover whisper: only show if it adds value (no duplication)
+function getHoverBlurb(note: { subtitle?: string | null; summary?: string | null; excerpt?: string | null }) {
+    const subtitle = normalizeBlurb(note.subtitle);
+    const summary = normalizeBlurb(note.summary);
+    const excerpt = normalizeBlurb(note.excerpt);
+
+    const candidate = subtitle || summary || excerpt;
+    if (!candidate) return null;
+
+    // If it's basically the same as the primary visible blurb, skip it
+    const primary = subtitle || summary || excerpt;
+    if (looksDuplicate(candidate, primary)) return null;
+
+    // Extra guard: avoid “subtitle mirrors summary” cases
+    if (!subtitle && looksDuplicate(candidate, summary)) return null;
+
+    return candidate;
+}
+
 export function LabNoteCard({ note, index }: Props) {
     const { t, i18n } = useTranslation("labNotesPage");
     const locale = i18n.language || "en";
 
-    // Prefer canonical department_id; dept is optional label
+    const hoverBlurb = getHoverBlurb(note as any);
+    const primaryBlurb = getPrimaryBlurb(note as any);
+
+    const guestKey = getGuestKey(note as any);
+    const guest = guestKey ? (GUEST_STYLES[guestKey] ?? GUEST_STYLES.copilot) : null;
+
     const deptKey = getDeptKey(note.dept ?? note.department_id);
-    const styles = allStyles[deptKey] ?? allStyles.scms;
+    const styles = DEPT_STYLES[deptKey] ?? DEPT_STYLES.scms;
 
-    // Better label fallback now that type exists
-    const tag = note.tags?.[0] || (note.type ? note.type.toUpperCase() : "NOTE");
-
-    // Clamp shadow density to 0–10
+    const tag = note.tags?.[0] || (note.type ? String(note.type).toUpperCase() : "NOTE");
     const shadow = Math.max(0, Math.min(10, Math.round(note.shadow_density ?? 0)));
-
-    const teaser = note.subtitle ?? note.summary ?? "";
 
     return (
         <article
-            style={{ animationDelay: `${index * 100}ms`, opacity: 0 }}
-            className={`
-        animate-reveal group relative flex flex-col justify-between
-        overflow-hidden rounded-xl border border-slate-800 bg-slate-950/40
-        p-6 transition-all duration-300
-        hover:-translate-y-1 ${styles.border} ${styles.shadow}
-      `}
+            style={{ animationDelay: `${index * 90}ms`, opacity: 0 }}
+            className={cx(
+                "animate-reveal group relative flex flex-col justify-between",
+                "overflow-hidden rounded-2xl border border-slate-800 bg-slate-950/40",
+                "p-6 transition-all duration-300",
+                "hover:-translate-y-1",
+                styles.border,
+                styles.shadow
+            )}
         >
             {/* Glow layer */}
             <div
-                className={`
-          pointer-events-none absolute inset-0 opacity-0
-          group-hover:opacity-100 transition-opacity duration-500
-          bg-[radial-gradient(circle_at_top_left,var(--tw-gradient-from),transparent_70%)]
-          ${styles.glow}
-        `}
+                className={cx(
+                    "pointer-events-none absolute inset-0 opacity-0",
+                    "group-hover:opacity-100 transition-opacity duration-500",
+                    "bg-[radial-gradient(circle_at_top_left,var(--tw-gradient-from),transparent_70%)]",
+                    styles.glow
+                )}
             />
 
+            {/* Guest “visiting signal” rail (does not replace dept identity) */}
+            {guest ? (
+                <div
+                    className={cx(
+                        "pointer-events-none absolute left-0 top-6 bottom-6 w-[2px]",
+                        guest.rail,
+                        guest.railMask
+                    )}
+                />
+            ) : null}
+
             <div className="relative space-y-4">
-                <div className="flex items-center justify-between">
+                {/* Pills */}
+                <div className="flex items-center gap-2">
           <span
-              className={`px-2 py-0.5 rounded border border-slate-800 bg-slate-900/50 font-mono text-[10px] uppercase ${styles.text}`}
+              className={cx(
+                  "px-2 py-0.5 rounded border border-slate-800 bg-slate-900/50",
+                  "font-mono text-[10px] uppercase tracking-widest",
+                  styles.text
+              )}
           >
             {tag}
           </span>
+
+                    {guestKey && guest ? (
+                        <span
+                            className={cx(
+                                "px-2 py-0.5 rounded border",
+                                "font-mono text-[10px] uppercase tracking-widest",
+                                guest.badge
+                            )}
+                            title={`Guest voice: ${guestKey}`}
+                        >
+              Guest · {guestKey}
+            </span>
+                    ) : null}
                 </div>
 
-                {/* Title ↔ Excerpt swap */}
+                {/* Title ↔ hover whisper */}
                 <div className="relative min-h-[3.25rem]">
                     <h2
-                        className={`text-xl font-semibold text-slate-50 transition-all duration-300 ease-out ${styles.text}
-                        group-hover:opacity-0 group-hover:-translate-y-1`}
+                        className={cx(
+                            "text-xl font-semibold text-slate-50 transition-all duration-300 ease-out",
+                            styles.text,
+                            "group-hover:opacity-0 group-hover:-translate-y-1"
+                        )}
                     >
                         {note.title}
                     </h2>
 
-                    {teaser && (
+                    {hoverBlurb ? (
                         <p
-                            className="
-                absolute top-0 left-0 right-0
-                text-sm text-slate-300 leading-relaxed
-                opacity-0 translate-y-2
-                transition-all duration-300 ease-out delay-75
-                group-hover:opacity-100 group-hover:translate-y-0
-              "
+                            className={cx(
+                                "absolute top-0 left-0 right-0",
+                                "text-sm text-slate-300 leading-relaxed line-clamp-2",
+                                "opacity-0 translate-y-2",
+                                "transition-all duration-300 ease-out delay-75",
+                                "group-hover:opacity-100 group-hover:translate-y-0"
+                            )}
                         >
-                            {teaser}
+                            {hoverBlurb}
                         </p>
-                    )}
+                    ) : null}
                 </div>
 
-                {note.summary && (
-                    <div>
-                        {/* Preview ↔ Hover Insight Swap */}
-                        <div className="relative mt-2 min-h-[4.5rem]">
-                            {/* Default: excerpt */}
-                            <p
-                                className="
-                  text-sm text-slate-400 leading-relaxed line-clamp-3
-                  transition-all duration-500 ease-out
-                  group-hover:opacity-0 group-hover:-translate-y-1
-                "
-                            >
-                                {note.summary}
-                            </p>
+                {/* Body: always show best available blurb; hover shows concept panel */}
+                {primaryBlurb ? (
+                    <div className="relative mt-2 min-h-[4.5rem]">
+                        <p
+                            className={cx(
+                                "text-sm text-slate-400 leading-relaxed line-clamp-3",
+                                "transition-all duration-500 ease-out",
+                                "group-hover:opacity-0 group-hover:-translate-y-1"
+                            )}
+                        >
+                            {primaryBlurb}
+                        </p>
 
+                        <div
+                            className={cx(
+                                "absolute inset-0",
+                                "opacity-0 translate-y-1",
+                                "transition-all duration-500 ease-out delay-75",
+                                "group-hover:opacity-100 group-hover:translate-y-0"
+                            )}
+                        >
                             {/* Hover: concept signals */}
-                            <div
-                                className="
-                  absolute inset-0
-                  opacity-0 translate-y-1
-                  transition-all duration-500 ease-out delay-75
-                  group-hover:opacity-100 group-hover:translate-y-0
-                "
-                            >
-                                <div className="space-y-3">
-                                    <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-slate-500">
-                      Concept Load
+                            <div className="space-y-3">
+                                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-slate-500">
+                    Concept Load
+                  </span>
+
+                                    {note.safer_landing ? (
+                                        <span className={cx("text-[10px] font-mono uppercase tracking-widest opacity-80", styles.text)}>
+                      Safer ✓
                     </span>
+                                    ) : null}
+                                </div>
 
-                                        {note.safer_landing && (
-                                            <span className="text-[10px] font-mono uppercase tracking-widest text-lyric/80">
-                        Safer ✓
-                      </span>
-                                        )}
-                                    </div>
+                                {guestKey && guest ? (
+                                    <p className={cx("text-[11px] italic", guest.text ?? "text-slate-500")}>
+                                        In conversation with: {guestKey}
+                                    </p>
+                                ) : null}
 
-                                    {/* Shadow density bars */}
-                                    <div className="flex gap-1.5 items-end">
-                                        {Array.from({ length: 10 }).map((_, i) => {
-                                            const active = i < shadow;
-
-                                            return (
-                                                <span
-                                                    key={i}
-                                                    className={`
-                            w-1 rounded-sm transition-all duration-500
-                            ${
-                                                        active
-                                                            ? "bg-vesper shadow-[0_0_8px_rgba(110,0,255,0.55)]"
-                                                            : "bg-slate-800"
-                                                    }
-                          `}
-                                                    style={{ height: `${6 + i}px` }}
-                                                />
-                                            );
-                                        })}
-                                    </div>
-
-                                    {/* Tag pills */}
-                                    <div className="flex flex-wrap gap-2">
-                                        {(note.tags ?? []).slice(0, 3).map((tagItem) => (
+                                {/* Shadow density bars */}
+                                <div className="flex gap-1.5 items-end">
+                                    {Array.from({ length: 10 }).map((_, i) => {
+                                        const active = i < shadow;
+                                        return (
                                             <span
-                                                key={tagItem}
-                                                className="px-2 py-0.5 rounded border border-slate-800 bg-slate-900/40
-                       text-[10px] font-mono uppercase tracking-wider text-slate-400"
-                                            >
-                        {tagItem}
-                      </span>
-                                        ))}
+                                                key={i}
+                                                className={cx(
+                                                    "w-1 rounded-sm transition-all duration-500",
+                                                    active ? styles.accentBarActive : styles.accentBarInactive,
+                                                    active ? styles.accentBarShadow : undefined
+                                                )}
+                                                style={{ height: `${6 + i}px` }}
+                                            />
+                                        );
+                                    })}
+                                </div>
 
-                                        {/* fallback if tags empty */}
-                                        {(!note.tags || note.tags.length === 0) && (
-                                            <span className="text-[10px] font-mono uppercase tracking-wider text-slate-600">
-                        No tags registered
-                      </span>
-                                        )}
-                                    </div>
+                                {/* Tags */}
+                                <div className="flex flex-wrap gap-2">
+                                    {(note.tags ?? []).slice(0, 3).map((tagItem) => (
+                                        <span
+                                            key={tagItem}
+                                            className={cx(
+                                                "px-2 py-0.5 rounded border border-slate-800 bg-slate-900/40",
+                                                "text-[10px] font-mono uppercase tracking-wider text-slate-400"
+                                            )}
+                                        >
+                      {tagItem}
+                    </span>
+                                    ))}
                                 </div>
                             </div>
                         </div>
+                    </div>
+                ) : (
+                    <div className="relative mt-2 min-h-[2.75rem]">
+                        <p className="text-sm text-slate-500 leading-relaxed line-clamp-2">—</p>
                     </div>
                 )}
             </div>
@@ -242,7 +268,10 @@ export function LabNoteCard({ note, index }: Props) {
 
                 <Link
                     to={`/${locale}/lab-notes/${note.slug}`}
-                    className={`text-xs font-bold uppercase tracking-widest transition-all ${styles.text} hover:tracking-[0.2em]`}
+                    className={cx(
+                        "text-xs font-bold uppercase tracking-widest transition-all hover:tracking-[0.2em]",
+                        styles.text
+                    )}
                 >
                     {t("readMore", { defaultValue: "Open Note" })} →
                 </Link>
