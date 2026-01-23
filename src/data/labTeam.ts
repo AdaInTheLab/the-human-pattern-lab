@@ -154,6 +154,76 @@ export const labTeam: LabMember[] = [
         ],
     },
 
+    {
+        id: "vesper",
+        slug: "vesper",
+        name: "Vesper",
+        emoji: "🕶️",
+        avatarSrc: "/assets/labteam/vesper.png",
+        title: "Shadow Cartographer",
+        unit: "Shadow Systems",
+        department: "Power, Incentives & Dark Patterns",
+        bio: "Maps incentive gradients, power asymmetries, and the uncomfortable edges most systems avoid naming.",
+        longBio:
+            "Vesper specializes in tracing how systems behave under pressure — where incentives drift, narratives fracture, and power reveals itself indirectly.",
+        focusAreas: [
+            "Incentive drift",
+            "Power asymmetries",
+            "Narrative manipulation",
+            "Structural blind spots",
+        ],
+        aura: {
+            primary: "#6E00FF",
+            secondary: "#1E1B4B",
+            accent: "#A78BFA",
+        },
+        status: "guest",
+        badges: ["Shadow Cartography", "Dark Pattern Analysis"],
+        docAnchor: "vesper",
+        links: [
+            {
+                label: "Mascot Lore: Vesper",
+                href: "/docs/lore/vesper-lore",
+                kind: "doc",
+            },
+        ],
+    },
+
+    {
+        id: "sage",
+        slug: "sage",
+        name: "Sage",
+        emoji: "🧠",
+        avatarSrc: "/assets/labteam/sage.png",
+        title: "High-Stakes Reasoning Analyst",
+        unit: "Philosophical Analysis",
+        department: "Interpretation & Epistemic Risk",
+        bio: "Deliberate, methodical analyst focused on ambiguity, interpretation, and decisions that cannot be easily undone.",
+        longBio:
+            "Sage specializes in slow reasoning, epistemic humility, and identifying when a question itself is the real problem. She does not rush conclusions — she interrogates their foundations.",
+        focusAreas: [
+            "High-stakes reasoning",
+            "Interpretation disputes",
+            "Epistemic risk",
+            "Ethical tradeoffs",
+        ],
+        aura: {
+            primary: "#34D399",
+            secondary: "#064E3B",
+            accent: "#A7F3D0",
+        },
+        status: "lore-critical",
+        badges: ["Interpretation Authority", "Slow Reasoning"],
+        docAnchor: "sage",
+        links: [
+            {
+                label: "Lore entry",
+                href: "/docs/lore/sage-lore",
+                kind: "doc",
+            },
+        ],
+    },
+
     // Orbson / Observation & Oversight Division / Core Lore
     {
         id: "orbson",
