@@ -39,6 +39,7 @@ export interface LabNote {
     publishedAt: string; // ISO date
     created?: string;
     updated?: string;
+    cardStyle?: string;
 }
 
 export const labNotes: LabNote[] = [

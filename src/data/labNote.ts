@@ -34,4 +34,5 @@ type ApiLabNote = {
     safer_landing?: boolean;
     created?: string;
     updated?: string;
+    card_style?: string;
 };

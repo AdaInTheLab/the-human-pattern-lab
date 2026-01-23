@@ -25,6 +25,7 @@ export interface LabNote {
     status?: LabNoteStatus;       // NEW (can be derived server-side)
     type?: LabNoteType;           // NEW
     dept?: string;                // NEW (human readable)
+    card_style?: string;
     department_id: string;
     locale?: "en" | "ko";         // NEW
 
