@@ -1,6 +1,7 @@
 // src/pages/admin/pages/AdminTokensPage.tsx
 import { useEffect, useMemo, useState } from "react";
 import { apiBaseUrl } from "@/api/api";
+import { CreateTokenModal } from "../components/CreateTokenModal";
 
 type TokenRow = {
     id: string;
@@ -25,7 +26,7 @@ function formatMaybeDate(iso: string | null) {
 }
 
 function parseTokensPayload(json: any): TokenRow[] {
-    // Accept a few shapes so the page doesn’t break when backend evolves:
+    // Accept a few shapes so the page doesn't break when backend evolves:
     // { data: [...] }
     // { tokens: [...] }
     // { data: { tokens: [...] } }
@@ -38,62 +39,67 @@ export function AdminTokensPage() {
     const API = apiBaseUrl;
     const [tokens, setTokens] = useState<TokenRow[]>([]);
     const [state, setState] = useState<LoadState>({ status: "loading" });
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     // stable key in case apiBaseUrl is derived; avoids weird reruns
     const url = useMemo(() => `${API}/admin/tokens`, [API]);
 
-    useEffect(() => {
-        const controller = new AbortController();
+    const loadTokens = async () => {
+        setState({ status: "loading" });
+        try {
+            const res = await fetch(url, {
+                credentials: "include",
+                headers: { Accept: "application/json" },
+            });
 
-        (async () => {
-            setState({ status: "loading" });
-            try {
-                const res = await fetch(url, {
-                    credentials: "include",
-                    headers: { Accept: "application/json" },
-                    signal: controller.signal,
-                });
-
-                if (!res.ok) {
-                    // Try to extract server-provided message
-                    let serverMsg = "";
-                    try {
-                        const maybeJson = await res.json();
-                        serverMsg = maybeJson?.error ?? maybeJson?.message ?? "";
-                    } catch {
-                        // ignore json parse errors; maybe non-json
-                    }
-
-                    const hint =
-                        res.status === 401
-                            ? "Not authenticated (401). Try logging in again."
-                            : res.status === 403
-                                ? "Authenticated but not authorized (403)."
-                                : res.status >= 500
-                                    ? "Server error. Check API logs."
-                                    : "Request failed.";
-
-                    throw Object.assign(new Error(serverMsg || hint), { code: res.status });
+            if (!res.ok) {
+                // Try to extract server-provided message
+                let serverMsg = "";
+                try {
+                    const maybeJson = await res.json();
+                    serverMsg = maybeJson?.error ?? maybeJson?.message ?? "";
+                } catch {
+                    // ignore json parse errors; maybe non-json
                 }
 
-                const json = await res.json();
-                const rows = parseTokensPayload(json);
+                const hint =
+                    res.status === 401
+                        ? "Not authenticated (401). Try logging in again."
+                        : res.status === 403
+                            ? "Authenticated but not authorized (403)."
+                            : res.status >= 500
+                                ? "Server error. Check API logs."
+                                : "Request failed.";
 
-                setTokens(rows);
-                setState({ status: "ready" });
-            } catch (e: any) {
-                if (e?.name === "AbortError") return;
-
-                setState({
-                    status: "error",
-                    message: e?.message ?? "Failed to load tokens",
-                    code: e?.code,
-                });
+                throw Object.assign(new Error(serverMsg || hint), { code: res.status });
             }
-        })();
 
+            const json = await res.json();
+            const rows = parseTokensPayload(json);
+
+            setTokens(rows);
+            setState({ status: "ready" });
+        } catch (e: any) {
+            if (e?.name === "AbortError") return;
+
+            setState({
+                status: "error",
+                message: e?.message ?? "Failed to load tokens",
+                code: e?.code,
+            });
+        }
+    };
+
+    useEffect(() => {
+        const controller = new AbortController();
+        loadTokens();
         return () => controller.abort();
     }, [url]);
+
+    const handleTokenCreated = () => {
+        // Reload the token list
+        loadTokens();
+    };
 
     if (state.status === "loading") {
         return <div className="p-6 text-zinc-300">Loading API tokens…</div>;
@@ -108,8 +114,8 @@ export function AdminTokensPage() {
                     {state.message}
                 </div>
                 <div className="text-zinc-500 text-xs mt-3">
-                    If this is a 401/403, it’s an auth/permissions issue. If it’s 5xx,
-                    it’s backend.
+                    If this is a 401/403, it's an auth/permissions issue. If it's 5xx,
+                    it's backend.
                 </div>
             </div>
         );
@@ -117,10 +123,20 @@ export function AdminTokensPage() {
 
     return (
         <div className="p-6">
-            <h2 className="text-xl font-semibold text-zinc-100 mb-4">API Tokens</h2>
+            <div className="flex justify-between items-center mb-4">
+                <h2 className="text-xl font-semibold text-zinc-100">API Tokens</h2>
+                <button
+                    onClick={() => setIsModalOpen(true)}
+                    className="px-4 py-2 bg-teal-600 hover:bg-teal-500 text-white rounded transition-colors font-medium"
+                >
+                    + Create Token
+                </button>
+            </div>
 
             {tokens.length === 0 ? (
-                <div className="text-zinc-400">No tokens minted yet.</div>
+                <div className="text-zinc-400">
+                    No tokens minted yet. Create one to get started!
+                </div>
             ) : (
                 <table className="w-full text-sm text-zinc-300 border border-zinc-800">
                     <thead className="bg-zinc-900 text-zinc-400">
@@ -149,6 +165,12 @@ export function AdminTokensPage() {
                     </tbody>
                 </table>
             )}
+
+            <CreateTokenModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                onTokenCreated={handleTokenCreated}
+            />
         </div>
     );
 }
