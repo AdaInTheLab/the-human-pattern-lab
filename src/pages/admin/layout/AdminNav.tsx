@@ -4,6 +4,7 @@ const NAV_ITEMS = [
     { label: "Dashboard", path: "/admin/dashboard" },
     { label: "Lab Notes", path: "/admin/notes" },
     { label: "API Tokens", path: "/admin/tokens" },
+    { label: "Relays", path: "/admin/relays" },
     { label: "API Docs", path: "/admin/docs" },
 
     // Future controls
