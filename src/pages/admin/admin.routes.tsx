@@ -11,6 +11,7 @@ import { AdminDashboardPage } from "@/pages/admin/pages/AdminDashboardPage";
 import { AdminNotesPage } from "@/pages/admin/pages/AdminNotesPage";
 import AdminApiDocsPage from "@/pages/admin/AdminApiDocsPage";
 import { AdminTokensPage } from "@/pages/admin/pages/AdminTokensPage";
+import { AdminRelaysPage } from "@/pages/admin/pages/AdminRelaysPage";
 
 function PageLoader() {
     return <div className="p-6 text-slate-300">Loading…</div>;
@@ -50,6 +51,7 @@ export const adminRoutes = [
                             { path: "dashboard", element: <AdminDashboardPage /> },
                             { path: "notes", element: <AdminNotesPage /> },
                             { path: "tokens", element: <AdminTokensPage /> },
+                            { path: "relays", element: <AdminRelaysPage /> },
                             { path: "docs", element: <AdminApiDocsPage /> },
                             { path: "*", element: <Navigate to="dashboard" replace /> },
                         ],
