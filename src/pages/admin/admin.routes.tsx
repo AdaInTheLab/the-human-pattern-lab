@@ -9,6 +9,8 @@ import { AdminLoginPage } from "@/pages/admin/pages/AdminLoginPage";
 import { AdminDeniedPage } from "@/pages/admin/pages/AdminDeniedPage";
 import { AdminDashboardPage } from "@/pages/admin/pages/AdminDashboardPage";
 import { AdminNotesPage } from "@/pages/admin/pages/AdminNotesPage";
+import { AdminNotebookPage } from "@/pages/admin/pages/AdminNotebookPage";
+import { AdminTailsPage } from "@/pages/admin/pages/AdminTailsPage";
 import AdminApiDocsPage from "@/pages/admin/AdminApiDocsPage";
 import { AdminTokensPage } from "@/pages/admin/pages/AdminTokensPage";
 import { AdminRelaysPage } from "@/pages/admin/pages/AdminRelaysPage";
@@ -49,6 +51,8 @@ export const adminRoutes = [
                         children: [
                             { index: true, element: <Navigate to="dashboard" replace /> },
                             { path: "dashboard", element: <AdminDashboardPage /> },
+                            { path: "notebook", element: <AdminNotebookPage /> },
+                            { path: "tails", element: <AdminTailsPage /> },
                             { path: "notes", element: <AdminNotesPage /> },
                             { path: "tokens", element: <AdminTokensPage /> },
                             { path: "relays", element: <AdminRelaysPage /> },

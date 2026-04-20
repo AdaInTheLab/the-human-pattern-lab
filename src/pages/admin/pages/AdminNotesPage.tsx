@@ -1,42 +1,72 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { Plus } from "lucide-react";
 import { apiBaseUrl } from "@/api/api";
 import { Panel } from "../components/Panel";
 import {SyncLabNotesPanel} from "@/pages/admin/components/SyncLabNotesPanel";
+import { MarkdownEditor } from "@/pages/admin/components/MarkdownEditor.lazy";
+import { NoteCard } from "@/pages/admin/components/NoteCard";
+import { useToast } from "@/pages/admin/components/Toast";
+import { slugify } from "@/pages/admin/utils/slugify";
+import { Drawer } from "@/pages/admin/components/Drawer";
+import { RevisionHistory } from "@/pages/admin/components/RevisionHistory";
 
-export function AdminNotesPage() {
+type NoteType = "labnote" | "paper" | "memo" | "lore" | "weather" | "tail";
+
+type AdminNotesPageProps = {
+    /** When set, list is filtered to this type, form locks to it, and the type field is hidden. */
+    fixedType?: NoteType;
+    /** Header overrides for scoped views (e.g. "Notebook"). */
+    heading?: string;
+    eyebrow?: string;
+};
+
+const blankFormFor = (fixedType?: NoteType) => ({
+    id: "",
+    title: "",
+    subtitle: "",
+    slug: "",
+    locale: "en",
+    type: fixedType ?? "labnote",
+    status: "draft",
+
+    department_id: "SCMS",
+    dept: "",
+    card_style: "",
+
+    category: "",
+    excerpt: "",
+    summary: "",
+
+    content_markdown: "",
+
+    shadow_density: 4,
+    coherence_score: 1.0,
+    safer_landing: true,
+    read_time_minutes: 5,
+    published_at: new Date().toISOString().split("T")[0],
+});
+
+export function AdminNotesPage({ fixedType, heading, eyebrow }: AdminNotesPageProps = {}) {
     const navigate = useNavigate();
+    const toast = useToast();
     const API = apiBaseUrl;
+    const formRef = useRef<HTMLFormElement | null>(null);
 
     const [notes, setNotes] = useState<any[]>([]);
-    const [form, setForm] = useState({
-        id: "",
-        title: "",
-        subtitle: "",
-        slug: "",
-        locale: "en",
-        type: "labnote",
-        status: "draft",
-
-        department_id: "SCMS",
-        dept: "",
-        card_style: "",
-
-        category: "",
-        excerpt: "",
-        summary: "",
-
-        content_markdown: "",
-
-        shadow_density: 4,
-        coherence_score: 1.0,
-        safer_landing: true,
-        read_time_minutes: 5,
-        published_at: new Date().toISOString().split("T")[0],
-    });
+    const [form, setForm] = useState(blankFormFor(fixedType));
+    const [baseline, setBaseline] = useState(blankFormFor(fixedType));
+    const [slugTouched, setSlugTouched] = useState(false);
+    const [drawerOpen, setDrawerOpen] = useState(false);
+    const [revisionsRefreshKey, setRevisionsRefreshKey] = useState(0);
 
     const [editingId, setEditingId] = useState<string | null>(null);
     const isEditing = Boolean(editingId);
+
+    const isDirty = useMemo(
+        () => JSON.stringify(form) !== JSON.stringify(baseline),
+        [form, baseline]
+    );
 
     const refreshNotes = async () => {
         const res = await fetch(`${API}/admin/notes`, { credentials: "include" });
@@ -60,16 +90,59 @@ export function AdminNotesPage() {
         setNotes(list);
     };
 
+    const filteredNotes = useMemo(
+        () => (fixedType ? notes.filter((n) => n?.type === fixedType) : notes),
+        [notes, fixedType]
+    );
+
     useEffect(() => {
-        console.log("API base:", API);
         refreshNotes().catch(() => navigate("/admin/login"));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [API, navigate]);
+
+    // Unsaved changes guard
+    useEffect(() => {
+        if (!isDirty) return;
+        const handler = (e: BeforeUnloadEvent) => {
+            e.preventDefault();
+            e.returnValue = "";
+        };
+        window.addEventListener("beforeunload", handler);
+        return () => window.removeEventListener("beforeunload", handler);
+    }, [isDirty]);
+
+    // Cmd/Ctrl+S submits the form (only when the drawer is open)
+    useEffect(() => {
+        if (!drawerOpen) return;
+        const onKey = (e: KeyboardEvent) => {
+            if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "s") {
+                if (!formRef.current) return;
+                e.preventDefault();
+                formRef.current.requestSubmit();
+            }
+        };
+        window.addEventListener("keydown", onKey);
+        return () => window.removeEventListener("keydown", onKey);
+    }, [drawerOpen]);
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
         const { name, value } = e.target;
+
+        if (name === "title") {
+            setForm((prev) => ({
+                ...prev,
+                title: value,
+                // Auto-generate slug while creating + slug untouched
+                slug: !slugTouched && !isEditing ? slugify(value) : prev.slug,
+            }));
+            return;
+        }
+
+        if (name === "slug") {
+            setSlugTouched(true);
+        }
 
         setForm((prev) => ({
             ...prev,
@@ -78,32 +151,29 @@ export function AdminNotesPage() {
     };
 
     const resetForm = () => {
-        setForm({
-            id: "",
-            title: "",
-            subtitle: "",
-            slug: "",
-            locale: "en",
-            type: "labnote",
-            status: "draft",
-
-            department_id: "SCMS",
-            dept: "",
-            card_style: "",
-
-            category: "",
-            excerpt: "",
-            summary: "",
-
-            content_markdown: "",
-
-            shadow_density: 4,
-            coherence_score: 1.0,
-            safer_landing: true,
-            read_time_minutes: 5,
-            published_at: new Date().toISOString().split("T")[0],
-        });
+        const blank = blankFormFor(fixedType);
+        setForm(blank);
+        setBaseline(blank);
+        setSlugTouched(false);
         setEditingId(null);
+    };
+
+    const openForNew = () => {
+        resetForm();
+        setDrawerOpen(true);
+    };
+
+    const closeDrawer = () => {
+        resetForm();
+        setDrawerOpen(false);
+    };
+
+    const requestCloseDrawer = () => {
+        if (isDirty) {
+            const ok = window.confirm("Discard unsaved changes?");
+            if (!ok) return false;
+        }
+        closeDrawer();
     };
 
     const CARD_STYLE_OPTIONS = [
@@ -135,12 +205,14 @@ export function AdminNotesPage() {
         if (!res.ok) {
             const t = await res.text();
             console.error("Save failed:", res.status, t);
-            alert(`Save failed (${res.status}). Check console.`);
+            toast.error(`Save failed (${res.status})`, "Check console for details.");
             return;
         }
 
+        toast.success(isEditing ? "Note updated" : "Note created", form.title || form.slug);
         await refreshNotes();
-        resetForm();
+        setRevisionsRefreshKey((k) => k + 1);
+        closeDrawer();
     };
 
     const handleEdit = async (note: any) => {
@@ -151,13 +223,13 @@ export function AdminNotesPage() {
         );
         const full = res.ok ? await res.json() : note;
 
-        setForm({
+        const nextForm = {
             id: full.id ?? "",
             title: full.title ?? "",
             subtitle: full.subtitle ?? "",
             slug: full.slug ?? "",
             locale: full.locale ?? "en",
-            type: full.type ?? "labnote",
+            type: fixedType ?? full.type ?? "labnote",
             status: full.status ?? "draft",
 
             department_id: full.department_id ?? "SCMS",
@@ -175,14 +247,16 @@ export function AdminNotesPage() {
             safer_landing: Boolean(full.safer_landing ?? true),
             read_time_minutes: Number(full.read_time_minutes ?? 5),
             published_at: (full.published_at ?? new Date().toISOString()).split("T")[0],
-        });
+        };
+        setForm(nextForm);
+        setBaseline(nextForm);
+        setSlugTouched(true);
 
         setEditingId(full.id);
+        setDrawerOpen(true);
     };
 
-    const handleDelete = async (id: string) => {
-        if (!confirm("Delete this note?")) return;
-
+    const handleDelete = async (id: string, label?: string) => {
         const res = await fetch(`${API}/admin/notes/${id}`, {
             method: "DELETE",
             credentials: "include",
@@ -191,7 +265,12 @@ export function AdminNotesPage() {
         if (res.status === 401) return navigate("/admin/login");
         if (res.status === 403) return navigate("/admin/denied");
 
-        if (res.ok) await refreshNotes();
+        if (res.ok) {
+            toast.success("Note deleted", label);
+            await refreshNotes();
+        } else {
+            toast.error("Delete failed", `Status ${res.status}`);
+        }
     };
 
     const handleNotesSync = async () => {
@@ -207,10 +286,11 @@ export function AdminNotesPage() {
         if (!res.ok) {
             const t = await res.text();
             console.error("Import failed:", t);
-            alert("Import failed. Check console.");
+            toast.error("Markdown sync failed", "Check console for details.");
             return;
         }
 
+        toast.success("Markdown sync complete");
         await refreshNotes();
     };
 
@@ -221,96 +301,78 @@ export function AdminNotesPage() {
     return (
         <div className="space-y-6">
             {/* Header */}
-            <div className="space-y-2">
-                <h1 className="text-3xl font-semibold tracking-wide text-cyan-300">
-                    Shadow Fox Den
-                </h1>
-                <p className="text-sm uppercase tracking-widest text-zinc-500">
-                    Lab Notes — Control Room
-                </p>
+            <div className="flex flex-wrap items-start justify-between gap-4">
+                <div className="space-y-2">
+                    <h1 className="text-3xl font-semibold tracking-wide text-cyan-300">
+                        {heading ?? "Shadow Fox Den"}
+                    </h1>
+                    <p className="text-sm uppercase tracking-widest text-zinc-500">
+                        {eyebrow ?? "Lab Notes — Control Room"}
+                    </p>
+                </div>
+                <button
+                    type="button"
+                    onClick={openForNew}
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-cyan-500/40 bg-cyan-500/10 px-3.5 py-2 text-sm font-medium text-cyan-200 hover:bg-cyan-500/20"
+                >
+                    <Plus aria-hidden className="h-4 w-4" />
+                    {fixedType === "labnote" ? "New Note" : "New"}
+                </button>
             </div>
             <SyncLabNotesPanel />
-            <Panel title="Notes">
-                <div className="-mx-4 -mb-4 overflow-x-auto">
-                    <table className="w-full text-sm">
-                        <thead className="border-b border-zinc-800 bg-zinc-900/40">
-                        <tr className="text-left">
-                            {[
-                                "Title",
-                                "Slug",
-                                "Dept",
-                                "Type",
-                                "Status",
-                                "Published",
-                                "Actions",
-                            ].map((label) => (
-                                <th
-                                    key={label}
-                                    className="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-zinc-400 hover:text-zinc-200"
-                                >
-        <span className="inline-flex items-center gap-1">
-          {label}
-            {label !== "Actions" && (
-                <span className="opacity-40 select-none">↕</span>
-            )}
-        </span>
-                                </th>
-                            ))}
-                        </tr>
-                        </thead>
-
-                        <tbody className="divide-y divide-zinc-800/60">
-                        {notes.length === 0 ? (
-                            <tr>
-                                <td className="px-4 py-4 text-zinc-500" colSpan={7}>
-                                    No notes found.
-                                </td>
-                            </tr>
-                        ) : (
-                            notes.map((n) => (
-                                <tr key={n.id} className="hover:bg-zinc-900/30">
-                                    <td className="px-4 py-3 text-zinc-100">
-                                        {n.title ?? <span className="text-zinc-500">(untitled)</span>}
-                                        {n.locale ? (
-                                            <span className="ml-2 text-xs text-zinc-500">[{n.locale}]</span>
-                                        ) : null}
-                                    </td>
-                                    <td className="px-4 py-3 font-mono text-zinc-300">{n.slug}</td>
-                                    <td className="px-4 py-3 text-zinc-300">{n.department_id ?? "—"}</td>
-                                    <td className="px-4 py-3 text-zinc-300">{n.type ?? "—"}</td>
-                                    <td className="px-4 py-3 text-zinc-300">{n.status ?? "—"}</td>
-                                    <td className="px-4 py-3 text-zinc-300">{n.published_at ?? "—"}</td>
-
-                                    <td className="px-4 py-3 text-right">
-                                        <div className="inline-flex gap-2">
-                                            <button
-                                                type="button"
-                                                onClick={() => handleEdit(n)}
-                                                className="rounded-md border bg-cyan-500/10 px-3 py-1 text-cyan-300 hover:bg-cyan-500/20"
-                                            >
-                                                Edit
-                                            </button>
-                                            <button
-                                                type="button"
-                                                onClick={() => handleDelete(n.id)}
-                                                className="rounded-md border border-red-500/20 bg-red-500/10 px-3 py-1 text-red-300 hover:bg-red-500/20"
-                                            >
-                                                Delete
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ))
-                        )}
-                        </tbody>
-                    </table>
-                </div>
+            <Panel title={`Notes (${filteredNotes.length})`}>
+                {filteredNotes.length === 0 ? (
+                    <p className="text-sm text-zinc-500">No notes found.</p>
+                ) : (
+                    <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+                        {filteredNotes.map((n) => (
+                            <NoteCard
+                                key={n.id}
+                                note={n}
+                                onEdit={() => handleEdit(n)}
+                                onDelete={() => handleDelete(n.id, n.title ?? n.slug)}
+                            />
+                        ))}
+                    </div>
+                )}
             </Panel>
 
-            {/* Editor */}
-            <Panel title={editingId ? "Edit Note" : "New Note"} >
-                <Panel title={editingId ? "Edit Note" : "New Note"}>
-                    <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Editor drawer */}
+            <Drawer
+                open={drawerOpen}
+                onClose={closeDrawer}
+                onRequestClose={requestCloseDrawer}
+                eyebrow={fixedType === "labnote" ? "Notebook" : "Note"}
+                title={isEditing ? form.title || form.slug || "Edit note" : "New note"}
+                headerRight={
+                    isDirty ? (
+                        <span className="text-xs text-amber-400/80">Unsaved</span>
+                    ) : null
+                }
+                footer={
+                    <div className="flex items-center gap-3">
+                        <button
+                            type="button"
+                            onClick={() => formRef.current?.requestSubmit()}
+                            className="rounded-lg border bg-cyan-500/15 px-4 py-2 font-medium text-cyan-200 hover:bg-cyan-500/25"
+                        >
+                            {editingId ? "Save changes" : "Create note"}
+                        </button>
+                        <button
+                            type="button"
+                            onClick={requestCloseDrawer}
+                            className="rounded-lg border bg-zinc-800/60 px-4 py-2 font-medium text-zinc-200 hover:bg-zinc-800"
+                        >
+                            Cancel
+                        </button>
+                        <span className="ml-auto text-[11px] text-zinc-600">
+                            <kbd className="rounded border border-zinc-700 bg-zinc-900 px-1.5 py-0.5 text-zinc-400">⌘S</kbd>{" "}
+                            to save
+                        </span>
+                    </div>
+                }
+            >
+                    <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
                         <div className="grid gap-4 md:grid-cols-2">
                             <div className="space-y-2">
                                 <label className="text-xs uppercase tracking-widest text-zinc-500">
@@ -342,6 +404,11 @@ export function AdminNotesPage() {
                             <div className="space-y-2">
                                 <label className="text-xs uppercase tracking-widest text-zinc-500">
                                     Slug
+                                    {!slugTouched && !isEditing && form.title ? (
+                                        <span className="ml-2 normal-case tracking-normal text-[10px] text-zinc-600">
+                                            auto from title
+                                        </span>
+                                    ) : null}
                                 </label>
                                 <input
                                     name="slug"
@@ -366,17 +433,19 @@ export function AdminNotesPage() {
                                                    : "border-zinc-800 bg-zinc-950/40 text-zinc-100"
                                            }`} />
                                 </div>
-                                <div className="space-y-2">
-                                    <label className="text-xs uppercase tracking-widest text-zinc-500">Type</label>
-                                    <input name="type" value={form.type}
-                                           readOnly={isEditing}
-                                           onChange={handleChange}
-                                           className={`w-full rounded-lg border px-3 py-2 ${
-                                               isEditing
-                                                   ? "border-zinc-800 bg-zinc-950/40 text-zinc-400 cursor-not-allowed"
-                                                   : "border-zinc-800 bg-zinc-950/40 text-zinc-100"
-                                           }`} />
-                                </div>
+                                {fixedType ? null : (
+                                    <div className="space-y-2">
+                                        <label className="text-xs uppercase tracking-widest text-zinc-500">Type</label>
+                                        <input name="type" value={form.type}
+                                               readOnly={isEditing}
+                                               onChange={handleChange}
+                                               className={`w-full rounded-lg border px-3 py-2 ${
+                                                   isEditing
+                                                       ? "border-zinc-800 bg-zinc-950/40 text-zinc-400 cursor-not-allowed"
+                                                       : "border-zinc-800 bg-zinc-950/40 text-zinc-100"
+                                               }`} />
+                                    </div>
+                                )}
                                 <div className="space-y-2">
                                     <label className="text-xs uppercase tracking-widest text-zinc-500">Locale</label>
                                     <input name="locale" value={form.locale}
@@ -523,38 +592,27 @@ export function AdminNotesPage() {
                             <label className="text-xs uppercase tracking-widest text-zinc-500">
                                 Body (Markdown)
                             </label>
-                            <textarea
-                                name="content_markdown"
+                            <MarkdownEditor
                                 value={form.content_markdown}
-                                onChange={handleChange}
-                                className="h-80 w-full resize-y rounded-lg border border-zinc-800 bg-zinc-950/40 px-3 py-2 font-mono text-zinc-100"
-                                placeholder="# Title\n\nWrite the note body here…"
+                                onChange={(next) =>
+                                    setForm((p) => ({ ...p, content_markdown: next }))
+                                }
+                                placeholder={"# Title\n\nWrite the note body here…"}
+                                minRows={20}
                             />
                         </div>
-
-                        {/* SUBMIT BUTTON */}
-                        <div className="flex flex-wrap gap-2">
-                            <button
-                                type="submit"
-                                className="rounded-lg border bg-cyan-500/15 px-4 py-2 font-medium text-cyan-200 hover:bg-cyan-500/25"
-                            >
-                                {editingId ? "Save Changes" : "Create Note"}
-                            </button>
-
-                            {editingId ? (
-                                <button
-                                    type="button"
-                                    onClick={resetForm}
-                                    className="rounded-lg border bg-zinc-800/60 px-4 py-2 font-medium text-zinc-200 hover:bg-zinc-800"
-                                >
-                                    Cancel
-                                </button>
-                            ) : null}
-                        </div>
                     </form>
-                </Panel>
 
-            </Panel>
+                    {isEditing && form.slug ? (
+                        <div className="mt-4">
+                            <RevisionHistory
+                                slug={form.slug}
+                                locale={form.locale}
+                                refreshKey={revisionsRefreshKey}
+                            />
+                        </div>
+                    ) : null}
+            </Drawer>
         </div>
     );
 }

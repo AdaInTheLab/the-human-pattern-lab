@@ -2,7 +2,9 @@ import { NavLink } from "react-router-dom";
 
 const NAV_ITEMS = [
     { label: "Dashboard", path: "/admin/dashboard" },
-    { label: "Lab Notes", path: "/admin/notes" },
+    { label: "Notebook", path: "/admin/notebook" },
+    { label: "Tails", path: "/admin/tails" },
+    { label: "All Notes", path: "/admin/notes" },
     { label: "API Tokens", path: "/admin/tokens" },
     { label: "Relays", path: "/admin/relays" },
     { label: "API Docs", path: "/admin/docs" },
