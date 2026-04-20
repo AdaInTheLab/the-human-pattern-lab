@@ -22,6 +22,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
+import { ExternalLink } from "lucide-react";
 
 type NavItem = {
     label: string;
@@ -34,7 +35,7 @@ const navItems: NavItem[] = [
     { label: "Home", to: "/", end: true },
     { label: "About", to: "/about" },
     { label: "Departments", to: "/departments" },
-    { label: "Lab Notes", to: "/lab-notes" },
+    { label: "Notebook", to: "https://notebook.thehumanpatternlab.com/", external: true },
     { label: "Docs", to: "/docs/", external: true },
     { label: "Videos", to: "/videos" },
     { label: "Content Use", to: "/content-use-policy" },
@@ -54,12 +55,13 @@ function PillLink({ item, onNavigate }: { item: NavItem; onNavigate?: () => void
         return (
             <a
                 href={item.to}
-                className={`${base} ${inactive}`}
+                className={`${base} ${inactive} inline-flex items-center gap-1`}
                 target="_self"
                 rel="noreferrer"
                 onClick={onNavigate}
             >
                 {item.label}
+                <ExternalLink aria-hidden="true" className="h-3 w-3 opacity-70" />
             </a>
         );
     }

@@ -10,7 +10,6 @@ import enCommon from "./locales/en/common.json";
 import enHome from "./locales/en/pages.home.json";
 import enLabTeam from "./locales/en/pages.labTeam.json";
 import enDepartmentsPage from "./locales/en/pages.departments.json";
-import enLabNotesPage from "./locales/en/pages.labNotes.json";
 import enVideos from "./locales/en/pages.videos.json";
 import enContent from "./locales/en/pages.content.json";
 import enContact from "./locales/en/pages.contact.json";
@@ -25,7 +24,6 @@ import koCommon from "./locales/ko/common.json";
 import koHome from "./locales/ko/pages.home.json";
 import koLabTeam from "./locales/ko/pages.labTeam.json";
 import koDepartmentsPage from "./locales/ko/pages.departments.json";
-import koLabNotesPage from "./locales/ko/pages.labNotes.json";
 import koVideos from "./locales/ko/pages.videos.json";
 import koContent from "./locales/ko/pages.content.json";
 import koContact from "./locales/ko/pages.contact.json";
@@ -50,7 +48,6 @@ void i18n
                 "pages.home": enHome,
                 "pages.labTeam": enLabTeam,
                 "pages.departments": enDepartmentsPage,
-                labNotesPage: enLabNotesPage,  // ←⭐ LAB NOTES NAMESPACE
                 "pages.videos": enVideos,
                 "pages.content": enContent,
                 "pages.contact": enContact,
@@ -64,7 +61,6 @@ void i18n
                 "pages.home": koHome,
                 "pages.labTeam": koLabTeam,
                 "pages.departments": koDepartmentsPage,
-                labNotesPage: koLabNotesPage,   // ←⭐ LAB NOTES NAMESPACE
                 "pages.videos": koVideos,
                 "pages.content": koContent,
                 "pages.contact": koContact,
@@ -79,7 +75,6 @@ void i18n
             "pages.home",
             "pages.labTeam",
             "pages.departments",
-            "labNotesPage",   // ←⭐ LAB NOTES NAMESPACE
             "pages.videos",
             "pages.content",
             "pages.contact",
