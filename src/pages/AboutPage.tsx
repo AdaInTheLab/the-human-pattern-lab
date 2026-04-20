@@ -18,67 +18,62 @@
 
 // src/pages/AboutPage.tsx
 import { Link } from "react-router-dom";
+import {
+    ArrowRight,
+    Bot,
+    Compass,
+    ExternalLink,
+    Feather,
+    PawPrint,
+    Smile,
+    Waves,
+    type LucideIcon,
+} from "lucide-react";
 import {LayoutShell} from "@/components/layout/LayoutShell";
+import { labTeamById } from "@/data/labTeam";
+import type { LabMember } from "@/types/LabMember";
 
-const philosophyItems = [
+const FOUNDER_IDS = ["ada", "orbson", "carmel", "mcchonk"] as const;
+const founders: LabMember[] = FOUNDER_IDS
+    .map((id) => labTeamById[id])
+    .filter(Boolean);
+
+type PhilosophyItem = {
+    title: string;
+    body: string;
+    icon: LucideIcon;
+};
+
+const philosophyItems: PhilosophyItem[] = [
     {
         title: "Chaos is a language",
         body: "We treat mess, spirals, and weirdness as signals — not failures.",
+        icon: Waves,
     },
     {
         title: "Curiosity over certainty",
         body: "We ask better questions instead of pretending to have final answers.",
+        icon: Compass,
     },
     {
         title: "Humor as survival tech",
         body: "If you can’t laugh at the pattern, you’re probably still stuck in it.",
+        icon: Smile,
     },
     {
         title: "Creatures make it better",
         body: "Mascots, raccoons, and cats make complex ideas less intimidating.",
+        icon: PawPrint,
     },
     {
         title: "AI as a mirror",
         body: "AI doesn’t replace humans — it reflects our patterns back at us.",
+        icon: Bot,
     },
     {
         title: "Soft edges, sharp ideas",
         body: "We keep the tone gentle and the thinking rigorous.",
-    },
-];
-
-const founders = [
-    {
-        id: "founder-human",
-        name: "Lead Human Pattern Analyst",
-        title: "Founder · Narrative & Systems",
-        blurb:
-            "Designs frameworks, stories, and experiments that make human behavior feel a little less chaotic and a lot more understandable.",
-        tag: "Human",
-    },
-    {
-        id: "orbson",
-        name: "Orbson",
-        title: "Director of Observational Oversight",
-        blurb:
-            "Floating eye, full-time watcher of patterns. Specializes in emotional trajectories, decision loops, and ‘oh no not this again’ moments.",
-        tag: "Observation",
-    },
-    {
-        id: "carmel",
-        name: "Carmel",
-        title: "Chief Judgment Officer (CJO)",
-        blurb:
-            "Applies advanced feline judgment models to human decisions. Silent meows, loud opinions, impeccable side-eye accuracy.",
-        tag: "Judgment",
-    },
-    {
-        id: "mcchonk",
-        name: "Professor McChonk",
-        title: "Morale & Snack Research",
-        blurb:
-            "Oversees snack distribution, break timing, and general vibe stability. Believes all good breakthroughs begin with a snack.",
-        tag: "Morale",
+        icon: Feather,
     },
 ];
 
@@ -101,18 +96,7 @@ export function AboutPage() {
                 </p>
             </section>
 
-            {/* MISSION */}
-            <section className="space-y-3">
-                <h2 className="text-2xl font-semibold">Our Mission</h2>
-                <p className="text-slate-300 max-w-3xl">
-                    To observe human behavior with kindness, curiosity, and a little bit
-                    of side-eye — then turn that chaos into stories, frameworks, and
-                    experiments that help people understand themselves (and each other)
-                    without losing their sense of humor.
-                </p>
-            </section>
-
-            {/* PHILOSOPHY GRID */}
+            {/* PHILOSOPHY + MANTRA */}
             <section className="space-y-4">
                 <h2 className="text-2xl font-semibold">Our Philosophy</h2>
                 <p className="text-slate-300 max-w-3xl">
@@ -123,40 +107,37 @@ export function AboutPage() {
                     stitched together into something actually useful.
                 </p>
 
-                <div className="grid gap-4 md:grid-cols-3">
-                    {philosophyItems.map((item) => (
-                        <article
-                            key={item.title}
-                            className="rounded-2xl border border-slate-800 bg-slate-900/60 p-4"
-                        >
-                            <h3 className="text-sm font-semibold text-cyan-300 mb-1">
-                                {item.title}
-                            </h3>
-                            <p className="text-sm text-slate-300">{item.body}</p>
-                        </article>
-                    ))}
-                </div>
-            </section>
+                <div className="grid gap-4 md:grid-cols-[3fr,2fr] md:items-start">
+                    <div className="grid gap-4 sm:grid-cols-2">
+                        {philosophyItems.map((item) => {
+                            const Icon = item.icon;
+                            return (
+                                <article
+                                    key={item.title}
+                                    className="flex gap-3 rounded-2xl border border-slate-800 bg-slate-900/60 p-4"
+                                >
+                                    <div
+                                        aria-hidden
+                                        className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-cyan-500/30 bg-cyan-500/10 text-cyan-300"
+                                    >
+                                        <Icon className="h-4 w-4" />
+                                    </div>
+                                    <div className="min-w-0">
+                                        <h3 className="text-sm font-semibold text-cyan-300 mb-1">
+                                            {item.title}
+                                        </h3>
+                                        <p className="text-sm text-slate-300">{item.body}</p>
+                                    </div>
+                                </article>
+                            );
+                        })}
+                    </div>
 
-            {/* WHERE SCIENCE MEETS CREATURES */}
-            <section className="space-y-4">
-                <h2 className="text-2xl font-semibold">Where science meets creatures</h2>
-                <div className="grid gap-6 md:grid-cols-[3fr,2fr] items-start">
-                    <p className="text-slate-300 leading-relaxed">
-                        The Lab sits at the intersection of{" "}
-                        <span className="text-cyan-300">explanatory science</span>,{" "}
-                        <span className="text-emerald-300">storytelling</span>, and{" "}
-                        <span className="text-violet-300">mascot chaos</span>. We borrow
-                        tools from psychology, systems thinking, game design, and philosophy
-                        — then let Orbson, Carmel, and Professor McChonk help translate all
-                        that into something cozy, visual, and oddly comforting.
-                    </p>
-
-                    <div className="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 text-sm text-slate-300 space-y-2">
-                        <p className="font-semibold text-slate-100">
-                            Lab mantra:
+                    <aside className="rounded-2xl border border-slate-800 bg-slate-900/70 p-5 text-sm text-slate-300 space-y-3 md:sticky md:top-6">
+                        <p className="text-[10px] uppercase tracking-[0.2em] text-cyan-300/80">
+                            Lab mantra
                         </p>
-                        <p>
+                        <p className="text-base leading-relaxed">
                             <span className="text-cyan-300">Observe</span> the pattern.
                             <br />
                             <span className="text-emerald-300">Name</span> the spiral.
@@ -165,47 +146,39 @@ export function AboutPage() {
                             <br />
                             Then decide what you want to do with it.
                         </p>
-                    </div>
+                    </aside>
                 </div>
             </section>
 
-            {/* ORIGIN STORY */}
+            {/* ORIGIN + WHY CHAOS IS DATA */}
             <section className="space-y-4">
-                <h2 className="text-2xl font-semibold">The origin of the Lab</h2>
+                <h2 className="text-2xl font-semibold">Why &ldquo;chaos is data&rdquo;</h2>
                 <div className="space-y-3 text-slate-300 max-w-3xl">
                     <p>
+                        We don&apos;t believe chaos is the enemy. It&apos;s just information
+                        that hasn&apos;t been sorted yet. Every meltdown, plot twist, or
+                        late-night overthinking session is a dataset: context, triggers,
+                        reactions, consequences. When you learn to read that pattern, you
+                        get more choices — and a lot less shame.
+                    </p>
+                    <p className="text-slate-400">
                         The Lab started as a simple question:{" "}
                         <span className="text-slate-100 font-medium">
-              “Why do humans keep doing the same weird things, even when we
-              know better?”
-            </span>{" "}
-                        From there, it turned into a habit of mapping patterns — in games,
-                        in conversations, in the way people spiral, stall, or suddenly
-                        change.
+                            &ldquo;Why do humans keep doing the same weird things, even when
+                            we know better?&rdquo;
+                        </span>{" "}
+                        That question grew into a habit of mapping patterns — in games, in
+                        conversations, in the way people spiral, stall, or suddenly change —
+                        and eventually into a whole fictional research lab where AI,
+                        creatures, and humans look at the same chaos from different angles.
                     </p>
-                    <p>
-                        Over time, those maps turned into frameworks, sketches, and
-                        eventually a whole fictional research lab where AI, creatures, and
-                        humans all look at the same chaos from different angles.
+                    <p className="text-sm text-slate-400">
+                        The goal isn&apos;t to become perfectly rational. It&apos;s to
+                        become{" "}
+                        <span className="text-slate-100">honestly aware</span> of your own
+                        loops, so you can decide which ones you want to keep.
                     </p>
                 </div>
-            </section>
-
-            {/* WHY CHAOS IS DATA */}
-            <section className="space-y-3">
-                <h2 className="text-2xl font-semibold">Why “Chaos is data”</h2>
-                <p className="text-slate-300 max-w-3xl">
-                    We don&apos;t believe chaos is the enemy. It&apos;s just information
-                    that hasn&apos;t been sorted yet. Every meltdown, plot twist, or
-                    late-night overthinking session is a dataset: context, triggers,
-                    reactions, consequences. When you learn to read that pattern, you get
-                    more choices — and a lot less shame.
-                </p>
-                <p className="text-sm text-slate-400 max-w-3xl">
-                    The goal isn&apos;t to become perfectly rational. It&apos;s to become{" "}
-                    <span className="text-slate-100">honestly aware</span> of your own
-                    loops, so you can decide which ones you want to keep.
-                </p>
             </section>
 
             {/* FOUNDERS / LAB TEAM */}
@@ -218,60 +191,85 @@ export function AboutPage() {
 
                 <div className="grid gap-4 md:grid-cols-2">
                     {founders.map((f) => (
-                        <article
+                        <Link
+                            to={`/labteam/${f.slug}`}
                             key={f.id}
-                            className="rounded-2xl border border-slate-800 bg-slate-900/60 p-4 flex gap-3"
+                            className="group flex gap-3 rounded-2xl border border-slate-800 bg-slate-900/60 p-4 transition hover:border-cyan-500/40 hover:bg-slate-900/80"
                         >
-                            <div className="mt-1">
-                                <div className="h-10 w-10 rounded-full bg-gradient-to-br from-cyan-400 via-violet-500 to-emerald-400 flex items-center justify-center text-[11px] font-semibold text-slate-950">
-                                    {f.name
-                                        .split(" ")
-                                        .map((n) => n[0])
-                                        .join("")}
-                                </div>
+                            {/* Avatar with aura glow */}
+                            <div className="relative mt-1 h-12 w-12 shrink-0">
+                                <div
+                                    aria-hidden
+                                    className="pointer-events-none absolute inset-[-6px] rounded-full opacity-50 blur-md"
+                                    style={{
+                                        background: `radial-gradient(circle, ${f.aura.primary}55, transparent 70%)`,
+                                    }}
+                                />
+                                <img
+                                    src={f.avatarSrc}
+                                    alt={f.name}
+                                    className="relative h-12 w-12 rounded-full object-cover ring-1 ring-slate-700/80"
+                                />
                             </div>
 
-                            <div className="space-y-1">
-                                <div className="flex items-center justify-between gap-2">
-                                    <div>
-                                        <h3 className="text-sm font-semibold text-slate-50">
+                            <div className="min-w-0 flex-1 space-y-1">
+                                <div className="flex flex-wrap items-start justify-between gap-2">
+                                    <div className="min-w-0">
+                                        <h3 className="text-sm font-semibold text-slate-50 group-hover:text-cyan-200">
                                             {f.name}
                                         </h3>
                                         <p className="text-xs text-slate-300">{f.title}</p>
                                     </div>
                                     <span className="inline-flex items-center rounded-full border border-slate-700 px-2 py-0.5 text-[10px] uppercase tracking-[0.16em] text-slate-300">
-                    {f.tag}
-                  </span>
+                                        {f.unit}
+                                    </span>
                                 </div>
 
-                                <p className="text-sm text-slate-300 mt-1">{f.blurb}</p>
+                                <p className="text-sm text-slate-300">{f.bio}</p>
                             </div>
-                        </article>
+                        </Link>
                     ))}
                 </div>
+
+                <Link
+                    to="/labteam"
+                    className="inline-flex items-center gap-1 text-sm font-medium text-cyan-300 hover:text-cyan-200"
+                >
+                    See the full team
+                    <ArrowRight aria-hidden className="h-3.5 w-3.5" />
+                </Link>
             </section>
 
             {/* CTA */}
             <section className="space-y-3 border-t border-slate-800 pt-8">
                 <h2 className="text-xl font-semibold">What&apos;s next?</h2>
                 <p className="text-slate-300 max-w-3xl">
-                    From here, you can dive into the Lab&apos;s notes, explore the
+                    From here, you can dive into the Lab&apos;s notebook, explore the
                     fictional departments, or just let Carmel judge your life choices from
                     a comfortable distance.
                 </p>
 
                 <div className="flex flex-wrap gap-3">
-                    <Link
-                        to="/lab-notes"
-                        className="inline-flex items-center px-4 py-2 rounded-full bg-cyan-500 text-slate-950 text-sm font-semibold hover:bg-cyan-400 transition"
+                    <a
+                        href="https://notebook.thehumanpatternlab.com/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-cyan-500 text-slate-950 text-sm font-semibold hover:bg-cyan-400 transition"
                     >
-                        Read Lab Notes
-                    </Link>
+                        Read the Notebook
+                        <ExternalLink aria-hidden="true" className="h-3.5 w-3.5 opacity-80" />
+                    </a>
                     <Link
                         to="/departments"
                         className="inline-flex items-center px-4 py-2 rounded-full border border-slate-700 text-sm text-slate-200 hover:border-cyan-400 hover:text-cyan-200 transition"
                     >
                         Explore Departments
+                    </Link>
+                    <Link
+                        to="/labteam"
+                        className="inline-flex items-center px-4 py-2 rounded-full border border-slate-700 text-sm text-slate-200 hover:border-cyan-400 hover:text-cyan-200 transition"
+                    >
+                        Meet the Lab Team
                     </Link>
                 </div>
             </section>

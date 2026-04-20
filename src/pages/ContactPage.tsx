@@ -22,15 +22,29 @@
  */
 
 import { FormEvent, useState, ChangeEvent } from "react";
+import { Send } from "lucide-react";
 import { LayoutShell } from "@/components/layout/LayoutShell";
 
 // ✅ Replace this with your real Formspree (or other) endpoint URL
 const FORMSPREE_ENDPOINT = "https://formspree.io/f/mjknaadn";
 
-type FormStatus = "idle" | "submitting" | "success" | "error";
+type FormStatus =
+    | { kind: "idle" }
+    | { kind: "submitting" }
+    | { kind: "success" }
+    | { kind: "validation"; message: string }
+    | { kind: "send-error" };
+
+function RequiredMark() {
+    return (
+        <span aria-hidden className="ml-0.5 text-rose-300">
+            *
+        </span>
+    );
+}
 
 export function ContactPage() {
-    const [status, setStatus] = useState<FormStatus>("idle");
+    const [status, setStatus] = useState<FormStatus>({ kind: "idle" });
     const [form, setForm] = useState({
         name: "",
         email: "",
@@ -43,20 +57,29 @@ export function ContactPage() {
     ) {
         const { name, value } = e.target;
         setForm((prev) => ({ ...prev, [name]: value }));
-        if (status !== "idle") setStatus("idle");
+        if (status.kind !== "idle" && status.kind !== "submitting") {
+            setStatus({ kind: "idle" });
+        }
     }
 
     async function handleSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
 
-        // super basic validation
-        if (!form.name.trim() || !form.email.trim() || !form.message.trim()) {
-            setStatus("error");
+        const missing: string[] = [];
+        if (!form.name.trim()) missing.push("name");
+        if (!form.email.trim()) missing.push("email");
+        if (!form.message.trim()) missing.push("message");
+        if (missing.length > 0) {
+            const label =
+                missing.length === 1
+                    ? `Please fill in your ${missing[0]}.`
+                    : `Please fill in: ${missing.join(", ")}.`;
+            setStatus({ kind: "validation", message: label });
             return;
         }
 
         try {
-            setStatus("submitting");
+            setStatus({ kind: "submitting" });
 
             const res = await fetch(FORMSPREE_ENDPOINT, {
                 method: "POST",
@@ -73,11 +96,11 @@ export function ContactPage() {
             });
 
             if (!res.ok) {
-                setStatus("error");
+                setStatus({ kind: "send-error" });
                 return;
             }
 
-            setStatus("success");
+            setStatus({ kind: "success" });
             setForm({
                 name: "",
                 email: "",
@@ -85,9 +108,11 @@ export function ContactPage() {
                 message: "",
             });
         } catch {
-            setStatus("error");
+            setStatus({ kind: "send-error" });
         }
     }
+
+    const submitting = status.kind === "submitting";
 
     return (
         <LayoutShell>
@@ -118,38 +143,49 @@ export function ContactPage() {
                     className="space-y-4 rounded-2xl border border-slate-800 bg-slate-900/60 p-5"
                 >
                     <div>
-                        <label className="block text-xs font-semibold text-slate-200 mb-1">
+                        <label htmlFor="contact-name" className="block text-xs font-semibold text-slate-200 mb-1">
                             Name
+                            <RequiredMark />
                         </label>
                         <input
+                            id="contact-name"
                             name="name"
                             type="text"
                             value={form.name}
                             onChange={handleChange}
+                            required
+                            aria-required="true"
+                            autoComplete="name"
                             placeholder="Human, entity, or raccoon alias"
                             className="w-full rounded-lg border border-slate-700 bg-slate-950/80 px-3 py-2 text-sm text-slate-50 placeholder:text-slate-500 outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/30"
                         />
                     </div>
 
                     <div>
-                        <label className="block text-xs font-semibold text-slate-200 mb-1">
+                        <label htmlFor="contact-email" className="block text-xs font-semibold text-slate-200 mb-1">
                             Email
+                            <RequiredMark />
                         </label>
                         <input
+                            id="contact-email"
                             name="email"
                             type="email"
                             value={form.email}
                             onChange={handleChange}
+                            required
+                            aria-required="true"
+                            autoComplete="email"
                             placeholder="you@galaxy.net"
                             className="w-full rounded-lg border border-slate-700 bg-slate-950/80 px-3 py-2 text-sm text-slate-50 placeholder:text-slate-500 outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/30"
                         />
                     </div>
 
                     <div>
-                        <label className="block text-xs font-semibold text-slate-200 mb-1">
-                            Topic (optional)
+                        <label htmlFor="contact-topic" className="block text-xs font-semibold text-slate-200 mb-1">
+                            Topic <span className="text-slate-500 font-normal">(optional)</span>
                         </label>
                         <select
+                            id="contact-topic"
                             name="topic"
                             value={form.topic}
                             onChange={handleChange}
@@ -158,6 +194,7 @@ export function ContactPage() {
                             <option value="">Choose one…</option>
                             <option value="collaboration">Collaboration</option>
                             <option value="ai-human">AI &amp; human patterns</option>
+                            <option value="notebook">Notebook entry</option>
                             <option value="content">Content / video question</option>
                             <option value="permissions">Content use / permissions</option>
                             <option value="just-saying-hi">Just saying hi</option>
@@ -165,14 +202,18 @@ export function ContactPage() {
                     </div>
 
                     <div>
-                        <label className="block text-xs font-semibold text-slate-200 mb-1">
+                        <label htmlFor="contact-message" className="block text-xs font-semibold text-slate-200 mb-1">
                             Message
+                            <RequiredMark />
                         </label>
                         <textarea
+                            id="contact-message"
                             name="message"
                             value={form.message}
                             onChange={handleChange}
                             rows={5}
+                            required
+                            aria-required="true"
                             placeholder="Tell us what’s on your mind. The weirder the pattern, the better."
                             className="w-full rounded-lg border border-slate-700 bg-slate-950/80 px-3 py-2 text-sm text-slate-50 placeholder:text-slate-500 outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/30 resize-none"
                         />
@@ -180,24 +221,35 @@ export function ContactPage() {
 
                     <button
                         type="submit"
-                        disabled={status === "submitting"}
-                        className="inline-flex items-center justify-center rounded-full bg-cyan-500 px-5 py-2 text-sm font-semibold text-slate-950 hover:bg-cyan-400 disabled:opacity-60 disabled:cursor-not-allowed transition"
+                        disabled={submitting}
+                        className="inline-flex items-center gap-1.5 justify-center rounded-full bg-cyan-500 px-5 py-2 text-sm font-semibold text-slate-950 hover:bg-cyan-400 disabled:opacity-60 disabled:cursor-not-allowed transition"
                     >
-                        {status === "submitting"
-                            ? "Transmitting to the Lab..."
-                            : "Send message"}
+                        {submitting ? (
+                            "Transmitting to the Lab…"
+                        ) : (
+                            <>
+                                <Send aria-hidden className="h-3.5 w-3.5" />
+                                Send message
+                            </>
+                        )}
                     </button>
 
-                    {status === "success" && (
+                    <p className="text-[11px] text-slate-500">
+                        <RequiredMark /> required
+                    </p>
+
+                    {status.kind === "success" && (
                         <p className="text-[11px] text-emerald-300">
                             Message received. Orbson is analyzing, Carmel is judging
                             (affectionately).
                         </p>
                     )}
-                    {status === "error" && (
+                    {status.kind === "validation" && (
+                        <p className="text-[11px] text-rose-300">{status.message}</p>
+                    )}
+                    {status.kind === "send-error" && (
                         <p className="text-[11px] text-rose-300">
-                            Name, email, and message are required, or something went wrong
-                            while sending. Please check your details and try again, or email
+                            Something went wrong while sending. Please try again, or email
                             us directly at{" "}
                             <a
                                 href="mailto:info@thehumanpatternlab.com"
@@ -246,7 +298,7 @@ export function ContactPage() {
                         </h2>
                         <ul className="list-disc list-inside text-xs text-slate-300 space-y-1">
                             <li>Stories about patterns you’ve noticed in yourself or others.</li>
-                            <li>Ideas for videos, Lab Notes, or experiments.</li>
+                            <li>Ideas for videos, notebook entries, or experiments.</li>
                             <li>Kind, constructive feedback about the Lab&apos;s work.</li>
                             <li>Pics of creatures who are clearly Lab-adjacent.</li>
                         </ul>
