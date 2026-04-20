@@ -16,7 +16,7 @@ const labels = [
     "Home",
     "About",
     "Departments",
-    "Lab Notes",
+    "Notebook",
     "Docs",
     "Videos",
     "Content Use",
@@ -73,7 +73,7 @@ describe("TopNav (Site Header)", () => {
         const q = within(mobile);
 
         // now that it's open, the mobile links should be queryable
-        expect(q.getByRole("link", { name: "Lab Notes" })).toBeInTheDocument();
+        expect(q.getByRole("link", { name: "Notebook" })).toBeInTheDocument();
 
         await user.keyboard("{Escape}");
         expect(toggle).toHaveAttribute("aria-expanded", "false");

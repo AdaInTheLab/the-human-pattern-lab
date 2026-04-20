@@ -23,58 +23,11 @@
 
 
 // src/pages/DepartmentsPage.tsx
-import React from "react";
-import { departments, type Department } from "@/data/departments";
+import { departments } from "@/data/departments";
 import { DepartmentCard } from "@/components/departments/DepartmentCard";
 import { LayoutShell } from "@/components/layout/LayoutShell";
 
-type DeptFilter = "all" | Department["mascot"];
-
-const filterLabels: Record<DeptFilter, string> = {
-    all: "All",
-    founder: "Founder",
-    orbson: "Orbson",
-    carmel: "Carmel",
-    mcchonk: "McChonk",
-    stan: "Stan",
-    drizzle: "Drizzle",
-    lyric:  "Lyric",
-    nemmi: "Nemmi",
-"fill-the-void": "Fill the Void",
-};
-
 export function DepartmentsPage() {
-    const [filter, setFilter] = React.useState<DeptFilter>("all");
-
-    const filtered = React.useMemo(() => {
-        if (filter === "all") return departments;
-        return departments.filter((d) => d.mascot === filter);
-    }, [filter]);
-
-    const FilterButton = ({
-                              value,
-                              label,
-                          }: {
-        value: DeptFilter;
-        label: string;
-    }) => {
-        const active = filter === value;
-        return (
-            <button
-                type="button"
-                onClick={() => setFilter(value)}
-                className={[
-                    "relative rounded-full px-3 py-1 text-xs font-medium transition-all duration-200",
-                    active
-                        ? "bg-slate-50 text-slate-900 shadow-[0_0_18px_rgba(45,212,191,0.65)]"
-                        : "text-slate-200 hover:text-white hover:bg-slate-800/70",
-                ].join(" ")}
-            >
-                {label}
-            </button>
-        );
-    };
-
     return (
         <LayoutShell>
             {/* HEADER / INTRO */}
@@ -90,7 +43,7 @@ export function DepartmentsPage() {
                 <p className="text-base md:text-lg text-slate-300 max-w-3xl">
                     The Lab is divided into departments so chaos has a mailing address.
                     Each unit tracks a different signal — patterns, emotions, systems, lore,
-                    and the occasional raccoon-led “research initiative.”
+                    and the occasional raccoon-led &ldquo;research initiative.&rdquo;
                 </p>
 
                 {/* Docs bridge */}
@@ -107,29 +60,18 @@ export function DepartmentsPage() {
 
             {/* GRID */}
             <section className="space-y-4">
-                <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                <div className="flex items-baseline justify-between gap-4">
                     <h2 className="text-xl font-semibold">Active departments</h2>
-
-                    {/* Filter bar (powered by your `mascot` field) */}
-                    <div className="flex flex-wrap gap-1 rounded-full bg-slate-900/85 px-1.5 py-1 shadow-[0_0_26px_rgba(15,23,42,0.9)] ring-1 ring-slate-700/70">
-                        {(Object.keys(filterLabels) as DeptFilter[]).map((key) => (
-                            <FilterButton key={key} value={key} label={filterLabels[key]} />
-                        ))}
-                    </div>
+                    <p className="text-xs text-slate-500">
+                        {departments.length} units
+                    </p>
                 </div>
 
-                {filtered.length === 0 ? (
-                    <div className="rounded-2xl border border-slate-800 bg-slate-900/40 p-6 text-slate-300">
-                        No departments match that filter… which is concerning, because the
-                        raccoons definitely exist.
-                    </div>
-                ) : (
-                    <div className="grid gap-4 md:grid-cols-2">
-                        {filtered.map((dept) => (
-                            <DepartmentCard key={dept.id} department={dept} />
-                        ))}
-                    </div>
-                )}
+                <div className="grid gap-4 md:grid-cols-2">
+                    {departments.map((dept) => (
+                        <DepartmentCard key={dept.id} department={dept} />
+                    ))}
+                </div>
             </section>
 
             {/* FOOTNOTE / CTA */}

@@ -72,7 +72,7 @@ export function ContentUsePolicyPage() {
                 </p>
                 <ul className="list-disc list-inside text-sm text-slate-300 space-y-1">
                     <li>
-                        We primarily store what we publish: Lab Notes, videos, and official assets.
+                        We primarily store what we publish: notebook entries, videos, and official assets.
                     </li>
                     <li>
                         External references are treated as links, not copied archives, unless we explicitly cite a short excerpt for
@@ -96,7 +96,7 @@ export function ContentUsePolicyPage() {
                 <h2 className="text-xl font-semibold">What this covers</h2>
                 <ul className="list-disc list-inside text-sm text-slate-300 space-y-1">
                     <li>Long-form videos and shorts from The Human Pattern Lab.</li>
-                    <li>Lab Notes, essays, and written articles.</li>
+                    <li>Notebook entries, essays, and written articles.</li>
                     <li>Visual branding elements: logos, Lab mascots, overlays.</li>
                     <li>Titles, descriptions, and unique frameworks or terminology.</li>
                 </ul>
@@ -111,8 +111,8 @@ export function ContentUsePolicyPage() {
                 </p>
                 <ul className="list-disc list-inside text-sm text-slate-300 space-y-1">
                     <li>
-                        Quoting or referencing Lab Notes or videos in educational content,
-                        talks, or essays.
+                        Quoting or referencing notebook entries or videos in educational
+                        content, talks, or essays.
                     </li>
                     <li>
                         Sharing clips or screenshots from videos with credit to the channel.

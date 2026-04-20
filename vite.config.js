@@ -40,6 +40,16 @@ export default defineConfig({
                     router: ["react-router-dom"],
                     // If you use swagger-ui-react:
                     swagger: ["swagger-ui-react"],
+                    // Admin-only markdown editor stack (CodeMirror + markdown + preview)
+                    markdown: [
+                        "@uiw/react-codemirror",
+                        "@codemirror/lang-markdown",
+                        "@codemirror/theme-one-dark",
+                        "@codemirror/view",
+                        "@codemirror/state",
+                        "react-markdown",
+                        "remark-gfm",
+                    ],
                 },
             },
         },

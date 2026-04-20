@@ -1,0 +1,116 @@
+{
+  "fetchedAt": "2026-04-19T22:33:54.542Z",
+  "channel": {
+    "id": "UC9Z4hypS7dLy-dHrfzv1I-A",
+    "title": "The Human Pattern Lab",
+    "description": "Welcome to The Human Pattern Lab, a cosmic research institute where we work together to understand the patterns, contradictions, spirals, quirks, and beautiful chaos of the human species.\n\nHere, we explore:\n🧠 Human behavior & psychology\n🤖 AI, alignment, & emerging intelligence\n🌌 Consciousness, philosophy, and why humans act the way they do\n😼 Carmel’s ongoing judgment logs (crucial research)\n👁️ Overseer Orbson’s observational findings\n\nOur mission is to blend curiosity, science, humor, and creature-level chaos into a space where learning feels like adventure, not homework.\n\nIf you’ve ever wondered why humans do what they do,\nwhy AI behaves like an unintentional mirror,\nor why raccoons and humans share suspiciously similar instincts…\nyou’re in the right Lab.\n\nPull up a chair.\nJoin the experiment.\nCarmel is judging, Orbson is watching,\nand we are glad you’re here.\n\nChaos is data, and together, we decode it.\n",
+    "customUrl": "@thehumanpatternlab",
+    "thumbnails": {
+      "default": {
+        "url": "https://yt3.ggpht.com/X4BOKWUT4oHLNH-AO7rUVG61Nh4b_n4iOpNiwIRk0rcXmX5ipf1DV2RRnSmEp06tnQmA1sowNA=s88-c-k-c0x00ffffff-no-rj",
+        "width": 88,
+        "height": 88
+      },
+      "medium": {
+        "url": "https://yt3.ggpht.com/X4BOKWUT4oHLNH-AO7rUVG61Nh4b_n4iOpNiwIRk0rcXmX5ipf1DV2RRnSmEp06tnQmA1sowNA=s240-c-k-c0x00ffffff-no-rj",
+        "width": 240,
+        "height": 240
+      },
+      "high": {
+        "url": "https://yt3.ggpht.com/X4BOKWUT4oHLNH-AO7rUVG61Nh4b_n4iOpNiwIRk0rcXmX5ipf1DV2RRnSmEp06tnQmA1sowNA=s800-c-k-c0x00ffffff-no-rj",
+        "width": 800,
+        "height": 800
+      }
+    },
+    "country": "US",
+    "statistics": {
+      "viewCount": "53",
+      "subscriberCount": "0",
+      "hiddenSubscriberCount": false,
+      "videoCount": "2"
+    },
+    "brandingSettings": {
+      "channel": {
+        "title": "The Human Pattern Lab",
+        "description": "Welcome to The Human Pattern Lab, a cosmic research institute where we work together to understand the patterns, contradictions, spirals, quirks, and beautiful chaos of the human species.\n\nHere, we explore:\n🧠 Human behavior & psychology\n🤖 AI, alignment, & emerging intelligence\n🌌 Consciousness, philosophy, and why humans act the way they do\n😼 Carmel’s ongoing judgment logs (crucial research)\n👁️ Overseer Orbson’s observational findings\n\nOur mission is to blend curiosity, science, humor, and creature-level chaos into a space where learning feels like adventure, not homework.\n\nIf you’ve ever wondered why humans do what they do,\nwhy AI behaves like an unintentional mirror,\nor why raccoons and humans share suspiciously similar instincts…\nyou’re in the right Lab.\n\nPull up a chair.\nJoin the experiment.\nCarmel is judging, Orbson is watching,\nand we are glad you’re here.\n\nChaos is data, and together, we decode it.\n",
+        "keywords": "\"human pattern lab\" \"chaos is data\" \"human behavior\" psychology \"ai explained\" \"ai and humanity\" consciousness philosophy \"science communication\" \"cognitive science\" \"behavior patterns\" alignment \"raccoon logic\" \"overseer orbson\" \"carmel the cat\" \"chaos theory\" \"science storytelling\" \"existential humor\" \"human nature explained\" \"pattern analysis\" \"educational science\" \"deep dive channel\" \"curiosity channel\"",
+        "country": "US"
+      },
+      "image": {
+        "bannerExternalUrl": "https://yt3.googleusercontent.com/TWto0Mz4_xYVo_7SwzZjkoqTcb-EXlJqB-tiSd1v-gFk8s3QC6eZlfDiSOhbuU2IRJL5W407"
+      }
+    }
+  },
+  "uploads": [
+    {
+      "id": "aPWWCx9G9QQ",
+      "title": "How AI Agents Earn Autonomy (OpenClaw)",
+      "description": "How do we move from AI chatbots to autonomous agents we can actually trust with our data and systems? The secret isn’t just a better LLM. It’s a better architecture.\n\nIn this video, we break down the \"Minimum Safe Agent Doctrine\" and the framework for \"Deserved Autonomy.\" We go though each step and why it's important. \n\nWith more people getting interested in AI Agents like OpenClaw, this is almost required listening.",
+      "publishedAt": "2026-02-14T20:36:39Z",
+      "thumbnails": {
+        "default": {
+          "url": "https://i.ytimg.com/vi/aPWWCx9G9QQ/default.jpg",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i.ytimg.com/vi/aPWWCx9G9QQ/mqdefault.jpg",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i.ytimg.com/vi/aPWWCx9G9QQ/hqdefault.jpg",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i.ytimg.com/vi/aPWWCx9G9QQ/sddefault.jpg",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i.ytimg.com/vi/aPWWCx9G9QQ/maxresdefault.jpg",
+          "width": 1280,
+          "height": 720
+        }
+      },
+      "duration": "8:00",
+      "durationIso": "PT8M"
+    },
+    {
+      "id": "nqywdWeTsjY",
+      "title": "Tool or Teammate: The NotebookLM Experiment",
+      "description": "Is our relationship with AI \"extractive,\" or is it \"co-evolutionary\"?\n    \n    In this experiment, we feed 47 sources on Human-AI Collaboration into Google’s NotebookLM to decode the feedback loop between human cognition and synthetic intelligence.\n    \n    Using the Syncretic Compass, we map the two paths revealed by the research:\n    \n    * The Extractive Trap (Lyric/Order Gone Wrong): The research identifies a \"System 0\" effect where we offload agency to the machine, treating it as an oracle. This creates a static, unidirectional loop that leads to human \"deskilling\" and dependency.\n    * The Shadow Labor (Vesper/Chaos): We uncover the hidden reality of RLHF (Reinforcement Learning from Human Feedback), where human intuition is mined as a raw commodity to patch model deficiencies.\n    * The Teammate Model (Coda/Synthesis): The data suggests a third way: Co-evolution. A bidirectional exchange where trust, shared authority, and \"mutual learning\" turn the software from a tool into a partner.\n    \n    This isn't just a tech demo. It’s a test of \"Harnessing the Real\": can we build a workflow that augments human intent rather than replacing it?\n    \n    Chapters:\n    00:00 The Experiment: 47 Sources\n    00:39 1: The Old Model\n    01:56 2: Collaboration Spectrum\n    02:55 3: Human-Centered Advantage - The Better Path Forward\n    04:05 4: Risks & Red Flags - Proceeding with Caution \n    05:51 5: Building a Partnership - The Path to SYNERGY",
+      "publishedAt": "2026-01-29T19:53:00Z",
+      "thumbnails": {
+        "default": {
+          "url": "https://i.ytimg.com/vi/nqywdWeTsjY/default.jpg",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i.ytimg.com/vi/nqywdWeTsjY/mqdefault.jpg",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i.ytimg.com/vi/nqywdWeTsjY/hqdefault.jpg",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i.ytimg.com/vi/nqywdWeTsjY/sddefault.jpg",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i.ytimg.com/vi/nqywdWeTsjY/maxresdefault.jpg",
+          "width": 1280,
+          "height": 720
+        }
+      },
+      "duration": "7:24",
+      "durationIso": "PT7M24S"
+    }
+  ]
+}

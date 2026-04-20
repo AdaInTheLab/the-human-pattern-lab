@@ -322,7 +322,7 @@ export function AdminRelaysPage() {
             {/* Info Box */}
             <div className="bg-blue-900/20 border border-blue-700/50 rounded-lg p-4">
                 <h3 className="text-sm font-semibold text-blue-300 mb-2">
-                    🏛️ About Relay URLs
+                    🌉 About Liminal Bridge
                 </h3>
                 <ul className="text-sm text-slate-300 space-y-1">
                     <li>• Each relay URL is <strong>single-use</strong> and <strong>time-limited</strong></li>

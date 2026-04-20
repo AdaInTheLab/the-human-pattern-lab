@@ -23,6 +23,7 @@
 
 // src/components/home/Hero.tsx
 import { Link } from "react-router-dom";
+import { ExternalLink } from "lucide-react";
 import EmotionalWeatherCard from "@/components/ewu/EmotionalWeatherCard";
 export function Hero() {
     return (
@@ -56,12 +57,15 @@ export function Hero() {
                     >
                         Enter the Lab
                     </Link>
-                    <Link
-                        to="/lab-notes"
-                        className="inline-flex items-center px-4 py-2 rounded-full border border-slate-700 text-sm text-slate-200 hover:border-cyan-400 hover:text-cyan-200 transition"
+                    <a
+                        href="https://notebook.thehumanpatternlab.com/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-slate-700 text-sm text-slate-200 hover:border-cyan-400 hover:text-cyan-200 transition"
                     >
-                        View Lab Notes
-                    </Link>
+                        Read the Notebook
+                        <ExternalLink aria-hidden="true" className="h-3.5 w-3.5 opacity-80" />
+                    </a>
                 </div>
             </div>
 

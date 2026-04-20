@@ -19,7 +19,6 @@
 import { Hero } from "@/components/home/Hero";
 import { Pillars } from "@/components/home/Pillars";
 import { LabTeamPreview } from "@/components/home/LabTeamPreview";
-import { RecentLabNotesPreview } from "@/components/home/RecentLabNotesPreview";
 import { FeaturedVideo } from "@/components/home/FeaturedVideo";
 import { LayoutShell } from "@/components/layout/LayoutShell";
 
@@ -29,7 +28,6 @@ export function HomePage() {
             <Hero />
             <Pillars />
             <LabTeamPreview />
-            <RecentLabNotesPreview />
             <FeaturedVideo />
         </LayoutShell>
     );

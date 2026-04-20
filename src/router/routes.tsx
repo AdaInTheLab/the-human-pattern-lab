@@ -24,7 +24,6 @@ import { Layout } from "@/components/layout/Layout";
 import { HomePage } from "@/pages/HomePage";
 import { AboutPage } from "@/pages/AboutPage";
 import { DepartmentsPage } from "@/pages/DepartmentsPage";
-import { LabNotesPage } from "@/pages/LabNotesPage";
 import { VideoArchivePage } from "@/pages/VideoArchivePage";
 import { ContentUsePolicyPage } from "@/pages/ContentUsePolicyPage";
 import { MerchPage } from "@/pages/MerchPage";
@@ -49,7 +48,15 @@ import {
 } from "@/departments";
 import {AdminDashboardPage} from "@/pages/admin/pages/AdminDashboardPage";
 import {AdminDeniedPage} from "@/pages/admin/pages/AdminDeniedPage";
-import LabNoteDetailPage from "@/pages/LabNoteDetailPage";
+
+const NOTEBOOK_URL = "https://notebook.thehumanpatternlab.com/";
+
+function NotebookRedirect() {
+    useEffect(() => {
+        window.location.replace(NOTEBOOK_URL);
+    }, []);
+    return <div className="p-6 text-slate-300">Redirecting to notebook…</div>;
+}
 
 function GATracker() {
     const loc = useLocation();
@@ -91,13 +98,11 @@ export const router = createBrowserRouter([
             // Future-friendly dynamic detail route (if/when needed)
             { path: "departments/:id", element: (<Suspense fallback={<PageLoader />}><DepartmentDetailPage /></Suspense> ) },
 
-            // List
-            { path: "lab-notes", element: (<Suspense fallback={<PageLoader />}><LabNotesPage /> </Suspense> )},
-            { path: ":locale/lab-notes", element: (<Suspense fallback={<PageLoader />}><LabNotesPage /> </Suspense> )},
-
-            // Detail (pick ONE param name; use slug)
-            { path: "lab-notes/:slug", element: <LabNoteDetailPage /> },
-            { path: ":locale/lab-notes/:slug", element: <LabNoteDetailPage /> },
+            // Lab notes moved to notebook.thehumanpatternlab.com
+            { path: "lab-notes", element: <NotebookRedirect /> },
+            { path: ":locale/lab-notes", element: <NotebookRedirect /> },
+            { path: "lab-notes/:slug", element: <NotebookRedirect /> },
+            { path: ":locale/lab-notes/:slug", element: <NotebookRedirect /> },
 
             { path: "videos", element: (<Suspense fallback={<PageLoader />}><VideoArchivePage /></Suspense> ) },
             { path: "videos/:slug", element: <VideoDetailPage /> },

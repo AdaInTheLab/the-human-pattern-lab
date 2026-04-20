@@ -17,27 +17,16 @@
  */
 
 // src/pages/VideoArchivePage.tsx
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { labVideos } from "../data/videos";
 import {LayoutShell} from "@/components/layout/LayoutShell";
 
-const ALL = "All";
-
 export function VideoArchivePage() {
-    const [activeCategory, setActiveCategory] = useState<string>(ALL);
-
-    const categories = [
-        ALL,
-        ...Array.from(new Set(labVideos.map((v) => v.category))),
-    ];
-
-    const sorted = [...labVideos]; // if you later add publishedAt, sort here
-
-    const filtered =
-        activeCategory === ALL
-            ? sorted
-            : sorted.filter((v) => v.category === activeCategory);
+    const sorted = [...labVideos].sort((a, b) => {
+        const aTime = a.publishedAt ? Date.parse(a.publishedAt) : 0;
+        const bTime = b.publishedAt ? Date.parse(b.publishedAt) : 0;
+        return bTime - aTime;
+    });
 
     return (
         <LayoutShell>
@@ -56,52 +45,23 @@ export function VideoArchivePage() {
                 </p>
             </section>
 
-            {/* CATEGORY FILTERS */}
-            <section className="space-y-3">
-                <h2 className="text-sm font-semibold text-slate-200">
-                    Filter by series
-                </h2>
-                <div className="flex flex-wrap gap-2">
-                    {categories.map((cat) => {
-                        const isActive = cat === activeCategory;
-                        return (
-                            <button
-                                key={cat}
-                                type="button"
-                                onClick={() => setActiveCategory(cat)}
-                                className={[
-                                    "inline-flex items-center rounded-full border px-3 py-1 text-xs transition",
-                                    isActive
-                                        ? "border-cyan-400 bg-cyan-500/20 text-cyan-200"
-                                        : "border-slate-700 bg-slate-900/60 text-slate-300 hover:border-cyan-400/70 hover:text-cyan-200",
-                                ].join(" ")}
-                            >
-                                {cat}
-                            </button>
-                        );
-                    })}
-                </div>
-            </section>
-
             {/* VIDEO GRID */}
             <section className="space-y-3">
                 <div className="flex items-center justify-between gap-4">
-                    <h2 className="text-xl font-semibold text-slate-100">
-                        {activeCategory === ALL ? "All videos" : activeCategory}
-                    </h2>
+                    <h2 className="text-xl font-semibold text-slate-100">All videos</h2>
                     <p className="text-xs text-slate-500">
-                        Showing {filtered.length}{" "}
-                        {filtered.length === 1 ? "video" : "videos"}
+                        Showing {sorted.length}{" "}
+                        {sorted.length === 1 ? "video" : "videos"}
                     </p>
                 </div>
 
-                {filtered.length === 0 ? (
+                {sorted.length === 0 ? (
                     <div className="rounded-2xl border border-dashed border-slate-700 bg-slate-900/40 p-6 text-sm text-slate-400">
-                        No videos in this category yet. Orbson is still editing.
+                        No videos yet. Orbson is still editing.
                     </div>
                 ) : (
                     <div className="grid gap-4 md:grid-cols-2">
-                        {filtered.map((video) => {
+                        {sorted.map((video) => {
                             const watchUrl = `https://www.youtube.com/watch?v=${video.youtubeId}`;
 
                             return (
@@ -133,17 +93,21 @@ export function VideoArchivePage() {
                                     {/* Meta */}
                                     <div className="space-y-2">
                                         <div className="flex items-center justify-between gap-2 text-[11px] text-slate-400">
-                      <span className="inline-flex items-center rounded-full border border-cyan-500/40 bg-cyan-500/10 px-2 py-0.5 uppercase tracking-[0.16em] text-cyan-300">
-                        {video.category}
-                      </span>
-                                            <span>Duration: {video.duration}</span>
+                                            {video.category ? (
+                                                <span className="inline-flex items-center rounded-full border border-cyan-500/40 bg-cyan-500/10 px-2 py-0.5 uppercase tracking-[0.16em] text-cyan-300">
+                                                    {video.category}
+                                                </span>
+                                            ) : (
+                                                <span />
+                                            )}
+                                            {video.duration && <span>Duration: {video.duration}</span>}
                                         </div>
 
                                         <h3 className="text-sm md:text-base font-semibold text-slate-50 group-hover:text-cyan-200">
                                             {video.title}
                                         </h3>
 
-                                        <p className="text-sm text-slate-300">
+                                        <p className="text-sm text-slate-300 line-clamp-3">
                                             {video.description}
                                         </p>
                                     </div>

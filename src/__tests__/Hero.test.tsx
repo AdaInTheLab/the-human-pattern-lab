@@ -37,7 +37,7 @@ describe("Hero", () => {
         ).toBeInTheDocument();
 
         expect(
-            screen.getByRole("link", { name: /view lab notes/i })
+            screen.getByRole("link", { name: /read the notebook/i })
         ).toBeInTheDocument();
     });
 });

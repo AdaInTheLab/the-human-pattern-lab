@@ -20,6 +20,8 @@
  *              and Lab identity messaging.
  */
 
+import { ExternalLink } from "lucide-react";
+
 export function Footer() {
     return (
         <footer className="border-t border-slate-800/80 bg-slate-950/95">
@@ -51,10 +53,13 @@ export function Footer() {
                         </a>
 
                         <a
-                            href="/lab-notes"
-                            className="text-[0.7rem] text-slate-300 hover:text-cyan-300 transition-colors"
+                            href="https://notebook.thehumanpatternlab.com/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 text-[0.7rem] text-slate-300 hover:text-cyan-300 transition-colors"
                         >
-                            Lab Notes
+                            Notebook
+                            <ExternalLink aria-hidden="true" className="h-3 w-3 opacity-70" />
                         </a>
 
                         <a

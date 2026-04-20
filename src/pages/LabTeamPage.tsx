@@ -22,14 +22,11 @@
 
 // src/pages/LabTeamPage.tsx
 import React from "react"
-import { useNavigate } from "react-router-dom"
 import { labTeam } from "@/data/labTeam"
 import LabMemberCard from "@/components/labteam/LabMemberCard"
 import { LayoutShell } from "@/components/layout/LayoutShell"
 
 const LabTeamPage: React.FC = () => {
-    const navigate = useNavigate()
-
     return (
         <LayoutShell
             eyebrow="Lab Directory"
@@ -39,11 +36,7 @@ const LabTeamPage: React.FC = () => {
         >
             <div className="grid gap-6 md:grid-cols-2">
                 {labTeam.map((member) => (
-                    <LabMemberCard
-                        key={member.id}
-                        member={member}
-                        onClick={() => navigate(`/labteam/${member.id}`)}
-                    />
+                    <LabMemberCard key={member.id} member={member} />
                 ))}
             </div>
         </LayoutShell>
