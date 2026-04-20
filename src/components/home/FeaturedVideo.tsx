@@ -97,22 +97,24 @@ export function FeaturedVideo() {
 
                 {/* VIDEO DETAILS */}
                 <article className="space-y-3 rounded-2xl border border-slate-800 bg-slate-900/60 p-4">
-          <span className="inline-flex items-center rounded-full border border-cyan-500/40 bg-cyan-500/10 px-2 py-0.5 text-[10px] uppercase tracking-[0.16em] text-cyan-300">
-            {featured.category}
-          </span>
+                    {featured.category && (
+                        <span className="inline-flex items-center rounded-full border border-cyan-500/40 bg-cyan-500/10 px-2 py-0.5 text-[10px] uppercase tracking-[0.16em] text-cyan-300">
+                            {featured.category}
+                        </span>
+                    )}
 
                     <h3 className="text-lg md:text-xl font-semibold text-slate-50">
                         {featured.title}
                     </h3>
 
-                    <p className="text-sm text-slate-300">{featured.description}</p>
+                    <p className="text-sm text-slate-300 line-clamp-4">{featured.description}</p>
 
-                    <p className="text-xs text-slate-500">
-                        Duration:{" "}
-                        <span className="font-medium text-slate-300">
-              {featured.duration}
-            </span>
-                    </p>
+                    {featured.duration && (
+                        <p className="text-xs text-slate-500">
+                            Duration:{" "}
+                            <span className="font-medium text-slate-300">{featured.duration}</span>
+                        </p>
+                    )}
 
                     <div className="flex flex-wrap gap-3 pt-1">
                         <a

@@ -68,11 +68,15 @@ export function VideoDetailPage() {
             {/* HEADER / META */}
             <header className="space-y-4 border-b border-slate-800 pb-6">
                 <div className="flex flex-wrap items-center gap-3 text-xs text-slate-400">
-          <span className="inline-flex items-center rounded-full border border-cyan-500/40 bg-cyan-500/10 px-2 py-0.5 text-[10px] uppercase tracking-[0.16em] text-cyan-300">
-            {video.category}
-          </span>
-
-                    <span>Duration: {video.duration}</span>
+                    {video.category && (
+                        <span className="inline-flex items-center rounded-full border border-cyan-500/40 bg-cyan-500/10 px-2 py-0.5 text-[10px] uppercase tracking-[0.16em] text-cyan-300">
+                            {video.category}
+                        </span>
+                    )}
+                    {video.duration && <span>Duration: {video.duration}</span>}
+                    {video.publishedAt && (
+                        <span>Published: {new Date(video.publishedAt).toLocaleDateString()}</span>
+                    )}
                 </div>
 
                 <h1 className="text-3xl md:text-4xl font-semibold text-slate-50">

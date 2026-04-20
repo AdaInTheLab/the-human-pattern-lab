@@ -22,7 +22,7 @@
 
 import * as React from "react";
 import type { EmotionalWeatherSignal } from "@/lib/emotionalWeather";
-import { EMOTIONAL_WEATHER_STATIC } from "@/lib/emotionalWeather";
+import { EMOTIONAL_WEATHER_LATEST } from "@/lib/weatherReportLoader";
 import {
     Thermometer,
     Gauge,
@@ -57,7 +57,7 @@ function TrendGlyph({ trend }: { trend: EmotionalWeatherSignal["temperature"]["t
 }
 
 export function EmotionalWeatherCard(props: EmotionalWeatherProps) {
-    const { id, title = "Emotional Weather", className, density = "normal", signal = EMOTIONAL_WEATHER_STATIC } = props;
+    const { id, title = "Emotional Weather", className, density = "normal", signal = EMOTIONAL_WEATHER_LATEST } = props;
     const isCompact = density === "compact";
     const headingId = id ? `${id}__heading` : "emotional-weather__heading";
     const descId = id ? `${id}__desc` : "emotional-weather__desc";
