@@ -55,15 +55,28 @@ const PrivacyPolicyPage: React.FC = () => {
                     We keep our tooling simple and focused on learning, not surveillance.
                 </p>
 
-                <h3 className="text-base font-semibold text-slate-100">Google Analytics (GA4)</h3>
+                <h3 className="text-base font-semibold text-slate-100">Matomo (self-hosted)</h3>
                 <p className="text-slate-300 max-w-3xl">
-                    We use Google Analytics in a lightweight, anonymous configuration to
-                    understand how the site is used. This helps us improve content,
-                    navigation, and user experience over time.
+                    We use{" "}
+                    <a
+                        href="https://matomo.org/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-cyan-300 hover:text-cyan-200"
+                    >
+                        Matomo
+                    </a>
+                    , an open-source analytics platform, in a privacy-respecting
+                    configuration. Matomo runs on our own infrastructure at{" "}
+                    <code className="text-cyan-200">analytics.kitsuneden.net</code> —
+                    <span className="text-slate-100 font-medium"> your data is never sent to Google, Meta, or any third-party tracker.</span>
                 </p>
                 <p className="text-slate-300 max-w-3xl">
-                    We do <span className="text-slate-100 font-medium">not</span> use it
-                    for ad personalization or cross-site tracking.
+                    IP addresses are anonymized before storage (last two octets masked),
+                    the Do Not Track signal is honored, and visitor logs are automatically
+                    deleted after 12 months. We do{" "}
+                    <span className="text-slate-100 font-medium">not</span> use it for ad
+                    personalization or cross-site tracking.
                 </p>
 
                 <h3 className="text-base font-semibold text-slate-100 pt-2">
@@ -133,14 +146,26 @@ const PrivacyPolicyPage: React.FC = () => {
                 <p className="text-slate-300 max-w-3xl">You can opt out of analytics by:</p>
                 <ul className="list-disc list-inside text-sm text-slate-300 space-y-1">
                     <li>
+                        Enabling your browser&apos;s &ldquo;Do Not Track&rdquo; setting
+                        (we honor it).
+                    </li>
+                    <li>
+                        Using our{" "}
+                        <a
+                            href="https://analytics.kitsuneden.net/index.php?module=CoreAdminHome&action=optOut"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-cyan-300 hover:text-cyan-200"
+                        >
+                            Matomo opt-out tool
+                        </a>{" "}
+                        directly.
+                    </li>
+                    <li>
                         Using a browser extension that blocks analytics (uBlock Origin,
                         Ghostery, DuckDuckGo, etc.)
                     </li>
-                    <li>Disabling JavaScript for this site</li>
-                    <li>
-                        Enabling your browser&apos;s built-in tracking protection or
-                        &ldquo;Do Not Track&rdquo; setting.
-                    </li>
+                    <li>Disabling JavaScript for this site.</li>
                 </ul>
                 <p className="text-sm text-slate-400 max-w-3xl">
                     Once you opt out, we stop collecting analytics on your visit. No
